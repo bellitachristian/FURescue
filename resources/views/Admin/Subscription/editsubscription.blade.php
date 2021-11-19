@@ -1,0 +1,171 @@
+@extends("Admin.main")
+@section("header")
+Edit Subscription
+@endsection
+@push("css")
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+@endpush
+@section("content")
+<div class="card shadow mb-4">
+    <div class="card-header">
+        <a href="{{route('view.subscription')}}"><button class="btn btn-secondary">Back</button></a>
+    </div>
+        <form method="POST" id="insert_form">
+            @csrf
+            <div class="card-body">
+                <span id="error"></span>
+                <div style="display:flex">
+                    <div class="col-md">
+                        <label class ="text-sm">Subscription Name</label>
+                        <input type="text" name="name" value="{{$subscription->sub_name}}" required class="form-control" id="">
+                    </div>
+                    <div class="col-md">
+                        <label class ="text-sm">Subscription Price</label>
+                        <input type="number" name="price" value="{{$subscription->sub_price}}" required class="form-control" id="">
+                    </div>
+                    <div class="col-md">
+                        <label class ="text-sm">Subscription Span</label>
+                        <input type="number" id="span" name="span" value="{{$subscription->sub_span}}" required class="form-control" id="">
+                        <select class="form-control form-control-sm" required name="length">
+                            <option value="{{$subscription->sub_span_type}}">{{$subscription->sub_span_type}}</option>
+                            <option value="day">Day</option>
+                            <option value="month">Month</option>
+                            <option value="year">Year</option>
+                        </select>
+                        <br>        
+                    </div>
+                    <div class="col-md">
+                        <label class ="text-sm">Post Credits</label>
+                        <input type="text" name="credits" value="{{$subscription->sub_credit}}" required class="form-control" id="">
+                        <br>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <div class="col-sm">
+                        <table class="table table-bordered" id="description">
+                            <thead>
+                                <tr>
+                                    <th>Subscription Details</th>
+                                    <th style="text-align:center">
+                                        <button type="button" name="add" class="btn btn-success btn-sm add"><i class="fa fa-plus"></i></button>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="data">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div style="text-align:center">
+                    <button type="submit" id="submit_button" class="btn btn-danger">Update</button>
+                </div>
+            </div>
+    </form>
+</div>
+@endsection
+@push('js')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+    load_subscription()
+   function load_subscription()
+  {
+    $.ajax({
+      url:"{{ route('load.subscription',$subscription->id) }}",
+      success:function(data)  
+      {
+        if(data == '')
+        {
+            confirm('Subscription details is empty')
+        }
+        $('#data').html(data);
+      }
+    })
+  }
+  $('#description tbody').on('click', '.remove', function(){
+        var index = $(this).closest('tr')
+        var col1= index.find("td:eq(0) input[type='text']").val();
+        var result = col1
+        console.log(result)
+        $.ajax({
+            url:"{{ route('load.subscription.remove',$subscription->id) }}",
+            data:{name : result},
+            success:function(data){
+                console.log(data)
+                if(data == "ok"){
+                    $('#error').html('<div class="alert alert-success">Removed Successfully</div>');
+                    load_subscription()
+                }
+            }
+        })    
+     });
+$(document).ready(function(){
+
+var count = 0;
+
+function add_input_field(count)
+{
+    var html = '';
+    html += '<tr>'; 
+    html += '<td><input type="text" name="desc[]" id="sub" class="form-control desc" /></td>';
+    var remove_button = '';
+    if(count > 0)
+    {
+        remove_button = '<button type="button" name="remove" class="btn btn-danger btn-sm remove1"><i class="fas fa-minus"></i></button>';
+    }
+    html += '<td>'+remove_button+'</td></tr>';
+    return html;
+}
+$('#description').append(add_input_field(0));
+$(document).on('click', '.add', function(){
+    count++;
+    $('#description').append(add_input_field(count));
+});
+$(document).on('click', '.remove1', function(){
+$(this).closest('tr').remove();
+});
+
+$("#insert_form").submit(function(e){
+    e.preventDefault();
+    var error = '';
+    count = 1;
+   
+    $(".desc").each(function(){
+        if($(this).val() == '')
+        {
+            error += "<li>Include subscription description at "+count+" row</li>";
+        }
+        count = count + 1
+    });
+    var form_data = $(this).serialize();
+    if(error == '')
+        {
+        $.ajax({
+            url:"{{route('update.subscription',$subscription->id)}}",
+            method:"POST",
+            data:form_data,
+            success:function(data)
+            {
+                if(data == 'ok')
+                {
+                    $('#error').html('<div class="alert alert-success">Updated Successfully</div>');
+                    load_subscription()
+                }else{
+                    $('#error').html('<div class="alert alert-danger">Something went wrong</div>');
+                }
+            }
+        })
+
+    }
+    else{
+        $('#error').html('<div class="alert alert-danger"><ul>'+error+'</ul></div>');
+    }
+});
+});
+</script>
+@endpush

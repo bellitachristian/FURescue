@@ -1,0 +1,68 @@
+.logo img{
+    width: 250px;
+    float: left;
+    padding-left: 5%;
+    margin-top: -40px;
+    margin-left: -50px;
+}
+h4{
+    padding-top: 5%;
+}
+
+.animalshelter{
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    justify-content:center;
+}
+.animalshelter h4{
+    margin-top: 0;
+}
+.animalshelter img{
+    width: 80px;
+    margin-left: -150px;
+    padding-right: 20px;
+}
+
+.petowner{
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    justify-content:center;
+}
+.petowner h4{
+    margin-top: 0;
+}
+.petowner img{
+    width: 80px;
+    margin-left: -150px;
+    padding-right: 20px;
+}
+.adopter{
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    justify-content:center;
+}
+.adopter h4{
+    margin-top: 0;   
+}
+.adopter img{
+    width: 90px;
+    margin-left: -110px;
+    padding-right: 20px;
+}
+.head-text{
+    text-align: center;
+}
+.choose h5{
+    color:#d9640f;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-left: 170px;
+}
+

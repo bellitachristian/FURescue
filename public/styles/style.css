@@ -1,0 +1,174 @@
+
+.container{
+    width:1300px;
+    margin: 0;
+}
+body{
+    background: linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.7)), url("/images/frontpagePic.jpg"); 
+    background-repeat: no-repeat;
+    background-size: 100% 180%;
+    background-position: top center; 
+    height: 50vh;
+}   
+.nav-area{
+    float: right;
+    list-style: none;
+    margin-top: 40px;
+   
+}
+.nav-area li{
+    display: inline-block;
+}
+.nav-area li a{
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 20px;
+    font-size: 14px;
+}
+.nav-area li a:hover{
+    background: #fff;
+    color: #333; 
+}
+
+.logo img{
+    width: 250px;
+    float: left;
+    padding-left: 5%;
+    margin-top: 30px;
+    margin-left: -100px ;
+}
+.wrapper{
+    display: flex;
+    padding-top: 40%;
+}
+.win{
+    background: linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.7)), url("/images/WIN.jpg"); 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+
+}
+.win h1{
+    color: #fff;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    font-size: 50px;   
+    text-transform: uppercase;
+    padding: 40%;
+}
+.build{
+    background: linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.7)), url("/images/BUILD.jpg"); 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 115%;
+}
+.build h1{
+    color: #fff;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    font-size: 50px;   
+    text-transform: uppercase;
+    padding: 35%;
+
+}
+.adopt{
+    background: linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.7)), url("/images/ADOPT.jpg"); 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+}
+.adopt h1{
+    color: #fff;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    font-size: 50px;   
+    text-transform: uppercase;
+    padding: 40%;
+}
+.arrow{
+    justify-content: center;
+    align-items: center;
+}
+.arrow img{
+    width: 100px;
+    height: 150px;
+    margin-top: 50px;
+    margin-left: -35px;
+}
+
+.modal-body{
+   margin-left: 20px;   
+   margin-right: 20px;
+}
+.logbtn{
+   padding-top: 10px;
+    margin: auto;
+    text-align: center;
+}
+.logbtn .btn-primary{
+    width: 150px;
+}
+
+.animalshelter{
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    justify-content:center;
+}
+.animalshelter h4{
+    margin-top: 20px;
+}
+.animalshelter img{
+    width: 80px;
+    margin-left: -150px;
+    padding-right: 20px;
+}
+
+.petowner{
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    justify-content:center;
+}
+.petowner h4{
+    margin-top: 20px;
+}
+.petowner img{
+    width: 80px;
+    margin-left: -150px;
+    padding-right: 20px;
+}
+.adopter{
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    justify-content:center;
+}
+.adopter h4{
+    margin-top: 20px;   
+}
+.adopter img{
+    width: 90px;
+    margin-left: -110px;
+    padding-right: 20px;
+}
+.head-text{
+    text-align: center;
+}
+.choose h5{
+    color:#d9640f;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-left: 170px;
+}
+

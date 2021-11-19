@@ -1,0 +1,199 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap");
+
+
+.grid{
+    margin: 80px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 30px;
+    align-items: center;
+}
+.grid-new{
+  justify-content: center;
+  display: flex;
+  grid-template-columns: repeat(2,1fr);
+  grid-gap: 30px;
+  align-items: center;
+}
+.option-items{
+  width: 50%;
+}
+.grid .option_item .checkbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  opacity: 0;
+}
+
+.option_item .option_inner{
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  text-align: center;
+  cursor: pointer;
+  color: #585c68;
+  display: block;
+  border: 5px solid transparent;
+  position: relative;
+}
+
+.grid > label img{
+    width:100%;
+      border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.grid > label{
+    background-color:white;
+    border: none;
+    box-shadow: 2px 2px 6px 0px rgba(0, 0,0,0.3);
+    border-radius: 20px;
+    text-align: center;
+    transition: transform .3s;
+}
+
+.grid > label:hover{
+    transform: translateY(5px);
+    box-shadow: 2px 2px 26px 0px rgba(0, 0, 0, 0.3);
+}
+
+.grid-new > label{
+  background-color:white;
+  border: none;
+  box-shadow: 2px 2px 6px 0px rgba(0, 0,0,0.3);
+  text-align: center;
+  transition: transform .3s;
+}
+
+.grid-new > label:hover{
+  transform: translateY(5px);
+  box-shadow: 2px 2px 26px 0px rgba(0, 0, 0, 0.3);
+}
+
+.option_item .option_inner .icon {
+  margin-bottom: 10px;
+}
+
+.option_item .option_inner .icon .fab {
+  font-size: 32px;
+}
+
+.option_item .option_inner .name {
+  user-select: none;
+}
+
+.option_item .checkbox:checked ~ .option_inner.puppy {
+  border-color: #ff8818;
+  color: #ff8818;
+}
+
+.option_item .checkbox:checked ~ .option_inner.adolescent {
+  border-color: #ff8818;
+  color: #ff8818;
+}
+
+.option_item .checkbox:checked ~ .option_inner.adult {
+  border-color: #ff8818;
+  color: #ff8818;
+}
+
+.option_item .checkbox:checked ~ .option_inner.senior {
+  border-color: #ff8818;
+  color: #ff8818;
+}
+
+.option_item .checkbox:checked ~ .option_inner.kitten {
+    border-color: #ff8818;
+    color: #ff8818;
+  }
+  
+  .option_item .checkbox:checked ~ .option_inner.junior {
+    border-color: #ff8818;
+    color: #ff8818;
+  }
+  
+  .option_item .checkbox:checked ~ .option_inner.prime {
+    border-color: #ff8818;
+    color: #ff8818;
+  }
+  
+  .option_item .checkbox:checked ~ .option_inner.mature {
+    border-color: #ff8818;
+    color: #ff8818;
+  }
+  .option_item .checkbox:checked ~ .option_inner.seniorcat {
+    border-color: #ff8818;
+    color: #ff8818;
+  }
+
+.option_item .option_inner .tickmark {
+  position: absolute;
+  border: 20px solid;
+  border-color: #000 transparent transparent #000;
+  display: none;
+}
+
+.option_item .option_inner .tickmark:before {
+  content: "";
+  position: absolute;
+  top: -18px;
+  left: -18px;
+  width: 15px;
+  height: 10px;
+  border: 3px solid;
+  border-color: transparent transparent #fff #fff;
+  transform: rotate(-45deg);
+}
+
+.option_item .checkbox:checked ~ .option_inner .tickmark {
+  display: block;
+}
+
+.option_item .option_inner.puppy .tickmark {
+  border-color: #ff5700 transparent transparent #ff5700;
+}
+
+.option_item .option_inner.adolescent .tickmark {
+  border-color: #ff5700 transparent transparent #ff5700;
+}
+
+.option_item .option_inner.adult .tickmark {
+  border-color: #ff5700 transparent transparent #ff5700;
+}
+
+.option_item .option_inner.senior .tickmark {
+  border-color: #ff5700 transparent transparent #ff5700;
+}
+
+.option_item .option_inner.kitten .tickmark {
+    border-color: #ff5700 transparent transparent #ff5700;
+  }
+  
+  .option_item .option_inner.junior .tickmark {
+    border-color: #ff5700 transparent transparent #ff5700;
+  }
+  
+  .option_item .option_inner.prime .tickmark {
+    border-color: #ff5700 transparent transparent #ff5700;
+  }
+  
+  .option_item .option_inner.mature .tickmark {
+    border-color: #ff5700 transparent transparent #ff5700;
+  }
+  
+  .option_item .option_inner.seniorcat .tickmark {
+    border-color: #ff5700 transparent transparent #ff5700;
+  }
+ .btn button{
+    background:#f06b0c ;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 15px;
+    width: 100%;
+    font-weight: 600;
+    cursor: pointer;
+  }
