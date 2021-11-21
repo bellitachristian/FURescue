@@ -13,6 +13,7 @@ use App\Models\UploadedPhotos;
 use App\Models\Feedback;
 use App\Models\Usertype;
 use App\Models\Adopter;
+use App\Models\Adopter_Notif;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Mail\ApproveShelter;
@@ -42,6 +43,22 @@ class AdminController extends Controller
             'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(), 
           );
         return view('Admin.AdminDash', $data);
+    }
+
+    function approveadopterrequest($id){
+      $adopter = Adopter::find($id);
+      $adopter->status = 'isActive';
+      $adopter->reactivation_request = 'noRequest';
+      $adopter->update();
+
+      $notif = new Adopter_Notif;
+      $notif->notif_type = 'Account Reactivation';
+      $notif->notif_from = 'Admin';
+      $notif->notif_to = $id;
+      $notif->notif_message = 'has reactivated your account';
+      $notif->save();
+
+      return redirect()->back()->with('status','Account has been reactivated');
     }
 
     function ViewAnimalShelters(){

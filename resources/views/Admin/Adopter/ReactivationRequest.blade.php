@@ -40,7 +40,7 @@ Adopter Reactivation Requests
                         {{ $adopter->reason}}
                     </td>
                     <td> 
-                        <a href=""><button style="margin-bottom:3px" class="btn btn-success" type="button">Approve</button></a>
+                        <a href="{{route('approve.adopter.request',$adopter->id)}}"><button style="margin-bottom:3px" class="btn btn-success" type="button">Approve</button></a>
                     </td>
                 </tr>
                 @endforeach

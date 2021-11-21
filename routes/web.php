@@ -261,6 +261,7 @@ Route::group(['middleware'=>['AdopterNotifRequest']],function(){
     Route::get('/Admin/viewshelterenlargedetails/{filename}/{shelter_id}',[AdminController::class,'ViewAnimalSheltersEnlargeDetails'])->name('viewenlarge');
     Route::get('/Admin/viewshelter/{shelter_id}',[AdminController::class,'ApproveShelterApp'])->name('approve.shelter');
     Route::get('/Admin/viewpetowner/{petowner_id}',[AdminController::class,'ApprovePetOwnerApp'])->name('approve.petowner');
+    Route::get('/Admin/ApproveReactivationAdopter/{id}',[AdminController::class,'approveadopterrequest'])->name('approve.adopter.request');
     Route::get('/Admin/viewshelterReject/{shelter_id}',[AdminController::class,'RejectShelterApp'])->name('reject.shelter');
     Route::get('/Admin/viewpetownerReject/{petowner_id}',[AdminController::class,'RejectPetOwnerApp'])->name('reject.petowner');
     Route::get('/Reject/{shelter_id}',[AdminController::class,'reject_remove_shelter'])->name('remove.shelter'); 
