@@ -279,6 +279,31 @@ class UploadController extends Controller
             $imageupload->save();
         }            
     }
+
+    function uploadproofpetowner(Request $req,$id){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $sub =Subscription::Find($id);
+
+        $image = $req->file('file');
+        $photo = array();
+        $photo[] = $image;
+
+        foreach ($photo as $pics) {
+            $image_name = md5(rand(1000,10000));
+            $ext = strtolower($image->getClientOriginalExtension());
+            $imageName = $image_name.'.' .$ext;
+    
+            $image->move(public_path('uploads/pet-owner/uploaded-photos/'), $imageName);
+
+            $imageupload = new UploadedPhotos;
+            $imageupload->imagename = $imageName;
+            $imageupload->petowner_id = $petowner->id;
+            $imageupload->sub_id = $sub->id;
+            $imageupload->type = 'subscription';
+            $imageupload->save();
+        }            
+    }
+
     function loadproof($id,$sub_id)
     {
      $multiple = UploadedPhotos::all()->where('shelter_id',$id)->where('sub_id',$sub_id);   
@@ -297,6 +322,24 @@ class UploadController extends Controller
       echo $output;
      }
     }
+    function loadproofpetowner($id,$sub_id)
+    {
+     $multiple = UploadedPhotos::all()->where('petowner_id',$id)->where('sub_id',$sub_id);   
+     foreach($multiple as $image)
+     {
+      $output = '
+      <div class="col-md" style="margin-bottom:16px; text-align:center">
+                <div style="display:flex;">
+                    <div class="col-md">
+                        <img style="width:170px; height:150px; padding:3px" src="'.asset('uploads/pet-owner/uploaded-photos/' . $image->imagename).'"/>
+                    </div>
+                </div>
+                <i style="margin-top:1%" type="button" class="fa fa-trash remove_image" id="'.$image->imagename.'"></i>
+            </div>
+      ';
+      echo $output;
+     }
+    }
     function deleteproof(Request $req)
     {
         DB::table('uploaded_photos')->where('imagename', $req->get('name'))->delete();
@@ -305,5 +348,15 @@ class UploadController extends Controller
                 File::delete($destination);
             }   
     }
+
+    function deleteproofpetowner(Request $req)
+    {
+        DB::table('uploaded_photos')->where('imagename', $req->get('name'))->delete();
+        $destination = 'uploads/pet-owner/uploaded-photos/'.$req->get('name');
+            if(File::exists($destination)){ 
+                File::delete($destination);
+            }   
+    }
+
 
 }

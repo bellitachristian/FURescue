@@ -17,19 +17,55 @@ Subscription Transaction
                             <th>Subscription Name</th>
                             <th>Price</th>
                             <th>Subscriber</th>
-                            <th>Payment Proof</th>
-                            <th>View</th>
+                            <th  style="text-align:center">Payment Proof</th>
+                            <th  style="text-align:center">View</th>
                             <th style="text-align:center">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody> 
                     @foreach($subscriptions as $sub)
                         <tr>
                             <td>{{$sub->id}}</td>
                             <td>{{$sub->subscription->sub_name}}</td>
                             <td>{{$sub->subscription->sub_price}}</td>
+                            @if($sub->shelter)
                             <td>{{$sub->shelter->shelter_name}}</td>
-                            @foreach($sub->shelter->)
+                            @elseif($sub->petowner)
+                            <td>{{$sub->petowner->fname}}</td>
+                            @endif
+                            @if($sub->shelter)
+                            @foreach($sub->subscription->proofpayment as $subs)
+                                    <td style="text-align:center">
+                                        <img src="{{asset('uploads/animal-shelter/uploaded-photos/'.$subs->imagename)}}" width="90px" height="70px">
+                                    </td>
+                            @endforeach
+                            @elseif($sub->petowner)
+                            @foreach($sub->subscription->proofpayment as $subs)
+                                    <td style="text-align:center">
+                                        <img src="{{asset('uploads/pet-owner/uploaded-photos/'.$subs->imagename)}}" width="90px" height="70px">
+                                    </td>
+                            @endforeach
+                            @endif
+                            @if($sub->shelter)
+                            <td  style="text-align:center">
+                                <a href="{{url('/Admin/viewenlargeproof/'.$sub->sub_id.'/'.$sub->shelter_id)}}"><i class="far fa-eye"></i></a>
+                            </td>
+                            @elseif($sub->petowner)
+                            <td  style="text-align:center">
+                                <a href="{{url('/Admin/viewenlargeproof/'.$sub->sub_id.'/'.$sub->petowner_id)}}"><i class="far fa-eye"></i></a>
+                            </td>
+                            @endif
+                            @if($sub->shelter)
+                            <td  style="text-align:center">
+                                <a href="{{url('/Admin/Approveproofpayment/'.$sub->sub_id.'/'.$sub->shelter_id)}}"><button style="margin-bottom:3px" class="btn btn-success" type="button">Approve</button></a>
+                                <a href="#"><button style="width:90px" data-toggle="modal" data-target="#feedback"  class="btn btn-danger" type="button">Reject</button></a>
+                            </td>
+                            @elseif($sub->petowner)
+                            <td  style="text-align:center">
+                                <a href="{{url('/Admin/Approveproofpayment/'.$sub->sub_id.'/'.$sub->petowner_id)}}"><button style="margin-bottom:3px" class="btn btn-success" type="button">Approve</button></a>
+                                <a href="#"><button style="width:90px" data-toggle="modal" data-target="#feedback1"  class="btn btn-danger" type="button">Reject</button></a>
+                            </td>
+                            @endif
                         </tr> 
                     @endforeach
                     @if(empty($sub))   
@@ -41,6 +77,13 @@ Subscription Transaction
         </div>
     </div>
 </div>
+@foreach($subscriptions as $sub)
+@if($sub->shelter)
+@include('Admin.Transaction.Modal.feedbackmessage')
+@elseif($sub->petowner)
+@include('Admin.Transaction.Modal.feedbackmessagepetowner')
+@endif
+@endforeach
 @endsection
 @push('js')
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>

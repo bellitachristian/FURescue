@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Admin;
 use App\Models\AnimalShelter;
 use App\Models\ValidDocuments;
@@ -9,6 +10,8 @@ use App\Models\Subscription;
 use App\Models\RejectedShelters;
 use App\Models\SubscriptionTransac;
 use App\Models\UploadedPhotos;
+use App\Models\Feedback;
+use App\Models\Usertype;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Mail\ApproveShelter;
@@ -21,8 +24,14 @@ use App\Notifications\ValidPetOwnerDocumentsApprove;
 use App\Notifications\ValidDocumentsRejected;
 use App\Notifications\ConfirmReactivationNotif;
 use App\Notifications\ConfirmReactivationPetOwnerNotif;
+use App\Notifications\ApproveProofPayment;
+use App\Notifications\ApproveProofPaymentPetowner;
+use App\Notifications\RejectedProof;
+use App\Notifications\RejectProofPetowner;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\File; 
+
 
 class AdminController extends Controller
 {
@@ -451,7 +460,162 @@ class AdminController extends Controller
       $data = array(
         'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
         'subscriptions'=>SubscriptionTransac::all()->where('status','pending'),
-      );
+      );  
       return view('Admin.Transaction.subscription_transac',$data);
     }
-}
+
+    function viewenlargeproofpayment($sub_id, $user_id){
+        $check = SubscriptionTransac::where('status','pending')->where('sub_id',$sub_id)->where('shelter_id',$user_id)->count();
+        if($check > 0){
+            $data = array(
+              'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+              'proof' => UploadedPhotos::where('sub_id',$sub_id)->where('shelter_id',$user_id)->get(),
+          );
+          return view('Admin.Transaction.ViewEnlargeFile', $data);
+        }
+        else{
+          $data = array(
+            'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+            'proof' => UploadedPhotos::where('sub_id',$sub_id)->where('petowner_id',$user_id)->get(),
+          );
+        return view('Admin.Transaction.ViewEnlargeFile', $data);
+      }
+    }
+    function approveproofpayment($sub_id,$user_id){
+      $check = SubscriptionTransac::where('status','pending')->where('sub_id',$sub_id)->where('shelter_id',$user_id)->count();
+      if($check > 0){
+        $shelter = SubscriptionTransac::where('status','pending')->where('sub_id',$sub_id)->where('shelter_id',$user_id)->first();
+
+        $approvedproof = [
+          'shelter_name' => 'You have successfully subscribed '.$shelter->subscription->sub_name.' promo',
+          'promo' => ' valid for '.$shelter->subscription->sub_span.''.$shelter->subscription->sub_span_type.'/s',
+      ];
+      $shelter->status = 'approved';
+      $shelter->update();
+      AnimalShelter::find($shelter->shelter_id)->notify(new ApproveProofPayment($approvedproof));
+
+      $subscription = Subscription::find($sub_id);
+      $feedback = Feedback::where('sub_id',$subscription->id)->delete();
+        $proofphoto = UploadedPhotos::where('sub_id',$sub_id)->where('shelter_id',$user_id)->first();
+        $destination = 'uploads/animal-shelter/uploaded-photos/'.$proofphoto->imagename;
+        if(File::exists($destination)){ 
+          File::delete($destination);
+        }   
+        $proofphoto->delete();
+          $data = array(
+            'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+            'proof' => UploadedPhotos::where('sub_id',$sub_id)->where('shelter_id',$user_id)->get(),
+        );
+        return redirect()->back()->with('status','Approved Successfully');
+      }
+      if($check == 0){
+        $petowner = SubscriptionTransac::where('status','pending')->where('sub_id',$sub_id)->where('petowner_id',$user_id)->first();
+        
+        $approvedproof = [
+          'petowner_name' => 'You have successfully subscribed '.$petowner->subscription->sub_name.' promo',
+          'promo' => ' valid for '.$petowner->subscription->sub_span.''.$petowner->subscription->sub_span_type.'/s',
+        ];
+        PetOwner::find($petowner->petowner_id)->notify(new ApproveProofPaymentPetowner($approvedproof));
+
+        $petowner->status = 'approved';
+        $petowner->update();
+        
+        $subscription = Subscription::find($sub_id);
+        $feedback = Feedback::where('sub_id',$subscription->id)->delete();
+
+        $proofphoto = UploadedPhotos::where('sub_id',$sub_id)->where('petowner_id',$user_id)->first();
+        $destination = 'uploads/pet-owner/uploaded-photos/'.$proofphoto->imagename;
+        if(File::exists($destination)){ 
+          File::delete($destination);
+        }   
+        $proofphoto->delete();
+        $data = array(
+          'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+          'proof' => UploadedPhotos::where('sub_id',$sub_id)->where('petowner_id',$user_id)->get(),
+        );
+        return redirect()->back()->with('status','Approved Successfully');
+      }
+    }
+    function rejectproofpayment($sub_id,$user_id){
+      $check = SubscriptionTransac::where('status','pending')->where('sub_id',$sub_id)->where('shelter_id',$user_id)->count();
+      if($check > 0){
+          $data = array(
+            'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+            'proof' => UploadedPhotos::where('sub_id',$sub_id)->where('shelter_id',$user_id)->get(),
+        );
+        return view('Admin.Transaction.ViewEnlargeFile', $data);
+      }
+      else{
+        $data = array(
+          'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+          'proof' => UploadedPhotos::where('sub_id',$sub_id)->where('petowner_id',$user_id)->get(),
+        );
+      return view('Admin.Transaction.ViewEnlargeFile', $data);
+      }
+    } 
+    function feedback(Request $req, $sub_id, $receiver){
+      $checkshelter = AnimalShelter::where('shelter_name',$receiver)->count();
+       if($checkshelter > 0){
+        $bind = AnimalShelter::where('shelter_name',$receiver)->first();
+        $user = Usertype::where('id',$bind->usertype_id)->first();
+        $admin = Usertype::where('usertype','Admin')->first();
+        $feedback = new Feedback;
+        $feedback->message = $req->feedback;
+        $feedback->sender = $admin->id;
+        $feedback->receiver = $user->id;
+        $feedback->sub_id = $sub_id;
+        $feedback->status = 'not read';
+        $feedback->save();
+
+        $proofphoto = UploadedPhotos::where('sub_id',$sub_id)->where('shelter_id',$bind->id)->first();
+        $destination = 'uploads/animal-shelter/uploaded-photos/'.$proofphoto->imagename;
+        if(File::exists($destination)){ 
+          File::delete($destination);
+        }   
+        $proofphoto->delete();
+
+        $rejectedproof = [
+          'payment' => 'There is something wrong upon the proof of payment you had sent,',
+          'tryagain' => ' please upload again the neccessary proof of photo on your subscription',
+        ];
+        AnimalShelter::find($bind->id)->notify(new RejectedProof($rejectedproof));
+
+        $transac = SubscriptionTransac::where('status','pending')->where('sub_id',$sub_id)->where('shelter_id',$bind->id)->first();
+        $transac->status = "not approved";
+        $transac->update();
+
+        return redirect()->back()->with('status','Feedback Sent Successfully');
+      }  
+      if($checkshelter == 0){
+        $bind = PetOwner::where('email',$receiver)->first();
+        $user = Usertype::where('id',$bind->usertype_id)->first();
+        $admin = Usertype::where('usertype','Admin')->first();
+        $feedback = new Feedback;
+        $feedback->message = $req->feedback;
+        $feedback->sender = $admin->id;
+        $feedback->receiver = $user->id;
+        $feedback->sub_id = $sub_id;
+        $feedback->status = 'not read';
+        $feedback->save();
+
+        $proofphoto = UploadedPhotos::where('sub_id',$sub_id)->where('petowner_id',$bind->id)->first();
+        $destination = 'uploads/pet-owner/uploaded-photos/'.$proofphoto->imagename;
+        if(File::exists($destination)){ 
+          File::delete($destination);
+        }   
+        $proofphoto->delete();
+
+        $rejectedproof = [
+          'payment' => 'There is something wrong upon the proof of payment you had sent,',
+          'tryagain' => ' please upload again the neccessary proof of photo on your subscription',
+        ];
+        PetOwner::find($bind->id)->notify(new RejectProofPetowner($rejectedproof));
+
+        $transac = SubscriptionTransac::where('status','pending')->where('sub_id',$sub_id)->where('petowner_id',$bind->id)->first();
+        $transac->status = "not approved";
+        $transac->update();
+
+        return redirect()->back()->with('status','Feedback Sent Successfully');
+      }
+    }
+} 

@@ -15,4 +15,8 @@ class SubscriptionTransac extends Model
     public function shelter(){
         return $this->belongsTo(AnimalShelter::class,'shelter_id');
     }
+    public function petowner(){
+        return $this->belongsTo(PetOwner::class,'petowner_id');
+    }
+
 }

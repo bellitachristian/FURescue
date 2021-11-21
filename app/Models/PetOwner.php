@@ -31,4 +31,8 @@ class PetOwner extends Model
     {
         return $this->hasMany(Deworm::class,'petowner_id');
     }
+    public function subscription()
+    {
+        return $this->hasMany(Subscription::class,'petowner_id');
+    }
 }

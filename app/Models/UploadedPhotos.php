@@ -13,7 +13,10 @@ class UploadedPhotos extends Model
         return $this->belongsTo(Animals::class,'id');
     }
     public function shelter(){
-        return $this->belongsTo(AnimalShelter::class,'id');
+        return $this->belongsTo(AnimalShelter::class,'shelter_id');
+    }
+    public function petowner(){
+        return $this->belongsTo(PetOwner::class,'petowner_id');
     }
     public function subscription(){
         return $this->belongsTo(Subscription::class);

@@ -52,7 +52,7 @@
     <label class="option_item">
     <input type="checkbox" name="cat[]" value="Puspin" class="checkbox">
     <div class="option_inner kitten">
-        <img src="{{asset('images/junior.pn')}}" height="230" width="220" alt="Puspin">
+        <img src="{{asset('images/junior.png')}}" height="230" width="220" alt="Puspin">
         <div class="tickmark"></div>
             <h2 style="color:black; font-weight:bold">Puspin</h2>
         <p style="color:black">Pusang Pinoy(Philippine cat)</p>

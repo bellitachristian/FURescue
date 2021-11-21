@@ -21,10 +21,15 @@ use App\Models\DewormHistory;
 use App\Models\VaccineHistory;
 use App\Models\AnimalMasterList;
 use App\Models\UploadedPhotos;
+use App\Models\Feedback;
+use App\Models\Subscription;
+use App\Models\SubscriptionTransac;
+use App\Models\Usertype;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\RequestReactivationPetOwner;
+use App\Notifications\Checkproofpetowner;
 use Illuminate\Support\Facades\Notification;
 use Carbon\Carbon;
 
@@ -32,9 +37,21 @@ use Carbon\Carbon;
 class PetOwnerManagement extends Controller
 {
     function dashboard(){
+        $petowner=PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $id = $petowner->id;
+        $subscription = Subscription::whereHas('subscription_transaction', function($q) use ($id) {
+            $q->where('petowner_id','=',$id);  
+            $q->where('status','=','approved');    
+        })->pluck('id')->toArray(); 
+        $not= Subscription::whereNotIn('id', $subscription)->pluck('id')->toArray();
+        //dd($not);
+        $transaction = SubscriptionTransac::all()->where('status','pending')->pluck('status')->toArray();
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first()
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'subscription'=>Subscription::all(),
+            'notsub'=> $subscription,
+            'notapprove'=> Subscription::whereNotIn('id', $subscription)->pluck('id')->toArray(),
         );
         return view('PetOwner.PetOwnerDash',$data);
     } 
@@ -1715,6 +1732,64 @@ class PetOwnerManagement extends Controller
         }
         $post->delete();
      }
+
+     function choosesubscription($id){
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'shelter'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'subs'=>Subscription::find($id),
+        );
+        return view('PetOwner.Subscription.viewtransaction',$data);
+    }
+
+     function viewwaitsubscription($id){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $check = SubscriptionTransac::where('status','pending')->where('sub_id',$id)->where('petowner_id',$petowner->id)->count();
+        if($check > 0){
+            $data =array(
+                'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+                'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+                'subs'=>Subscription::find($id),
+            );
+            return view('PetOwner.Subscription.viewwaitsubscription',$data);
+        }
+        if($check == 0){
+            $user = Usertype::where('id',$petowner->usertype_id)->first();
+            $data =array(
+                'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+                'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+                'subs'=>Subscription::find($id),
+                'count'=>SubscriptionTransac::where('sub_id',$id)->where('petowner_id',$petowner->id)->where('status','not approved')->count(),
+                'feedback'=>Feedback::where('receiver',$user->id)->get(),
+            );
+            return view('PetOwner.Subscription.viewtransaction',$data);
+        }
+    }
+
+    function waitingsub($id){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $check = UploadedPhotos::where('sub_id',$id)->where('petowner_id',$petowner->id)->count();
+        if($check > 0){
+            $subscription = Subscription::find($id);
+            $waitsub = new SubscriptionTransac;
+            $waitsub->status ="pending";
+            $waitsub->sub_id = $id;
+            $waitsub->petowner_id = $petowner->id;
+            $waitsub->save();
+    
+            $valid = array();
+            $valid = [
+                'petowner_name' => $petowner->fname.'(Pet Owner) has sent a proof of payment',
+                'continue' => 'please check it now',
+            ];
+            Admin::find(1)->notify(new Checkproofpetowner($valid));
+    
+            return redirect()->route('owner.view.wait.subscription',$id)->with('status','Proof of payment has been sent');
+        }
+        else{
+            return redirect()->back()->with('status1','Please upload a photo that will serve as your proof of payment');
+        }
+    }  
 
 
 }

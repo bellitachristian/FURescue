@@ -2,7 +2,9 @@
 @section("header")
 Pet Owner Dashboard
 @endsection
-
+@push('css')
+<link href="{{url('css/style.css')}}" rel="stylesheet">    
+@endpush
 @section("content")
 <div class="row">
 
@@ -91,43 +93,50 @@ Pet Owner Dashboard
 </div>
 <div class="row">
     <!-- Dashboard Content -->
-    <div class="col-xl-8 col-lg-7">
+    <div class="col-md-4">
         <div class="card shadow mb-4">
             <!-- Dashboard header -->
             <div
                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h3>Welcome! <br>
-                    You have 0 post credits. To add a pet</h3>
+                <h5>To add a pet</h5>
                 <div>
               <a href="{{route('pet.view')}}"><button class="btn btn-danger">Go to Pet Management</button></a> 
                 </div>
             </div>
-            <!-- Content Body -->
-            <div class="card-body">
-                <div class="chart-area">
-                    Possible post for adoption
-                </div>
-            </div>
         </div>
     </div>
-
-    <!-- Subscription promo -->
-    <div class="col-xl-4 col-lg-5">
-        <div class="card shadow mb-4">
-            <!-- Subscription Header  -->
-            <div
-                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="font-weight-bold text-danger text-center">Subscription Promos</h6>
-            </div>
-            <!-- Subscription Body -->
-            <div class="card-body">
-                <div class="chart-pie pt-4 pb-2">
+</div>
+<div class="row">
+    @foreach($subscription as $subs)
+    <div style="margin-bottom:2%" class="col-md-4 col-sm-6">
+        <div class="pricingTable">
+            <div class="pricingTable-header">
+                <h3 class="heading">{{$subs->sub_name}}</h3>
                 
+                <div class="price-value">{{$subs->sub_price}}
+                    <span class="currency">PHP</span>
                 </div>
-                
             </div>
+            @foreach($subs->sub_desc as $descs)
+            <ul class="pricing-content"> 
+                    {{$descs}}
+            </ul>
+            @endforeach
+            @foreach($notapprove as $nots)
+                @if($nots == $subs->id)
+                    <a href="{{route('view.wait.subscription',$subs->id)}}" class="read">subscribe<i class="fa fa-angle-right"></i></a>
+                @endif
+            @endforeach
+            @foreach($notsub as $not)
+                @if($not == $subs->id)
+                <div  class="text-danger bg-danger card-footer">
+                    <h3 style="color:white; font-weight:bold">SUBSCRIBED</h3>
+                </div>
+                @endif
+            @endforeach 
         </div>
     </div>
+    @endforeach
 </div>
 @endsection
 

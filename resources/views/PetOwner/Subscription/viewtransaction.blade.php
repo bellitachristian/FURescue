@@ -1,4 +1,4 @@
-@extends("main")
+@extends("mainpetowner")
 @section("header")
 Subscription
 @endsection
@@ -27,7 +27,7 @@ Subscription
     <div class="col-sm">
         <div class="card shadow mb-4">
             <div class="card-header">
-                <a href="/dashboard"><button type="button" class="btn btn-secondary">Back</button></a>
+                <a href="/pet-owner/dashboard"><button type="button" class="btn btn-secondary">Back</button></a>
             </div>
             <div class="card-body">
                 <div style="display:flex">
@@ -47,7 +47,7 @@ Subscription
                             <label style="font-weight:bold; color:black" for="">GCash No. </label><span style="text-decoration:underline">09293291231</span>
                         </div>
                         <div class="col-sm">
-                            <form id="dropzoneForm" enctype="multipart/form-data" action="{{ route('upload.proof',$subs->id) }}" class="dropzone">
+                            <form id="dropzoneForm" enctype="multipart/form-data" action="{{ route('upload.proof.petowner',$subs->id) }}" class="dropzone">
                                 @csrf
                             </form> 
                         </div>
@@ -67,7 +67,7 @@ Subscription
                             <div>
                                 <label style="font-weight:bold; color:black">Photo</label>
                             </div>
-                            <form action="{{route('waiting.subscription',$subs->id)}}" method="POST">
+                            <form action="{{route('waiting.subscription.petowner',$subs->id)}}" method="POST">
                                 @csrf
                             <div>
                                 <div style="text-align:center" id="uploaded_image">
@@ -151,7 +151,7 @@ load_images();
   function load_images()
   {
     $.ajax({
-      url:"{{url('Admin/loadproof/'.$shelter->id.'/'.$subs->id)}}",
+      url:"{{url('PetOwner/loadproof/'.$petowner->id.'/'.$subs->id)}}",
       success:function(data)
       {
         $('#uploaded_image').html(data);
@@ -161,7 +161,7 @@ load_images();
   $(document).on('click', '.remove_image', function(){
     var name = $(this).attr('id');
     $.ajax({
-      url:"{{ route('delete.proof') }}",
+      url:"{{ route('delete.proof.petowner') }}",
       data:{name : name},
       success:function(data){
         confirm('Removed Successfully!');

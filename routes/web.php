@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\DB;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::post('/test/upload/petowner',[UploadController::class,'upload_petowner'])->name('up.upload.petowner');
 Route::post('/SecondaryIntro/petowner',[PetOwnerManagement::class,'secondaryIntro'])->name('second.intro.petowner');
 Route::post('/Dog/petowner',[PetOwnerManagement::class,'DogLifeStage'])->name('doglife.stage.petowner');
@@ -70,8 +71,14 @@ Route::post('/Admin/savesubscription',[AdminController::class,'savesubscription'
 Route::post('/Admin/updatesubscription/{id}',[AdminController::class,'updatesubscription'])->name('update.subscription');
 Route::post('/Admin/deletesubscription/{id}',[AdminController::class,'deletesubscription'])->name('delete.subscription');
 Route::post('/Admin/uploadproof/{id}',[UploadController::class,'uploadproof'])->name('upload.proof');
+Route::post('/PetOwner/uploadproof/{id}',[UploadController::class,'uploadproofpetowner'])->name('upload.proof.petowner');
+
 
 Route::post('/AnimalShelter/waitingsubscription/{id}',[AnimalShelterManagement::class,'waitingsub'])->name('waiting.subscription');
+Route::post('/PetOwner/waitingsubscription/{id}',[PetOwnerManagement::class,'waitingsub'])->name('waiting.subscription.petowner');
+
+
+Route::post('Admin/feedback/{sub_id}/{receiver_id}',[AdminController::class,'feedback']);
 
 
 Route::get('/test',[UploadController::class,'view']);
@@ -215,6 +222,9 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
     Route::get('/customselection/petowner/load_adoption',[DropDownController::class,'load_adoption_petowner'])->name('load.adoption.petowner');
     Route::get('/customselection/get_fee/petowner',[DropDownController::class,'get_fee_petowner'])->name('get.fee.petowner');
 
+    Route::get('/Petowner/viewwaitsubscription/{id}',[PetOwnerManagement::class,'viewwaitsubscription'])->name('owner.view.wait.subscription');
+    Route::get('/PetOwner/subscription/{id}',[PetOwnerManagement::class,'choosesubscription'])->name('choose.subscription.petowner');
+
 });
 
 Route::get('/dashboard/gettype/petowner',[DropDownController::class,'gettype_petowner'])->name('get.type.petowner');
@@ -264,8 +274,13 @@ Route::get('/Admin/vieweditsubscription/{id}',[AdminController::class,'Viewedits
 Route::get('/Admin/loadsubscription/{id}',[AdminController::class,'loadsubscription'])->name('load.subscription');
 Route::get('/Admin/loadsubscription/remove/{id}',[AdminController::class,'loadsubscriptionremove'])->name('load.subscription.remove');
 Route::get('/Admin/loadproof/{id}/{sub_id}',[UploadController::class,'loadproof'])->name('load.proof');
+Route::get('/PetOwner/loadproof/{id}/{sub_id}',[UploadController::class,'loadproofpetowner'])->name('load.proof.petowner');
 Route::get('/Admin/deleteproof',[UploadController::class,'deleteproof'])->name('delete.proof');
+Route::get('/PetOwner/deleteproof',[UploadController::class,'deleteproofpetowner'])->name('delete.proof.petowner');
 Route::get('/Admin/viewproofpayment',[AdminController::class,'viewproofpayment'])->name('view.proof.payment');
+Route::get('/Admin/viewenlargeproof/{sub_id}/{user_id}',[AdminController::class,'viewenlargeproofpayment'])->name('view.proof.enlarge');
+Route::get('/Admin/Approveproofpayment/{sub_id}/{user_id}',[AdminController::class,'approveproofpayment'])->name('approve.proof.payment');
+Route::get('/Admin/Rejectproofpayment/{sub_id}/{user_id}',[AdminController::class,'rejectproofpayment'])->name('reject.proof.payment');
 
 //markAllAsRead
 Route::get('markAllAsReadNotif/{email}', function($email){

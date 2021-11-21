@@ -14,6 +14,7 @@ use App\Models\AllocateVaccine;
 use App\Models\AdoptionFee;
 use App\Models\Admin;
 use App\Models\Type;
+use App\Models\Feedback;
 use App\Models\Post;
 use App\Models\Breed;
 use App\Models\PetBook;
@@ -22,6 +23,7 @@ use App\Models\DewormHistory;
 use App\Models\AnimalMasterList;
 use App\Models\AllocateDeworming;
 use App\Models\UploadedPhotos;
+use App\Models\Usertype;
 use App\Models\Subscription;
 use App\Models\SubscriptionTransac;
 use Illuminate\Support\Facades\File;
@@ -264,20 +266,30 @@ class AnimalShelterManagement extends Controller
     }
 
     function Animalshelter_dashboard(){
-        $transaction = SubscriptionTransac::all()->where('status','pending')->pluck('id')->toArray();
-        $transnotcheck=DB::table('subscription_transaction')->whereNotIn('id',$transaction)->where('shelter_id',session('LoggedUser'))->count();
-       // dd($transnotcheck);
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
 
+        $id = $shelter->id;
+        $subscription = Subscription::whereHas('subscription_transaction', function($q) use ($id) {
+            $q->where('shelter_id','=',$id); 
+            $q->where('status','=','approved');
+        })->pluck('id')->toArray(); 
+
+        $transac = SubscriptionTransac::where('status','approved')->where('shelter_id',$shelter->id)->get();
+     
+        dd($data);
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'subscription'=>Subscription::all(),
-            'transnotcheck'=>DB::table('subscription_transaction')->whereNotIn('id',$transaction)->where('shelter_id',session('LoggedUser'))->count(),
-            'activate'=>SubscriptionTransac::where('status','activated')->where('shelter_id',session('LoggedUser'))->count(),
+            'notsub'=> $subscription,
+            'notapprove'=> Subscription::whereNotIn('id', $subscription)->pluck('id')->toArray(),
+            'countcredits',
+            'countpets',
+            'countrequest',
+            'totalrevenue'
         );
         return view('AnimalShelter.ShelterDashboard',$data);
     }
-
     function Animalshelter_tempdashboard(){
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -1793,29 +1805,50 @@ class AnimalShelterManagement extends Controller
     }
 
     function viewwaitsubscription($id){
-        $data =array(
-            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'subs'=>Subscription::find($id),
-        );
-        return view('AnimalShelter.Subscription.viewwaitsubscription',$data);
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $check = SubscriptionTransac::where('status','pending')->where('sub_id',$id)->where('shelter_id',$shelter->id)->count();
+        if($check > 0){
+            $data =array(
+                'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+                'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+                'subs'=>Subscription::find($id),
+            );
+            return view('AnimalShelter.Subscription.viewwaitsubscription',$data);
+        }
+        if($check == 0){
+            $user = Usertype::where('id',$shelter->usertype_id)->first();
+            $data =array(
+                'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+                'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+                'subs'=>Subscription::find($id),
+                'count'=>SubscriptionTransac::where('sub_id',$id)->where('shelter_id',$shelter->id)->where('status','not approved')->count(),
+                'feedback'=>Feedback::where('receiver',$user->id)->get(),
+            );
+            return view('AnimalShelter.Subscription.viewtransaction',$data);
+        }
     }
     function waitingsub($id){
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
-        $subscription = Subscription::find($id);
-        $waitsub = new SubscriptionTransac;
-        $waitsub->status ="pending";
-        $waitsub->sub_id = $id;
-        $waitsub->shelter_id = $shelter->id;
-        $waitsub->save();
-
-        $valid = array();
-        $valid = [
-            'shelter_name' => $shelter->shelter_name.' has sent a proof of payment',
-            'continue' => 'please check it now',
-        ];
-        Admin::find(1)->notify(new Checkproofsubscriptionpayment($valid));
-
-        return redirect()->route('view.wait.subscription',$id);
-    }
+        $check = UploadedPhotos::where('sub_id',$id)->where('shelter_id',$shelter->id)->count();
+        if($check > 0){
+            $subscription = Subscription::find($id);
+            $waitsub = new SubscriptionTransac;
+            $waitsub->status ="pending";
+            $waitsub->sub_id = $id;
+            $waitsub->shelter_id = $shelter->id;
+            $waitsub->save();
+    
+            $valid = array();
+            $valid = [
+                'shelter_name' => $shelter->shelter_name.' has sent a proof of payment',
+                'continue' => 'please check it now',
+            ];
+            Admin::find(1)->notify(new Checkproofsubscriptionpayment($valid));
+    
+            return redirect()->route('view.wait.subscription',$id)->with('status','Proof of payment has been sent');
+        }
+        else{
+            return redirect()->back()->with('status1','Please upload a photo that will serve as your proof of payment');
+        }
+    }   
 }
