@@ -77,9 +77,9 @@ Route::post('/PetOwner/uploadproof/{id}',[UploadController::class,'uploadproofpe
 Route::post('/AnimalShelter/waitingsubscription/{id}',[AnimalShelterManagement::class,'waitingsub'])->name('waiting.subscription');
 Route::post('/PetOwner/waitingsubscription/{id}',[PetOwnerManagement::class,'waitingsub'])->name('waiting.subscription.petowner');
 
+Route::post('/Admin/feedback/{sub_id}/{receiver_id}',[AdminController::class,'feedback']);
 
-Route::post('Admin/feedback/{sub_id}/{receiver_id}',[AdminController::class,'feedback']);
-
+Route::post('/Admin/feedbackdonationmessage/{id}',[AnimalShelterManagement::class,'feedbackmessage'])->name('view.feedback.message');
 
 Route::get('/test',[UploadController::class,'view']);
 Route::post('/SecondaryIntro',[AnimalShelterManagement::class,'secondaryIntro'])->name('second.intro');
@@ -132,7 +132,7 @@ Route::get('/verify',[RegisterController::class,'verifyUser'])->name('verify.use
 Route::get('/verify/petowner',[RegisterController::class,'verifyPetUser'])->name('verifyPetUser.user');
 Route::get('/auto/logout/{shelter_id}',[LoginController::class,'autologout']);
 
-Route::group(['middleware'=>['Authcheck']],function(){
+Route::group(['middleware'=>['Authcheck','DonationCheckNotif']],function(){
     Route::get('/petbook/allocate',[AnimalShelterManagement::class,'petbook_allocate'])->name('petbook.allocate');
     Route::get('/petbook/viewbook',[AnimalShelterManagement::class,'petbook_viewbook'])->name('petbook.view');
     Route::get('/petbook/fetch',[AnimalShelterManagement::class,'load_books'])->name('petbook.fetch');
@@ -173,6 +173,7 @@ Route::group(['middleware'=>['Authcheck']],function(){
     Route::get('/AnimalShelter/subscription/{id}',[AnimalShelterManagement::class,'choosesubscription'])->name('choose.subscription');
     Route::get('/AnimalShelter/viewwaitsubscription/{id}',[AnimalShelterManagement::class,'viewwaitsubscription'])->name('view.wait.subscription');
 
+    Route::get('/AnimalShelter/viewdonation',[AnimalShelterManagement::class,'viewdonation'])->name('view.donation');
 
 });
 

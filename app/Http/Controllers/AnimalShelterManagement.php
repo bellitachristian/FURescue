@@ -8,10 +8,12 @@ use App\Models\Animals;
 use App\Models\Deworm;
 use App\Models\PetOwner;
 use App\Models\Category;
+use App\Models\Donation;
 use App\Models\Vaccine;
 use App\Models\AdoptionPolicy;
 use App\Models\AllocateVaccine;
 use App\Models\AdoptionFee;
+use App\Models\Adopter_Notif;
 use App\Models\Admin;
 use App\Models\Type;
 use App\Models\Feedback;
@@ -285,34 +287,24 @@ class AnimalShelterManagement extends Controller
                 }
             }
         }
-        $number = array();
-        $number[] = $credits;
-
         //explode array credits where credits being stored
-        foreach($credits as $credit){
-            if($index = array_search("UNLI", $credits)){
-                    $availed = "UNLI";  
-            }
-            else{
-                $numeric = array();
-                if($index = array_search("UNLI", $credits)){
-                    unset($credits[$index]);
-                    $numeric[]= $credits;
-                }
-            }
+        if(in_array("UNLI", $credits)){
+            $totalcredits = "UNLI";  
         }
-        if(!$index = array_search("UNLI", $credits)){
+        else{
             foreach($credits as $totcredits){
                 $int[] = (int)$totcredits;
-            }
+                }
             if(empty($int)){
                 $totalcredits = 0;
+                //dd('hi');   
             }
             else{
                 $credit = array_sum($int);
-                $totalcredits = $credit;        
+                $totalcredits = $credit;
+                //dd('hi');
             }
-        }      
+        }
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -1887,4 +1879,29 @@ class AnimalShelterManagement extends Controller
             return redirect()->back()->with('status1','Please upload a photo that will serve as your proof of payment');
         }
     }   
+    function viewdonation(){
+        $data = array(
+            'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'donors'=>Donation::where('status','pending')->get(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+          );   
+          return view('AnimalShelter.Donation.viewdonation',$data);
+    }
+
+    function feedbackmessage(Request $req, $id){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $receive = DB::table('donation')
+                    ->where('donation_id',$id)
+                    ->update(['status'=>'received','feedback'=>$req->feedback]);
+        $donor = Donation::where('donation_id',$id)->first();
+        $notif = new Adopter_Notif;
+        $notif->notif_type = 'Donation';
+        $notif->notif_from = $shelter->shelter_name;
+        $notif->notif_to = $donor->donor_id;
+        $notif->notif_message = ' has received your donation';
+        $notif->save();
+
+        return redirect()->back()->with('status','You have accepted his/her donation');
+
+    } 
 }

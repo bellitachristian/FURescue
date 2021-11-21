@@ -92,7 +92,7 @@
 
 <!-- Nav Item - Charts -->
 <li class="nav-item">
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="{{route('view.donation')}}">
         <i class="fas fa-fw fa-donate"></i>
         <span>Donation</span></a>
 </li>
