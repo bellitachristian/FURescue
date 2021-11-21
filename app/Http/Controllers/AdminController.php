@@ -12,6 +12,7 @@ use App\Models\SubscriptionTransac;
 use App\Models\UploadedPhotos;
 use App\Models\Feedback;
 use App\Models\Usertype;
+use App\Models\Adopter;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Mail\ApproveShelter;
@@ -51,6 +52,14 @@ class AdminController extends Controller
           );
         return view('Admin.Animal-Shelter.ViewShelter', $data);
     }
+
+    function ViewAdopterRequest(){
+        $data = array(
+          'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+          'adopters' => Adopter::all()->where('reactivation_request','sentRequest'),
+        );
+      return view('Admin.Adopter.ReactivationRequest', $data);
+  }
 
     function ViewSubscription(){
       $admin=Admin::where('id','=',session('LoggedUserAdmin'))->first();

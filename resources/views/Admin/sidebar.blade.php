@@ -31,13 +31,13 @@
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
         aria-expanded="true" aria-controls="collapseTwo">
         <i class="fas fa-fw fa-cog"></i>
-        <span>Animal Shelter</span>
+        <span>Application Request</span>
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Custom Funtions:</h6>
-            <a class="collapse-item" href="{{route('viewshelter')}}">AS Applications</a>
-            <a class="collapse-item" href="{{route('view.reactivation')}}">Account Reactivation</a>
+            <a class="collapse-item" href="{{route('viewshelter')}}">Animal Shelter</a>
+            <a class="collapse-item" href="{{route('viewpetowner')}}">Pet Owner</a>
         </div>
     </div>
 </li>
@@ -47,14 +47,15 @@
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
         aria-expanded="true" aria-controls="collapseUtilities">
         <i class="fas fa-fw fa-wrench"></i>
-        <span>Pet Owner</span>
+        <span>Reactivation</span>
     </a>
     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
         data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Custom Functions:</h6>
-            <a class="collapse-item" href="{{route('viewpetowner')}}">PO Applications</a>
-            <a class="collapse-item" href="{{route('view.reactivation.petowner')}}">Approve Activation</a>
+            <a class="collapse-item" href="{{route('view.reactivation')}}">Animal Shelter</a>
+            <a class="collapse-item" href="{{route('view.reactivation.petowner')}}">Pet Owner</a>
+            <a class="collapse-item" href="{{route('view.reactivation.adopter')}}">Adopter</a>
         </div>
     </div>
 </li>

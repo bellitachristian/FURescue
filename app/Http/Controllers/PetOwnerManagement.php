@@ -43,15 +43,55 @@ class PetOwnerManagement extends Controller
             $q->where('petowner_id','=',$id);  
             $q->where('status','=','approved');    
         })->pluck('id')->toArray(); 
-        $not= Subscription::whereNotIn('id', $subscription)->pluck('id')->toArray();
-        //dd($not);
-        $transaction = SubscriptionTransac::all()->where('status','pending')->pluck('status')->toArray();
+        $transac = SubscriptionTransac::where('status','approved')->where('petowner_id',$petowner->id)->pluck('sub_id')->toArray();
+        $posted = Subscription::all();
+        $credits=array();
+        //fetching the availed post credits
+        foreach($posted as $subs){
+            foreach($transac as $availed){
+                if($subs->id == $availed){
+                    $credits[]=$subs->sub_credit;
+                }
+            }
+        }
+        $number = array();
+        $number[] = $credits;
+
+        //explode array credits where credits being stored
+        foreach($credits as $credit){
+            if($index = array_search("UNLI", $credits)){
+                    $availed = "UNLI";  
+            }
+            else{
+                $numeric = array();
+                if($index = array_search("UNLI", $credits)){
+                    unset($credits[$index]);
+                    $numeric[]= $credits;
+                }
+            }
+        }
+        if(!$index = array_search("UNLI", $credits)){
+            foreach($credits as $totcredits){
+                $int[] = (int)$totcredits;
+            }
+            if(empty($int)){
+                $totalcredits = 0;
+            }
+            else{
+                $credit = array_sum($int);
+                $totalcredits = $credit;        
+            }
+        }      
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'subscription'=>Subscription::all(),
             'notsub'=> $subscription,
             'notapprove'=> Subscription::whereNotIn('id', $subscription)->pluck('id')->toArray(),
+            'countcredits'=>$totalcredits,
+            'countpets',
+            'countrequest',
+            'totalrevenue'
         );
         return view('PetOwner.PetOwnerDash',$data);
     } 

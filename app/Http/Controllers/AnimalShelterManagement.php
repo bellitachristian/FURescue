@@ -273,17 +273,53 @@ class AnimalShelterManagement extends Controller
             $q->where('shelter_id','=',$id); 
             $q->where('status','=','approved');
         })->pluck('id')->toArray(); 
+        $credits=array();
+        $transac = SubscriptionTransac::where('status','approved')->where('shelter_id',$shelter->id)->pluck('sub_id')->toArray();
+        $posted = Subscription::all();
+        
+        //fetching the availed post credits
+        foreach($posted as $subs){
+            foreach($transac as $availed){
+                if($subs->id == $availed){
+                    $credits[]=$subs->sub_credit;
+                }
+            }
+        }
+        $number = array();
+        $number[] = $credits;
 
-        $transac = SubscriptionTransac::where('status','approved')->where('shelter_id',$shelter->id)->get();
-     
-        dd($data);
+        //explode array credits where credits being stored
+        foreach($credits as $credit){
+            if($index = array_search("UNLI", $credits)){
+                    $availed = "UNLI";  
+            }
+            else{
+                $numeric = array();
+                if($index = array_search("UNLI", $credits)){
+                    unset($credits[$index]);
+                    $numeric[]= $credits;
+                }
+            }
+        }
+        if(!$index = array_search("UNLI", $credits)){
+            foreach($credits as $totcredits){
+                $int[] = (int)$totcredits;
+            }
+            if(empty($int)){
+                $totalcredits = 0;
+            }
+            else{
+                $credit = array_sum($int);
+                $totalcredits = $credit;        
+            }
+        }      
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'subscription'=>Subscription::all(),
             'notsub'=> $subscription,
             'notapprove'=> Subscription::whereNotIn('id', $subscription)->pluck('id')->toArray(),
-            'countcredits',
+            'countcredits'=>$totalcredits,
             'countpets',
             'countrequest',
             'totalrevenue'

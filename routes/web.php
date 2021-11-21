@@ -250,37 +250,41 @@ Route::post('/customselection/deletecat_breed/{id}',[DropDownController::class,'
 Route::get('/customselection/addadoptionfee',[DropDownController::class,'addadoptionfee'])->name('selection.addadoptionfee');
 Route::post('/customselection/selection_adoption_savefee',[DropDownController::class,'selection_adoption_savefee'])->name('selection.adoption.savefee');
 
-Route::get('/Reactivation/petowner/{petowner_id}',[AdminController::class,'reactivationpetowner'])->name('approve.reactivation.petowner');
-Route::get('/Admin/dashboard',[AdminController::class,'dashboard'])->name('admindash');
-Route::get('/Admin/viewpetowner',[AdminController::class,'ViewPetOwners'])->name('viewpetowner');
-Route::get('/Admin/viewshelter',[AdminController::class,'ViewAnimalShelters'])->name('viewshelter');
-Route::get('/Admin/viewpetownerdetails/{petowner_id}',[AdminController::class,'ViewPetOwnerDetails'])->name('viewownerdetails');
-Route::get('/Admin/viewshelterdetails/{shelter_id}',[AdminController::class,'ViewAnimalSheltersDetails'])->name('viewdetails');
-Route::get('/Admin/viewpetownerenlargedetails/{filename}/{petowner_id}',[AdminController::class,'ViewPetOwnerEnlargeDetails'])->name('viewenlargepetowner');
-Route::get('/Admin/viewshelterenlargedetails/{filename}/{shelter_id}',[AdminController::class,'ViewAnimalSheltersEnlargeDetails'])->name('viewenlarge');
-Route::get('/Admin/viewshelter/{shelter_id}',[AdminController::class,'ApproveShelterApp'])->name('approve.shelter');
-Route::get('/Admin/viewpetowner/{petowner_id}',[AdminController::class,'ApprovePetOwnerApp'])->name('approve.petowner');
-Route::get('/Admin/viewshelterReject/{shelter_id}',[AdminController::class,'RejectShelterApp'])->name('reject.shelter');
-Route::get('/Admin/viewpetownerReject/{petowner_id}',[AdminController::class,'RejectPetOwnerApp'])->name('reject.petowner');
-Route::get('/Reject/{shelter_id}',[AdminController::class,'reject_remove_shelter'])->name('remove.shelter'); 
-Route::get('/Reject/petowner/{petowner_id}',[AdminController::class,'reject_remove_petowner'])->name('remove.petowner'); 
-Route::get('/Reactivation/{shelter_id}',[AdminController::class,'reactivation'])->name('approve.reactivation');
-Route::get('/Admin/viewreactivation',[AdminController::class,'viewReactivation'])->name('view.reactivation');
-Route::get('/Admin/viewreactivation/petowner',[AdminController::class,'viewReactivationpetowner'])->name('view.reactivation.petowner');
-Route::get('/Admin/approveAllreactivation',[AdminController::class,'approveAll'])->name('approve.all');
-Route::get('/Admin/viewsubscription',[AdminController::class,'ViewSubscription'])->name('view.subscription');
-Route::get('/Admin/viewaddsubscription',[AdminController::class,'Viewaddsubscription'])->name('view.add.subscription');
-Route::get('/Admin/vieweditsubscription/{id}',[AdminController::class,'Vieweditsubscription'])->name('view.edit.subscription');
-Route::get('/Admin/loadsubscription/{id}',[AdminController::class,'loadsubscription'])->name('load.subscription');
-Route::get('/Admin/loadsubscription/remove/{id}',[AdminController::class,'loadsubscriptionremove'])->name('load.subscription.remove');
-Route::get('/Admin/loadproof/{id}/{sub_id}',[UploadController::class,'loadproof'])->name('load.proof');
-Route::get('/PetOwner/loadproof/{id}/{sub_id}',[UploadController::class,'loadproofpetowner'])->name('load.proof.petowner');
-Route::get('/Admin/deleteproof',[UploadController::class,'deleteproof'])->name('delete.proof');
-Route::get('/PetOwner/deleteproof',[UploadController::class,'deleteproofpetowner'])->name('delete.proof.petowner');
-Route::get('/Admin/viewproofpayment',[AdminController::class,'viewproofpayment'])->name('view.proof.payment');
-Route::get('/Admin/viewenlargeproof/{sub_id}/{user_id}',[AdminController::class,'viewenlargeproofpayment'])->name('view.proof.enlarge');
-Route::get('/Admin/Approveproofpayment/{sub_id}/{user_id}',[AdminController::class,'approveproofpayment'])->name('approve.proof.payment');
-Route::get('/Admin/Rejectproofpayment/{sub_id}/{user_id}',[AdminController::class,'rejectproofpayment'])->name('reject.proof.payment');
+Route::group(['middleware'=>['AdopterNotifRequest']],function(){ 
+    Route::get('/Reactivation/petowner/{petowner_id}',[AdminController::class,'reactivationpetowner'])->name('approve.reactivation.petowner');
+    Route::get('/Admin/dashboard',[AdminController::class,'dashboard'])->name('admindash');
+    Route::get('/Admin/viewpetowner',[AdminController::class,'ViewPetOwners'])->name('viewpetowner');
+    Route::get('/Admin/viewshelter',[AdminController::class,'ViewAnimalShelters'])->name('viewshelter');
+    Route::get('/Admin/viewpetownerdetails/{petowner_id}',[AdminController::class,'ViewPetOwnerDetails'])->name('viewownerdetails');
+    Route::get('/Admin/viewshelterdetails/{shelter_id}',[AdminController::class,'ViewAnimalSheltersDetails'])->name('viewdetails');
+    Route::get('/Admin/viewpetownerenlargedetails/{filename}/{petowner_id}',[AdminController::class,'ViewPetOwnerEnlargeDetails'])->name('viewenlargepetowner');
+    Route::get('/Admin/viewshelterenlargedetails/{filename}/{shelter_id}',[AdminController::class,'ViewAnimalSheltersEnlargeDetails'])->name('viewenlarge');
+    Route::get('/Admin/viewshelter/{shelter_id}',[AdminController::class,'ApproveShelterApp'])->name('approve.shelter');
+    Route::get('/Admin/viewpetowner/{petowner_id}',[AdminController::class,'ApprovePetOwnerApp'])->name('approve.petowner');
+    Route::get('/Admin/viewshelterReject/{shelter_id}',[AdminController::class,'RejectShelterApp'])->name('reject.shelter');
+    Route::get('/Admin/viewpetownerReject/{petowner_id}',[AdminController::class,'RejectPetOwnerApp'])->name('reject.petowner');
+    Route::get('/Reject/{shelter_id}',[AdminController::class,'reject_remove_shelter'])->name('remove.shelter'); 
+    Route::get('/Reject/petowner/{petowner_id}',[AdminController::class,'reject_remove_petowner'])->name('remove.petowner'); 
+    Route::get('/Reactivation/{shelter_id}',[AdminController::class,'reactivation'])->name('approve.reactivation');
+    Route::get('/Admin/viewreactivation',[AdminController::class,'viewReactivation'])->name('view.reactivation');
+    Route::get('/Admin/viewreactivation/petowner',[AdminController::class,'viewReactivationpetowner'])->name('view.reactivation.petowner');
+    Route::get('/Admin/approveAllreactivation',[AdminController::class,'approveAll'])->name('approve.all');
+    Route::get('/Admin/viewsubscription',[AdminController::class,'ViewSubscription'])->name('view.subscription');
+    Route::get('/Admin/viewaddsubscription',[AdminController::class,'Viewaddsubscription'])->name('view.add.subscription');
+    Route::get('/Admin/vieweditsubscription/{id}',[AdminController::class,'Vieweditsubscription'])->name('view.edit.subscription');
+    Route::get('/Admin/loadsubscription/{id}',[AdminController::class,'loadsubscription'])->name('load.subscription');
+    Route::get('/Admin/loadsubscription/remove/{id}',[AdminController::class,'loadsubscriptionremove'])->name('load.subscription.remove');
+    Route::get('/Admin/loadproof/{id}/{sub_id}',[UploadController::class,'loadproof'])->name('load.proof');
+    Route::get('/PetOwner/loadproof/{id}/{sub_id}',[UploadController::class,'loadproofpetowner'])->name('load.proof.petowner');
+    Route::get('/Admin/deleteproof',[UploadController::class,'deleteproof'])->name('delete.proof');
+    Route::get('/PetOwner/deleteproof',[UploadController::class,'deleteproofpetowner'])->name('delete.proof.petowner');
+    Route::get('/Admin/viewproofpayment',[AdminController::class,'viewproofpayment'])->name('view.proof.payment');
+    Route::get('/Admin/viewenlargeproof/{sub_id}/{user_id}',[AdminController::class,'viewenlargeproofpayment'])->name('view.proof.enlarge');
+    Route::get('/Admin/Approveproofpayment/{sub_id}/{user_id}',[AdminController::class,'approveproofpayment'])->name('approve.proof.payment');
+    Route::get('/Admin/Rejectproofpayment/{sub_id}/{user_id}',[AdminController::class,'rejectproofpayment'])->name('reject.proof.payment');
+    Route::get('/Admin/ViewReactivationAdopter',[AdminController::class,'ViewAdopterRequest'])->name('view.reactivation.adopter');
+    
+});
 
 //markAllAsRead
 Route::get('markAllAsReadNotif/{email}', function($email){
