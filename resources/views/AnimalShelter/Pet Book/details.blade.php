@@ -11,7 +11,7 @@ Details
     <div class="col-sm">
         <div class="card shadow mb-4">
             <div class="card-header">
-            </div>
+            </div>  
             <div class="card-body">
                 <div style="display:flex; height:350px">
                     <div class="col-sm-5">
@@ -120,8 +120,6 @@ Details
         </div>
     </div>
 </div>
-
-
 @endsection
 @push("js")
 <script src="{{url('https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js')}}"></script>

@@ -48,9 +48,12 @@ class RegisterController extends Controller
 
             }
             else{
+                $files = TemporaryStorage::all()->pluck('filename')->toArray();
+                foreach($files as $file){
+                    $destinationPath = 'uploads/temp/';
+                    File::delete($destinationPath.$file);
+                }
                 TemporaryStorage::truncate();
-                $file = new Filesystem;
-                $file->cleanDirectory('uploads/temp');
             }
             $req->validate([
                 'fname'=> 'required',
@@ -70,12 +73,7 @@ class RegisterController extends Controller
         $fpass = $req->password;
         $pass = $req->c_password;
  
-        $usertype = new Usertype;
-        if($fpass===$pass){
-            $usertype ->usertype ="Pet Owner";
-            $usertype -> save();
-        }
-     
+   
         $petowner = new PetOwner;
         
 
@@ -89,7 +87,7 @@ class RegisterController extends Controller
             $petowner->gender= $req->gender;
             $petowner ->contact = $req->contact;
             $petowner ->email = $req->email;
-            $petowner ->usertype_id = $usertype->id;
+            $petowner ->usertype_id = 3;
             $petowner ->verfication_code =sha1(time());
 
             $petowner ->save();
@@ -114,17 +112,20 @@ class RegisterController extends Controller
                     $docs->save();
                 }
 
-                $path = public_path('uploads/temp/');
+                $path = 'uploads/temp/';
                 $files =File::allFiles($path);      
                 foreach($files as $file){
                     $doc[] = basename($file);
                 }
                 foreach($doc as $docs){
-                    File::move(public_path('uploads/temp/'.$docs), public_path('uploads/valid-documents/'.$docs));
+                    File::move('uploads/temp/'.$docs,'uploads/valid-documents/'.$docs);
+                }
+                $files = TemporaryStorage::all()->pluck('filename')->toArray();
+                foreach($files as $file){
+                    $destinationPath = 'uploads/temp/';
+                    File::delete($destinationPath.$file);
                 }
                 TemporaryStorage::truncate();
-                $file = new Filesystem;
-                $file->cleanDirectory('uploads/temp');
             }
         
             return redirect()->back()->with('status','Registered Successfully, Please check your email to verify your account');
@@ -135,9 +136,12 @@ class RegisterController extends Controller
 
             }
             else{
+                $files = TemporaryStorage::all()->pluck('filename')->toArray();
+                foreach($files as $file){
+                    $destinationPath = 'uploads/temp/';
+                    File::delete($destinationPath.$file);
+                }
                 TemporaryStorage::truncate();
-                $file = new Filesystem;
-                $file->cleanDirectory('uploads/temp');
             }
             return redirect()->back()->with('status1','Password did not match');
         }
@@ -163,9 +167,12 @@ class RegisterController extends Controller
 
             }
             else{
+                $files = TemporaryStorage::all()->pluck('filename')->toArray();
+                foreach($files as $file){
+                    $destinationPath = 'uploads/temp/';
+                    File::delete($destinationPath.$file);
+                }
                 TemporaryStorage::truncate();
-                $file = new Filesystem;
-                $file->cleanDirectory('uploads/temp');
             }
             $req->validate([
                 'shelter_name'=> 'required|unique:animal_shelters',
@@ -188,11 +195,6 @@ class RegisterController extends Controller
 
         //Insertion of AnimalShelter in Usertype Table
            
-        $usertype = new Usertype;
-        if($fpass===$pass){
-            $usertype ->usertype ="Animal Shelter";
-            $usertype -> save();
-        }
 
         if($fpass === $pass){
             $shelter ->shelter_name = $req->shelter_name;
@@ -203,7 +205,7 @@ class RegisterController extends Controller
             $shelter ->address = $req->address;
             $shelter ->founder_name = $req->founder_name;
             $shelter ->contact = $req->contact;
-            $shelter ->usertype_id = $usertype->id; 
+            $shelter ->usertype_id = 2; 
             $shelter ->verfication_code =sha1(time());
             $shelter ->save();
             
@@ -228,17 +230,20 @@ class RegisterController extends Controller
                     $docs->save();
                 }
 
-                $path = public_path('uploads/temp/');
+                $path = 'uploads/temp/';
                 $files =File::allFiles($path);      
                 foreach($files as $file){
                     $doc[] = basename($file);
                 }
                 foreach($doc as $docs){
-                    File::move(public_path('uploads/temp/'.$docs), public_path('uploads/valid-documents/'.$docs));
+                    File::move('uploads/temp/'.$docs,'uploads/valid-documents/'.$docs);
+                }
+                $files = TemporaryStorage::all()->pluck('filename')->toArray();
+                foreach($files as $file){
+                    $destinationPath = 'uploads/temp/';
+                    File::delete($destinationPath.$file);
                 }
                 TemporaryStorage::truncate();
-                $file = new Filesystem;
-                $file->cleanDirectory('uploads/temp');
             }
 
             return redirect()->back()->with('status','Registered Successfully, Please check your email to verify your account');
@@ -249,9 +254,12 @@ class RegisterController extends Controller
 
             }
             else{
+                $files = TemporaryStorage::all()->pluck('filename')->toArray();
+                foreach($files as $file){
+                    $destinationPath = 'uploads/temp/';
+                    File::delete($destinationPath.$file);
+                }
                 TemporaryStorage::truncate();
-                $file = new Filesystem;
-                $file->cleanDirectory('uploads/temp');
             }
             return redirect()->back()->with('status1','Password did not match');
         }

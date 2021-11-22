@@ -73,13 +73,13 @@ Route::post('/Admin/deletesubscription/{id}',[AdminController::class,'deletesubs
 Route::post('/Admin/uploadproof/{id}',[UploadController::class,'uploadproof'])->name('upload.proof');
 Route::post('/PetOwner/uploadproof/{id}',[UploadController::class,'uploadproofpetowner'])->name('upload.proof.petowner');
 
-
 Route::post('/AnimalShelter/waitingsubscription/{id}',[AnimalShelterManagement::class,'waitingsub'])->name('waiting.subscription');
 Route::post('/PetOwner/waitingsubscription/{id}',[PetOwnerManagement::class,'waitingsub'])->name('waiting.subscription.petowner');
 
 Route::post('/Admin/feedback/{sub_id}/{receiver_id}',[AdminController::class,'feedback']);
 
 Route::post('/Admin/feedbackdonationmessage/{id}',[AnimalShelterManagement::class,'feedbackmessage'])->name('view.feedback.message');
+Route::post('/Admin/feedbackdonationmessageerror/{id}',[AnimalShelterManagement::class,'feedbackmessageerror'])->name('view.feedback.message.error');
 
 Route::get('/test',[UploadController::class,'view']);
 Route::post('/SecondaryIntro',[AnimalShelterManagement::class,'secondaryIntro'])->name('second.intro');

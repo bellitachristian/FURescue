@@ -70,7 +70,7 @@ class UploadController extends Controller
             $ext = strtolower($image->getClientOriginalExtension());
             $imageName = $image_name.'.' .$ext;
     
-            $image->move(public_path('uploads/animal-shelter/uploaded-photos/'), $imageName);
+            $image->move('uploads/animal-shelter/uploaded-photos/', $imageName);
 
             $imageupload = new UploadedPhotos;
             $imageupload->imagename = $imageName;
@@ -93,7 +93,7 @@ class UploadController extends Controller
             $ext = strtolower($image->getClientOriginalExtension());
             $imageName = $image_name.'.' .$ext;
     
-            $image->move(public_path('uploads/pet-owner/uploaded-photos/'), $imageName);
+            $image->move('uploads/pet-owner/uploaded-photos/', $imageName);
 
             $imageupload = new UploadedPhotos;
             $imageupload->imagename = $imageName;
@@ -227,7 +227,7 @@ class UploadController extends Controller
             $ext = strtolower($image->getClientOriginalExtension());
             $imageName = $image_name.'.' .$ext;
     
-            $image->move(public_path('uploads/animal-shelter/uploaded-photos/Post'), $imageName);
+            $image->move('uploads/animal-shelter/uploaded-photos/Post', $imageName);
             $name[] = $imageName;
             $imageupload = new UploadedPhotos; 
             $imageupload->imagename= $imageName;
@@ -247,7 +247,7 @@ class UploadController extends Controller
             $ext = strtolower($image->getClientOriginalExtension());
             $imageName = $image_name.'.' .$ext;
     
-            $image->move(public_path('uploads/pet-owner/uploaded-photos/Post'), $imageName);
+            $image->move('uploads/pet-owner/uploaded-photos/Post', $imageName);
             $name[] = $imageName;
             $imageupload = new UploadedPhotos; 
             $imageupload->imagename= $imageName;
@@ -269,7 +269,7 @@ class UploadController extends Controller
             $ext = strtolower($image->getClientOriginalExtension());
             $imageName = $image_name.'.' .$ext;
     
-            $image->move(public_path('uploads/animal-shelter/uploaded-photos/'), $imageName);
+            $image->move('uploads/animal-shelter/uploaded-photos/', $imageName);
 
             $imageupload = new UploadedPhotos;
             $imageupload->imagename = $imageName;
@@ -293,7 +293,7 @@ class UploadController extends Controller
             $ext = strtolower($image->getClientOriginalExtension());
             $imageName = $image_name.'.' .$ext;
     
-            $image->move(public_path('uploads/pet-owner/uploaded-photos/'), $imageName);
+            $image->move('uploads/pet-owner/uploaded-photos/', $imageName);
 
             $imageupload = new UploadedPhotos;
             $imageupload->imagename = $imageName;

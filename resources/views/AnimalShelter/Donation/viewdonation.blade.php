@@ -47,7 +47,7 @@ Donation
                     </td>
                     <td> 
                         <a href="#"><button style="margin-bottom:3px" id="approve" class="btn btn-success" type="button">Approve</button></a>
-                        <a href="#"><button style="margin-bottom:3px" data-toggle="modal" data-target="#feedback1" class="btn btn-danger" type="button">Reject</button></a>
+                        <a href="#"><button style="margin-bottom:3px" id="reject" class="btn btn-danger" type="button">Reject</button></a>
                     </td>
                 </tr>
                 @endforeach
@@ -77,6 +77,23 @@ Donation
 
                 $('#feedbackform').attr('action','/Admin/feedbackdonationmessage/'+data[0]);
                 $('#feedback').modal('show');
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+          var table = $('#datatable').DataTable();
+          table.on('click','#reject', function(){
+                $tr =$(this).closest('tr');
+                var data = table.row($tr).data();
+                if($($tr).hasClass('child')) {
+                    $tr=$tr.prev('.parent');
+                }
+                var data = table.row($tr).data();
+                console.log(data);
+
+                $('#feedbackformerror').attr('action','/Admin/feedbackdonationmessageerror/'+data[0]);
+                $('#feedback1').modal('show');
             });
         });
     </script>

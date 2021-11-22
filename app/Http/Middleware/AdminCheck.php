@@ -28,10 +28,18 @@ class AdminCheck
             $usertype ->usertype ="Admin";
             $usertype ->save();
 
+            $usertype = new Usertype;
+            $usertype ->usertype ="Animal Shelter";
+            $usertype ->save();
+
+            $usertype = new Usertype;
+            $usertype ->usertype ="Pet Owner";
+            $usertype ->save();
+
             $admin = new Admin;
             $admin->email = $username;
             $admin->password =  Hash::make($pass);
-            $admin->usertype_id = $usertype->id;
+            $admin->usertype_id = 1;
             $admin->save();  
         }
         return $next($request);

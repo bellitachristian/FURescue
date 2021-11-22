@@ -54,34 +54,26 @@ class PetOwnerManagement extends Controller
                 }
             }
         }
-        $number = array();
-        $number[] = $credits;
 
         //explode array credits where credits being stored
-        foreach($credits as $credit){
-            if($index = array_search("UNLI", $credits)){
-                    $availed = "UNLI";  
-            }
-            else{
-                $numeric = array();
-                if($index = array_search("UNLI", $credits)){
-                    unset($credits[$index]);
-                    $numeric[]= $credits;
-                }
-            }
+        if(in_array("UNLI", $credits)){
+            $totalcredits = "UNLI";  
         }
-        if(!$index = array_search("UNLI", $credits)){
+        else{
             foreach($credits as $totcredits){
                 $int[] = (int)$totcredits;
-            }
+                }
             if(empty($int)){
                 $totalcredits = 0;
+                //dd('hi');   
             }
             else{
                 $credit = array_sum($int);
-                $totalcredits = $credit;        
+                $totalcredits = $credit;
+                //dd('hi');
             }
-        }      
+        }
+      
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
@@ -440,7 +432,7 @@ class PetOwnerManagement extends Controller
                 'vaccine'=> VaccineHistory::all()->where('animal_id',$animals->id),
                 'deworm' => DewormHistory::all()->where('animal_id',0),
             );
-            return view('PetOwner.Pet Book.PetBookDetails',$data);
+            return view('PetOwner.Pet Book.details',$data);
         }
         if($dewhistory > 0 && $vachistory == 0){
             $dewhistory1 = DewormHistory::where('petbook_id',$id)->first();
@@ -452,7 +444,7 @@ class PetOwnerManagement extends Controller
                 'vaccine'=> VaccineHistory::all()->where('animal_id',0),
                 'deworm' => DewormHistory::all()->where('animal_id',$animals->id),
             );
-            return view('PetOwner.Pet Book.PetBookDetails',$data);
+            return view('PetOwner.Pet Book.details',$data);
         }
         if($dewhistory > 0 && $vachistory > 0){
             $vachistory1 = VaccineHistory::where('petbook_id',$id)->first();
@@ -466,7 +458,7 @@ class PetOwnerManagement extends Controller
                 'vaccine'=> VaccineHistory::all()->where('animal_id',$animals->id),
                 'deworm' => DewormHistory::all()->where('animal_id',$animals1->id),
             );
-            return view('PetOwner.Pet Book.PetBookDetails',$data);
+            return view('PetOwner.Pet Book.details',$data);
         }
         if($dewhistory == 0 && $vachistory == 0){
             $data =array(
@@ -476,7 +468,7 @@ class PetOwnerManagement extends Controller
                 'vaccine'=> VaccineHistory::all()->where('animal_id',0),
                 'deworm' => DewormHistory::all()->where('animal_id',0),
             );
-            return view('PetOwner.Pet Book.PetBookDetails',$data);
+            return view('PetOwner.Pet Book.details',$data);
         }
     }
 

@@ -70,7 +70,6 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Facilities</h6>
             <a class="collapse-item" href="{{route('view.proof.payment')}}">Subscription</a>
-            <a class="collapse-item" href="">Donation</a>
             <a class="collapse-item" href="">Adoption Fee</a>
         </div>
     </div>

@@ -1454,7 +1454,7 @@ class AnimalShelterManagement extends Controller
                 'vaccine'=> VaccineHistory::all()->where('animal_id',$animals->id),
                 'deworm' => DewormHistory::all()->where('animal_id', 0),
             );
-            return view('AnimalShelter.Pet Book.PetBookDetails',$data);
+            return view('AnimalShelter.Pet Book.details',$data);
         }
         if($dewhistory >0 && $vachistory == 0){
             $dewhistory1 = DewormHistory::where('petbook_id',$id)->first();
@@ -1466,7 +1466,7 @@ class AnimalShelterManagement extends Controller
                 'vaccine'=> VaccineHistory::all()->where('animal_id',0),
                 'deworm' => DewormHistory::all()->where('animal_id',$animals->id),
             );
-            return view('AnimalShelter.Pet Book.PetBookDetails',$data);
+            return view('AnimalShelter.Pet Book.details',$data);
         }
         if($dewhistory >0 && $vachistory > 0){
             $vachistory1 = VaccineHistory::where('petbook_id',$id)->first();
@@ -1480,7 +1480,7 @@ class AnimalShelterManagement extends Controller
                 'vaccine'=> VaccineHistory::all()->where('animal_id',$animals->id),
                 'deworm' => DewormHistory::all()->where('animal_id',$animals1->id),
             );
-            return view('AnimalShelter.Pet Book.PetBookDetails',$data);
+            return view('AnimalShelter.Pet Book.details',$data);
         }
 
         if($dewhistory == 0 && $vachistory == 0){
@@ -1491,7 +1491,7 @@ class AnimalShelterManagement extends Controller
                 'vaccine'=> VaccineHistory::all()->where('animal_id',0),
                 'deworm' => DewormHistory::all()->where('animal_id',0),
             );
-            return view('AnimalShelter.Pet Book.PetBookDetails',$data);
+            return view('AnimalShelter.Pet Book.details',$data);
         }
       
     }
@@ -1903,5 +1903,21 @@ class AnimalShelterManagement extends Controller
 
         return redirect()->back()->with('status','You have accepted his/her donation');
 
+    } 
+
+    function feedbackmessageerror(Request $req, $id){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $receive = DB::table('donation')
+                    ->where('donation_id',$id)
+                    ->update(['status'=>'not received','feedback'=>$req->feedback]);
+        $donor = Donation::where('donation_id',$id)->first();
+        $notif = new Adopter_Notif;
+        $notif->notif_type = 'Donation';
+        $notif->notif_from = $shelter->shelter_name;
+        $notif->notif_to = $donor->donor_id;
+        $notif->notif_message = ' has not received your donation please create new transaction for donation';
+        $notif->save();
+
+        return redirect()->back()->with('status','Feedback invalid donation sent successfully');
     } 
 }
