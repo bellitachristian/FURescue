@@ -37,7 +37,7 @@ Adoption Requests
                             <td>{{$adopters->adopter->email}}</td>
                             <td>{{$adopters->adopter->phonenum}}</td>
                             <td>
-                                <a href="{{route(''enlarge.petowner',$adopters->id)}}"><i class="far fa-eye"></i></a>
+                                <a href="{{route('enlarge.petowner',$adopters->id)}}"><i class="far fa-eye"></i></a>
                             </td>
                             <td style="text-align:center">
                                 <a href="#" ><button data-toggle="modal" data-target="#feedback" type="button" class="btn btn-success">Approve</button></a>
