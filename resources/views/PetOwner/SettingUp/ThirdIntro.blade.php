@@ -35,7 +35,7 @@ Welcome Pet Owner!
             </div>  
         </div>
     </div>
-@if($dog === "Dog")
+@if($checkdog === "Dog")
 @include('PetOwner.Pop.AddDog')
 @include('PetOwner.SettingUp.DogBreed')
 @elseif($cat === "Cat")

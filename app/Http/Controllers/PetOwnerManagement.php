@@ -903,6 +903,7 @@ class PetOwnerManagement extends Controller
         } 
         $data = array(
             'dog' => "Dog",
+            'checkdog'=>Category::where('category_name','=', 'Dog')->pluck('category_name')->first(),
             'cat' => "",
             'both' =>"",
             'breed'=> DB::select("select *from breed  where categ_id ='$categ_id->id'"),
