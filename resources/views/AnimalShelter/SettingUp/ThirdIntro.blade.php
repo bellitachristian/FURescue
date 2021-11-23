@@ -14,17 +14,17 @@ Welcome Animal Shelter!
                 <!-- Dashboard header -->
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    @if($cat)
+                    @if($cat == "Cat")
                     <h5>What cat breeds do you cater?</h5>
                     <div>
                     <button class="btn btn-danger" data-toggle="modal" data-target="#AddCatBreedModal" style="float:right">Add Breed +</button> 
                     </div>                         
-                    @elseif($dog)
+                    @elseif($dog == "Dog")
                     <h5>What dog breeds do you cater?</h5>
                     <div>
                     <button class="btn btn-danger" data-toggle="modal" data-target="#AddDogBreedModal" style="float:right">Add Breed +</button> 
                     </div>  
-                    @elseif($both)
+                    @elseif($both == "Both")
                     <h5>What cat and dog breeds do you cater?</h5>
                     <div>
                     <button style=" margin-right:5px" class="btn btn-danger" data-toggle="modal" data-target="#AddDogBreedModal1">Add Dog Breed +</button>
@@ -35,17 +35,20 @@ Welcome Animal Shelter!
             </div>  
         </div>
     </div>
-@if($dog)
+@if($dog == "Dog")
 @include('AnimalShelter.SettingUp.DogBreed')
-@elseif($cat)
+@elseif($cat == "Cat")
 @include('AnimalShelter.SettingUp.CatBreed')
-@elseif($both)
+@elseif($both == "Both")
 @include('AnimalShelter.SettingUp.Bothbreed')
 @endif
-
+@if($cat == "Cat")
 @include('AnimalShelter.SettingUp.Modal.AddCatBreedModal')
+@elseif($dog == "Dog")
 @include('AnimalShelter.SettingUp.Modal.AddDogBreedModal')
+@elseif($both == "Both")
 @include('AnimalShelter.SettingUp.Modal.AddBothBreedModal')
+@endif
 @endsection
 @push('js')
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
