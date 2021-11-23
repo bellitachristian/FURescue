@@ -42,11 +42,11 @@ Donation
                     <td style="text-align:center">
                         {{ $donor->donor_amount}}
                     </td>
-                    <td>
-                        <img src="" alt="">
+                    <td style="text-align:center">
+                        <img src="{{asset('phpcode/',$donor->donor_photo)}}" width="70px" height="70px" alt="">
                     </td>
                     <td> 
-                        <a href="#"><button style="margin-bottom:3px" id="approve" class="btn btn-success" type="button">Approve</button></a>
+                        <a href="#"><butston style="margin-bottom:3px" id="approve" class="btn btn-success" type="button">Approve</button></a>
                         <a href="#"><button style="margin-bottom:3px" id="reject" class="btn btn-danger" type="button">Reject</button></a>
                     </td>
                 </tr>
