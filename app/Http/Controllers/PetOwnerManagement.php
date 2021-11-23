@@ -10,6 +10,7 @@ use App\Models\Breed;
 use App\Models\Admin;
 use App\Models\Adoption;
 use App\Models\Animals;
+use App\Models\Adopter_Notif;
 use App\Models\AdoptionPolicy;
 use App\Models\AdoptionFee;
 use App\Models\PetBook;
@@ -1709,7 +1710,7 @@ class PetOwnerManagement extends Controller
         $petupdate->post_status = "posted"; 
         $petupdate->update();
 
-        
+
      }
 
      function postupdate($id){
