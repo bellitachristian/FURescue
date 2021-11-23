@@ -276,43 +276,13 @@ class AnimalShelterManagement extends Controller
             $q->where('shelter_id','=',$id); 
             $q->where('status','=','approved');
         })->pluck('id')->toArray(); 
-        $credits=array();
-        $transac = SubscriptionTransac::where('status','approved')->where('shelter_id',$shelter->id)->pluck('sub_id')->toArray();
-        $posted = Subscription::all();
-        
-        //fetching the availed post credits
-        foreach($posted as $subs){
-            foreach($transac as $availed){
-                if($subs->id == $availed){
-                    $credits[]=$subs->sub_credit;
-                }
-            }
-        }
-        //explode array credits where credits being stored
-        if(in_array("UNLI", $credits)){
-            $totalcredits = "UNLI";  
-        }
-        else{
-            foreach($credits as $totcredits){
-                $int[] = (int)$totcredits;
-                }
-            if(empty($int)){
-                $totalcredits = 0;
-                //dd('hi');   
-            }
-            else{
-                $credit = array_sum($int);
-                $totalcredits = $credit;
-                //dd('hi');
-            }
-        }
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'subscription'=>Subscription::all(),
             'notsub'=> $subscription,
             'notapprove'=> Subscription::whereNotIn('id', $subscription)->pluck('id')->toArray(),
-            'countcredits'=>$totalcredits,
+            'countcredits'=>$shelter->TotalCredits,
             'countpets',
             'countrequest',
             'totalrevenue'
@@ -1665,6 +1635,12 @@ class AnimalShelterManagement extends Controller
         $petupdate = Animals::find($id);
         $petupdate->post_status = "posted"; 
         $petupdate->update();
+
+        //decrement post credits
+        $subtotal = (int)$shelter->TotalCredits;
+        $remaining = $subtotal - 1 ;
+        $shelter->TotalCredits = $remaining;
+        $shelter->update();
      }
 
      function post_pet_update(Request $req, $id){

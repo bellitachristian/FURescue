@@ -45,44 +45,13 @@ class PetOwnerManagement extends Controller
             $q->where('petowner_id','=',$id);  
             $q->where('status','=','approved');    
         })->pluck('id')->toArray(); 
-        $transac = SubscriptionTransac::where('status','approved')->where('petowner_id',$petowner->id)->pluck('sub_id')->toArray();
-        $posted = Subscription::all();
-        $credits=array();
-        //fetching the availed post credits
-        foreach($posted as $subs){
-            foreach($transac as $availed){
-                if($subs->id == $availed){
-                    $credits[]=$subs->sub_credit;
-                }
-            }
-        }
-
-        //explode array credits where credits being stored
-        if(in_array("UNLI", $credits)){
-            $totalcredits = "UNLI";  
-        }
-        else{
-            foreach($credits as $totcredits){
-                $int[] = (int)$totcredits;
-                }
-            if(empty($int)){
-                $totalcredits = 0;
-                //dd('hi');   
-            }
-            else{
-                $credit = array_sum($int);
-                $totalcredits = $credit;
-                //dd('hi');
-            }
-        }
-      
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'subscription'=>Subscription::all(),
             'notsub'=> $subscription,
             'notapprove'=> Subscription::whereNotIn('id', $subscription)->pluck('id')->toArray(),
-            'countcredits'=>$totalcredits,
+            'countcredits'=>$petowner->TotalCredits,
             'countpets',
             'countrequest',
             'totalrevenue'
@@ -1677,7 +1646,7 @@ class PetOwnerManagement extends Controller
      }
      
      function post_pet_save(Request $req, $id){
-        $petowner=PetOwner::where('id','=',session('LoggedUserPet'))->first(); 
+        $petowner = PetOwner::where('id','=',session('LoggedUserPet'))->first(); 
         $checkdog = Category::where('category_name',"Dog")->where('petowner_id',$petowner->id)->count();
         $checkcat = Category::where('category_name',"Cat")->where('petowner_id',$petowner->id)->count();
 
@@ -1710,6 +1679,11 @@ class PetOwnerManagement extends Controller
         $petupdate->post_status = "posted"; 
         $petupdate->update();
 
+         //decrement post credits
+         $subtotal = (int)$petowner->TotalCredits;
+         $remaining = $subtotal - 1 ;
+         $petowner->TotalCredits = $remaining;
+         $petowner->update();
 
      }
 

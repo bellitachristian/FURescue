@@ -536,7 +536,25 @@ class AdminController extends Controller
             'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
             'proof' => UploadedPhotos::where('sub_id',$sub_id)->where('shelter_id',$user_id)->get(),
         );
-    
+        //check if credits is 0
+        $credits = AnimalShelter::find($user_id);
+        if($credits->TotalCredits == "0"){
+          $credits->TotalCredits = $subscription->sub_credit;
+          $credits->update();
+        }
+        else{
+          if($subscription->sub_credit == "UNLI"){
+            $credits->TotalCredits = "UNLI";
+            $credits->update();
+          }
+          else{
+            $credit = (int)$subscription->sub_credit;
+            $subtotal = (int)$credits->TotalCredits;
+            $total = $credit + $subtotal;
+            $credits->TotalCredits = $total;
+            $credits->update();
+          }
+        }
         return redirect()->back()->with('status','Approved Successfully');
       }
       if($check == 0){
@@ -566,6 +584,26 @@ class AdminController extends Controller
           'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
           'proof' => UploadedPhotos::where('sub_id',$sub_id)->where('petowner_id',$user_id)->get(),
         );
+
+        //check if credits is 0
+        $credits = PetOwner::find($user_id);
+        if($credits->TotalCredits == "0"){
+          $credits->TotalCredits = $subscription->sub_credit;
+          $credits->update();
+        }
+        else{
+          if($subscription->sub_credit == "UNLI"){
+            $credits->TotalCredits = "UNLI";
+            $credits->update();
+          }
+          else{
+            $credit = (int)$subscription->sub_credit;
+            $subtotal = (int)$credits->TotalCredits;
+            $total = $credit + $subtotal;
+            $credits->TotalCredits = $total;
+            $credits->update();
+          }
+        }
         return redirect()->back()->with('status','Approved Successfully');
       }
     }
