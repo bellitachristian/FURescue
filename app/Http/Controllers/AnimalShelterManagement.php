@@ -1881,9 +1881,10 @@ class AnimalShelterManagement extends Controller
         }
     }   
     function viewdonation(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data = array(
             'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'donors'=>Donation::where('status','pending')->get(),
+            'donors'=>Donation::where('status','pending')->where('animal_shelter',$shelter->id)->get(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
           );   
           return view('AnimalShelter.Donation.viewdonation',$data);
