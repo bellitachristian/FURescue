@@ -37,17 +37,12 @@ Welcome Pet Owner!
     </div>
 @if($dog == "Dog")
 @include('PetOwner.SettingUp.DogBreed')
+@include('PetOwner.SettingUp.Modal.AddDogBreedModal')
 @elseif($cat == "Cat")
 @include('PetOwner.SettingUp.CatBreed')
+@include('PetOwner.SettingUp.Modal.AddCatBreedModal')
 @elseif($both == "Both")
 @include('PetOwner.SettingUp.Bothbreed')
-@endif
-
-@if($cat == "Cat")
-@include('PetOwner.SettingUp.Modal.AddCatBreedModal')
-@elseif($dog == "Dog")
-@include('PetOwner.SettingUp.Modal.AddDogBreedModal')
-@elseif($both == "Both")
 @include('PetOwner.SettingUp.Modal.AddBothBreedModal')
 @endif
 @endsection
