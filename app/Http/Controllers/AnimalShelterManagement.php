@@ -1955,7 +1955,7 @@ class AnimalShelterManagement extends Controller
         $notif->notif_type = 'Adoption Application';
         $notif->notif_from = $shelter->shelter_name;
         $notif->notif_to = $message->adopter_id;
-        $notif->notif_message = ' has approved y    our adoption application';
+        $notif->notif_message = ' has approved your adoption application';
         $notif->save();
         $message->status = 'approved';
         $message->feedback = $req->feedback;
