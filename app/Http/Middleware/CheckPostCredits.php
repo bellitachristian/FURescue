@@ -51,7 +51,7 @@ class CheckPostCredits
                 //dd('hi');
             }
         }        
-        if($totalcredits == 0){ 
+        if($totalcredits == 0 && $totalcredits != "UNLI"){ 
             return back()->with('status','You have 0 post credit, subscribe to the following promos in order to get full control of the system.');
         }   
        
