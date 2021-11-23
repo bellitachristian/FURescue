@@ -80,7 +80,11 @@ Route::post('/Admin/feedback/{sub_id}/{receiver_id}',[AdminController::class,'fe
 
 Route::post('/Admin/feedbackdonationmessage/{id}',[AnimalShelterManagement::class,'feedbackmessage'])->name('view.feedback.message');
 Route::post('/Admin/feedbackdonationmessageerror/{id}',[AnimalShelterManagement::class,'feedbackmessageerror'])->name('view.feedback.message.error');
-Route::post('/Admin/message/{id}',[AnimalShelterManagement::class,'message'])->name('message');
+Route::post('/AnimalShelter/message/{id}',[AnimalShelterManagement::class,'message'])->name('message');
+Route::post('/AnimalShelter/error/{id}',[AnimalShelterManagement::class,'error'])->name('error');
+
+Route::post('/PetOwner/message/{id}',[PetOwnerManagement::class,'message'])->name('message.petowner');
+Route::post('/PetOwner/error/{id}',[PetOwnerManagement::class,'error'])->name('error.petowner');
 
 
 Route::get('/test',[UploadController::class,'view']);
@@ -134,8 +138,12 @@ Route::get('/verify',[RegisterController::class,'verifyUser'])->name('verify.use
 Route::get('/verify/petowner',[RegisterController::class,'verifyPetUser'])->name('verifyPetUser.user');
 Route::get('/auto/logout/{shelter_id}',[LoginController::class,'autologout']);
 
-Route::group(['middleware'=>['Authcheck','DonationCheckNotif']],function(){
-    Route::group(['middleware'=>['CheckPostCredits']],function(){
+Route::group(['middleware'=>['Authcheck']],function(){
+    Route::group(['middleware'=>['CheckPostCredits','CheckAdoptionRequest','DonationCheckNotif']],function(){
+        
+        Route::get('/AnimalShelter/enlargevalid/{id}',[AnimalShelterManagement::class,'enlarge'])->name('enlarge');
+        Route::get('/AnimalShelter/enlargedonation/{id}',[AnimalShelterManagement::class,'enlargedonation'])->name('enlarge.donation');
+
         Route::get('/petbook/allocate',[AnimalShelterManagement::class,'petbook_allocate'])->name('petbook.allocate');
         Route::get('/petbook/viewbook',[AnimalShelterManagement::class,'petbook_viewbook'])->name('petbook.view');
         Route::get('/petbook/fetch',[AnimalShelterManagement::class,'load_books'])->name('petbook.fetch');

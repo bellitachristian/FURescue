@@ -37,11 +37,11 @@ Adoption Requests
                             <td>{{$adoption->fname}} {{$adoption->lname}}</td>
                             @endforeach
                             <td>
-                                
+                                <a href="{{route('enlarge',$adopters->id)}}"><i class="far fa-eye"></i></a>
                             </td>
                             <td style="text-align:center">
-                                <a href="#" id="edit"><i class="fas fa-edit" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#" id="delete"><i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                <a href="#" ><button data-toggle="modal" data-target="#feedback" type="button" class="btn btn-success">Approve</button></a>
+                                <a href="#"><button data-toggle="modal" data-target="#feedback1" type="button" class="btn btn-danger">Disapprove</button></a>
                             </td>
                         </tr> 
                     @endforeach
@@ -54,4 +54,16 @@ Adoption Requests
         </div>
     </div>
 </div>
+@foreach($adopter as $adopters)
+@include('PetOwner.Adoption.Modal.message')
+@include('PetOwner.Adoption.Modal.error')
+@endforeach
 @endsection
+@push('js')
+<script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+          var table = $('#datatable').DataTable();
+        });
+    </script>
+@endpush

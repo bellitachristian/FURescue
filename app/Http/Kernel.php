@@ -54,6 +54,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'CheckAdoptionRequest' => \App\Http\Middleware\CheckAdoptionRequest::class,
         'CheckPostCreditsPetOwner' => \App\Http\Middleware\CheckPostCreditsPetOwner::class,
         'CheckPostCredits' => \App\Http\Middleware\CheckPostCredits::class,
         'DonationCheckNotif' => \App\Http\Middleware\DonationCheckNotif::class,

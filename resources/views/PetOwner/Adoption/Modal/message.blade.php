@@ -1,4 +1,4 @@
-<div class="modal fade" id="feedback1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -8,7 +8,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{route('error',$adopters->id)}}" method="POST">  
+                <form action="{{route('message.petowner',$adopters->id)}}" method="POST">  
                     @csrf
                     <div class="modal-body">
                         <textarea name="feedback" id="" class="form-control" cols="30" rows="10"></textarea>

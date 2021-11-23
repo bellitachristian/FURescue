@@ -1961,8 +1961,50 @@ class AnimalShelterManagement extends Controller
         $message->feedback = $req->feedback;
         $message->update();
 
-        return redirect()->back()->with('status','Feedback has sent successfully');
+        $animal = Animals::find($message->animal_id);
+        $animal->status = 'Adopted';
+        $animal->post_status = 'Adopted';
+        $animal->update();
 
+        return redirect()->back()->with('status','Feedback has been sent successfully');
     }
+
+    function error(Request $req, $id){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $message = Adoption::find($id);
+        $notif = new Adopter_Notif;
+        $notif->notif_type = 'Adoption Application';
+        $notif->notif_from = $shelter->shelter_name;
+        $notif->notif_to = $message->adopter_id;
+        $notif->notif_message = ' has disapproved your adoption application';
+        $notif->save();
+        $message->status = 'disapproved';
+        $message->feedback = $req->feedback;
+        $message->update();
+
+        return redirect()->back()->with('status','Disapprove feedback has been sent successfully');
+    }
+
+
+    function enlarge($id){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'images'=>Adoption::find($id),
+        );
+        return view('AnimalShelter.Adoption.viewid',$data);
+    }
+
+    function enlargedonation($id){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'images'=>Donation::where('donation_id',$id)->first(),
+        );
+        return view('AnimalShelter.Donation.reviewdonation',$data);
+    }
+
 }
 

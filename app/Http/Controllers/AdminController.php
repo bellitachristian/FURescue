@@ -536,6 +536,7 @@ class AdminController extends Controller
             'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
             'proof' => UploadedPhotos::where('sub_id',$sub_id)->where('shelter_id',$user_id)->get(),
         );
+    
         return redirect()->back()->with('status','Approved Successfully');
       }
       if($check == 0){

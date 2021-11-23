@@ -1708,6 +1708,8 @@ class PetOwnerManagement extends Controller
         $petupdate = Animals::find($id);
         $petupdate->post_status = "posted"; 
         $petupdate->update();
+
+        
      }
 
      function postupdate($id){
@@ -1839,11 +1841,59 @@ class PetOwnerManagement extends Controller
     }
 
     function adoptionrequests(){
-        $data =array(
+        $data =array( 
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'adopter'=>Adoption::all()->where('status','pending'),
+            'adopter'=>Adoption::all()->where('status','pending')->where('owner_type',3),
         );
         return view('PetOwner.Adoption.viewrequest',$data);
     }
+    function message(Request $req, $id){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $message = Adoption::find($id);
+        $notif = new Adopter_Notif;
+        $notif->notif_type = 'Adoption Application';
+        $notif->notif_from = $petowner->fname;
+        $notif->notif_to = $message->adopter_id;
+        $notif->notif_message = ' has approved your adoption application';
+        $notif->save();
+        $message->status = 'approved';
+        $message->feedback = $req->feedback;
+        $message->update();
+
+        $animal = Animals::find($message->animal_id);
+        $animal->status = 'Adopted';
+        $animal->post_status = 'Adopted';
+        $animal->update();
+
+        return redirect()->back()->with('status','Feedback has been sent successfully');
+    }
+
+    function error(Request $req, $id){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $message = Adoption::find($id);
+        $notif = new Adopter_Notif;
+        $notif->notif_type = 'Adoption Application';
+        $notif->notif_from = $petowner->fname;
+        $notif->notif_to = $message->adopter_id;
+        $notif->notif_message = ' has disapproved your adoption application';
+        $notif->save();
+        $message->status = 'disapproved';
+        $message->feedback = $req->feedback;
+        $message->update();
+
+        return redirect()->back()->with('status','Disapprove feedback has been sent successfully');
+    }
+
+    function enlarge($id){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'images'=>Adoption::find($id),
+        );
+        return view('PetOwner.Adoption.viewid',$data);
+    }
+
+
 }

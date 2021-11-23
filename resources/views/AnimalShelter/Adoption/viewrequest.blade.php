@@ -21,7 +21,7 @@ Adoption Requests
                             <th>Adopter Name</th>
                             <th>Adopter Email</th>
                             <th>Adopter Contact</th>
-                            <th>Review Credentials</th>
+                            <th>View Credentials</th>
                             <th style="text-align:center">Action</th>
                         </tr>
                     </thead>
@@ -36,10 +36,12 @@ Adoption Requests
                             <td>{{$adopters->adopter->fname}} {{$adopters->adopter->lname}}</td>
                             <td>{{$adopters->adopter->email}}</td>
                             <td>{{$adopters->adopter->phonenum}}</td>
-                            <td></td>
+                            <td style="text-align:center">
+                                 <a href="{{route('enlarge',$adopters->id)}}"><i class="far fa-eye"></i></a>
+                            </td>
                             <td style="text-align:center">
                                 <a href="#" ><button data-toggle="modal" data-target="#feedback" type="button" class="btn btn-success">Approve</button></a>
-                                <a href="#" id="feedbackerror"><button type="button" class="btn btn-danger">Disapprove</button></a>
+                                <a href="#"><button data-toggle="modal" data-target="#feedback1" type="button" class="btn btn-danger">Disapprove</button></a>
                             </td>
                         </tr> 
                     @endforeach
@@ -54,6 +56,7 @@ Adoption Requests
 </div>
 @foreach($adopter as $adopters)
 @include('AnimalShelter.Adoption.Modal.message')
+@include('AnimalShelter.Adoption.Modal.error')
 @endforeach
 @endsection
 @push('js')

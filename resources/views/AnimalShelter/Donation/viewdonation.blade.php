@@ -24,7 +24,7 @@ Donation
                     <th>Contact Number</th>
                     <th>Message</th>
                     <th>Amount</th>
-                    <th>Proof of donation</th>
+                    <th>View Donation Proof</th>
                     <th style="text-align:center">Action</th>
                 </tr>
             </thead>
@@ -43,7 +43,7 @@ Donation
                         {{ $donor->donor_amount}}
                     </td>
                     <td style="text-align:center">  
-                        <img src="{{asset('phpcode/donation/'.$donor->donor_photo)}}" width="70px" height="70px" alt="">
+                        <a href="{{route('enlarge.donation',$donor->donation_id)}}"><i class="far fa-eye"></i></a>
                     </td>
                     <td> 
                         <a href="#"><butston style="margin-bottom:3px" id="approve" class="btn btn-success" type="button">Approve</button></a>
