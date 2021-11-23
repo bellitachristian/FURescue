@@ -46,8 +46,8 @@ Donation
                         <a href="{{route('enlarge.donation',$donor->donation_id)}}"><i class="far fa-eye"></i></a>
                     </td>
                     <td> 
-                        <a href="#"><butston style="margin-bottom:3px" id="approve" class="btn btn-success" type="button">Approve</button></a>
-                        <a href="#"><button style="margin-bottom:3px" id="reject" class="btn btn-danger" type="button">Reject</button></a>
+                        <a href="#"><butston style="margin-bottom:3px" id="approve" class="btn btn-success" type="button">Received</button></a>
+                        <a href="#"><button style="margin-bottom:3px" id="reject" class="btn btn-danger" type="button">Not received</button></a>
                     </td>
                 </tr>
                 @endforeach
