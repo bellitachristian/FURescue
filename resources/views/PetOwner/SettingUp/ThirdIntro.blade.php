@@ -43,7 +43,7 @@ Welcome Pet Owner!
 @include('PetOwner.Pop.AddCat')
 @elseif($both)
 @include('PetOwner.SettingUp.Bothbreed')
-@include('PetOwner.pop.AddBoth')
+@include('PetOwner.Pop.AddBoth')
 @endif
 @endsection
 @push('js')
