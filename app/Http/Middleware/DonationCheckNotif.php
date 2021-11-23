@@ -43,5 +43,6 @@ class DonationCheckNotif
             }
             return $next($request);
         }
+        return $next($request);
     }
 }

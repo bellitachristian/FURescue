@@ -40,5 +40,6 @@ class AdopterNotifRequest
             }
             return $next($request);
         }
+        return $next($request);
     }
 }

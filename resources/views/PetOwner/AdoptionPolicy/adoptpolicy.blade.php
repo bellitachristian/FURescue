@@ -44,7 +44,6 @@ Adoption Policy
             </tbody>
         </table>
 </div>
-@endsection
 <!-- Add Policy Modal -->
 <div class="modal fade"  id="AddPolicy" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -126,6 +125,7 @@ Adoption Policy
         </div>
     </div> 
 </div> 
+@endsection
 @push("js")
     <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 

@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Type;
 use App\Models\Breed;
 use App\Models\Admin;
+use App\Models\Adoption;
 use App\Models\Animals;
 use App\Models\AdoptionPolicy;
 use App\Models\AdoptionFee;
@@ -799,9 +800,6 @@ class PetOwnerManagement extends Controller
 
     }
 
-
-
-
     function secondaryIntro (Request $req){
         $petowner = PetOwner::where('id','=',session('LoggedUserPet'))->first();
         $exists = Category::first();
@@ -934,7 +932,7 @@ class PetOwnerManagement extends Controller
            
         } 
         $data = array(
-            'dog' => $req->dog,
+            'dog' => "Dog",
             'cat' => "",
             'both' =>"",
             'breed'=> DB::select("select *from breed  where categ_id ='$categ_id->id'"),
@@ -988,7 +986,7 @@ class PetOwnerManagement extends Controller
         } 
         $data = array(
             'dog' => "",
-            'cat' => $req->cat,
+            'cat' => "Cat",
             'both' =>"",
             'breed'=> DB::select("select *from breed  where categ_id ='$categ_id->id'"),
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
@@ -1768,7 +1766,7 @@ class PetOwnerManagement extends Controller
      function choosesubscription($id){
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'shelter'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'subs'=>Subscription::find($id),
         );
         return view('PetOwner.Subscription.viewtransaction',$data);
@@ -1822,6 +1820,30 @@ class PetOwnerManagement extends Controller
             return redirect()->back()->with('status1','Please upload a photo that will serve as your proof of payment');
         }
     }  
+    function cancelsub($id){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $cancel = SubscriptionTransac::where('status','pending')->where('sub_id',$id)->where('petowner_id',$petowner->id)->first();
 
+        $cancel->status = 'cancelled';
+        $cancel->save();
+        
+        $remove = UploadedPhotos::where('type','subscription')->where('sub_id',$id)->where('petowner_id',$petowner->id)->get();
+        foreach($remove as $pic){
+            $destination = 'uploads/pet-owner/uploaded-photos/'.$pic->imagename;
+            if(File::exists($destination)){ 
+              File::delete($destination);
+            }   
+            $pic->delete();
+        }
+        return redirect()->back()->with('status','You cancelled your sent subscription proof of payment');
+    }
 
+    function adoptionrequests(){
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'adopter'=>Adoption::all()->where('status','pending'),
+        );
+        return view('PetOwner.Adoption.viewrequest',$data);
+    }
 }

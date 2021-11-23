@@ -509,6 +509,7 @@ class AdminController extends Controller
     }
     function approveproofpayment($sub_id,$user_id){
       $check = SubscriptionTransac::where('status','pending')->where('sub_id',$sub_id)->where('shelter_id',$user_id)->count();
+
       if($check > 0){
         $shelter = SubscriptionTransac::where('status','pending')->where('sub_id',$sub_id)->where('shelter_id',$user_id)->first();
 
@@ -518,16 +519,19 @@ class AdminController extends Controller
       ];
       $shelter->status = 'approved';
       $shelter->update();
-      AnimalShelter::find($shelter->shelter_id)->notify(new ApproveProofPayment($approvedproof));
+      AnimalShelter::find($user_id)->notify(new ApproveProofPayment($approvedproof));
 
       $subscription = Subscription::find($sub_id);
       $feedback = Feedback::where('sub_id',$subscription->id)->delete();
-        $proofphoto = UploadedPhotos::where('sub_id',$sub_id)->where('shelter_id',$user_id)->first();
-        $destination = 'uploads/animal-shelter/uploaded-photos/'.$proofphoto->imagename;
-        if(File::exists($destination)){ 
-          File::delete($destination);
-        }   
-        $proofphoto->delete();
+       
+        $proofphoto = UploadedPhotos::where('sub_id',$sub_id)->where('shelter_id',$user_id)->get();
+        foreach($proofphoto as $pic){
+            $destination = 'uploads/animal-shelter/uploaded-photos/'.$pic->imagename;
+            if(File::exists($destination)){ 
+              File::delete($destination);
+            }   
+            $pic->delete();
+        }
           $data = array(
             'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
             'proof' => UploadedPhotos::where('sub_id',$sub_id)->where('shelter_id',$user_id)->get(),
@@ -541,7 +545,7 @@ class AdminController extends Controller
           'petowner_name' => 'You have successfully subscribed '.$petowner->subscription->sub_name.' promo',
           'promo' => ' valid for '.$petowner->subscription->sub_span.''.$petowner->subscription->sub_span_type.'/s',
         ];
-        PetOwner::find($petowner->petowner_id)->notify(new ApproveProofPaymentPetowner($approvedproof));
+        PetOwner::find($user_id)->notify(new ApproveProofPaymentPetowner($approvedproof));
 
         $petowner->status = 'approved';
         $petowner->update();
@@ -549,12 +553,14 @@ class AdminController extends Controller
         $subscription = Subscription::find($sub_id);
         $feedback = Feedback::where('sub_id',$subscription->id)->delete();
 
-        $proofphoto = UploadedPhotos::where('sub_id',$sub_id)->where('petowner_id',$user_id)->first();
-        $destination = 'uploads/pet-owner/uploaded-photos/'.$proofphoto->imagename;
-        if(File::exists($destination)){ 
-          File::delete($destination);
-        }   
-        $proofphoto->delete();
+        $proofphoto = UploadedPhotos::where('sub_id',$sub_id)->where('petowner_id',$user_id)->get();
+        foreach($proofphoto as $pic){
+            $destination = 'uploads/pet-owner/uploaded-photos/'.$pic->imagename;
+            if(File::exists($destination)){ 
+              File::delete($destination);
+            }   
+            $pic->delete();
+        }
         $data = array(
           'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
           'proof' => UploadedPhotos::where('sub_id',$sub_id)->where('petowner_id',$user_id)->get(),
@@ -593,13 +599,15 @@ class AdminController extends Controller
         $feedback->status = 'not read';
         $feedback->save();
 
-        $proofphoto = UploadedPhotos::where('sub_id',$sub_id)->where('shelter_id',$bind->id)->first();
-        $destination = 'uploads/animal-shelter/uploaded-photos/'.$proofphoto->imagename;
-        if(File::exists($destination)){ 
-          File::delete($destination);
-        }   
-        $proofphoto->delete();
-
+        $proofphoto = UploadedPhotos::where('sub_id',$sub_id)->where('shelter_id',$bind->id)->get();
+        foreach($proofphoto as $pic){
+            $destination = 'uploads/animal-shelter/uploaded-photos/'.$pic->imagename;
+            if(File::exists($destination)){ 
+              File::delete($destination);
+            }   
+            $pic->delete();
+        }
+       
         $rejectedproof = [
           'payment' => 'There is something wrong upon the proof of payment you had sent,',
           'tryagain' => ' please upload again the neccessary proof of photo on your subscription',
@@ -624,13 +632,14 @@ class AdminController extends Controller
         $feedback->status = 'not read';
         $feedback->save();
 
-        $proofphoto = UploadedPhotos::where('sub_id',$sub_id)->where('petowner_id',$bind->id)->first();
-        $destination = 'uploads/pet-owner/uploaded-photos/'.$proofphoto->imagename;
-        if(File::exists($destination)){ 
-          File::delete($destination);
-        }   
-        $proofphoto->delete();
-
+        $proofphoto = UploadedPhotos::where('sub_id',$sub_id)->where('petowner_id',$bind->id)->get();
+        foreach($proofphoto as $pic){
+            $destination = 'uploads/pet-owner/uploaded-photos/'.$pic->imagename;
+            if(File::exists($destination)){ 
+              File::delete($destination);
+            }   
+            $pic->delete();
+        }
         $rejectedproof = [
           'payment' => 'There is something wrong upon the proof of payment you had sent,',
           'tryagain' => ' please upload again the neccessary proof of photo on your subscription',

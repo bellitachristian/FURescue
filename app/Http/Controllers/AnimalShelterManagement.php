@@ -10,6 +10,7 @@ use App\Models\PetOwner;
 use App\Models\Category;
 use App\Models\Donation;
 use App\Models\Vaccine;
+use App\Models\Adoption;
 use App\Models\AdoptionPolicy;
 use App\Models\AllocateVaccine;
 use App\Models\AdoptionFee;
@@ -465,7 +466,7 @@ class AnimalShelterManagement extends Controller
         } 
         $data = array(
             'dog' => "",
-            'cat' => $req->cat,
+            'cat' => "Cat",
             'both' =>"",
             'breed'=> DB::select("select *from breed  where categ_id ='$categ_id->id'"),
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -642,7 +643,7 @@ class AnimalShelterManagement extends Controller
            
         } 
         $data = array(
-            'dog' => $req->dog,
+            'dog' => "Dog",
             'cat' => "",
             'both' =>"",
             'breed'=> DB::select("select *from breed  where categ_id ='$categ_id->id'"),
@@ -1920,4 +1921,47 @@ class AnimalShelterManagement extends Controller
 
         return redirect()->back()->with('status','Feedback invalid donation sent successfully');
     } 
+    function cancelsub($id){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $cancel = SubscriptionTransac::where('status','pending')->where('sub_id',$id)->where('shelter_id',$shelter->id)->first();
+
+        $cancel->status = 'cancelled';
+        $cancel->save();
+        
+        $remove = UploadedPhotos::where('type','subscription')->where('sub_id',$id)->where('shelter_id',$shelter->id)->get();
+        foreach($remove as $pic){
+            $destination = 'uploads/animal-shelter/uploaded-photos/'.$pic->imagename;
+            if(File::exists($destination)){ 
+              File::delete($destination);
+            }   
+            $pic->delete();
+        }
+        return redirect()->back()->with('status','You cancelled your sent subscription proof of payment');
+    }
+    function adoptionrequests(){
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'adopter'=>Adoption::all()->where('status','pending')->where('owner_type',2),
+        );
+        return view('AnimalShelter.Adoption.viewrequest',$data);
+    }
+
+    function message(Request $req, $id){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $message = Adoption::find($id);
+        $notif = new Adopter_Notif;
+        $notif->notif_type = 'Adoption Application';
+        $notif->notif_from = $shelter->shelter_name;
+        $notif->notif_to = $message->adopter_id;
+        $notif->notif_message = ' has approved y    our adoption application';
+        $notif->save();
+        $message->status = 'approved';
+        $message->feedback = $req->feedback;
+        $message->update();
+
+        return redirect()->back()->with('status','Feedback has sent successfully');
+
+    }
 }
+

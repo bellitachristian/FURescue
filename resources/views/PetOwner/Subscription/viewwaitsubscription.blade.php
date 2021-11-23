@@ -41,7 +41,7 @@ Subscription
                 </p>
             </div>
             <div class="card-footer">
-                <a href=""><button class="btn btn-secondary">Cancel Subscription</button></a>
+                <a href="{{route('cancel.subscription.petowner',$subs->id)}}"><button class="btn btn-secondary">Cancel Subscription</button></a>
             </div>
         </div>
     </div>

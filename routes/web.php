@@ -80,6 +80,8 @@ Route::post('/Admin/feedback/{sub_id}/{receiver_id}',[AdminController::class,'fe
 
 Route::post('/Admin/feedbackdonationmessage/{id}',[AnimalShelterManagement::class,'feedbackmessage'])->name('view.feedback.message');
 Route::post('/Admin/feedbackdonationmessageerror/{id}',[AnimalShelterManagement::class,'feedbackmessageerror'])->name('view.feedback.message.error');
+Route::post('/Admin/message/{id}',[AnimalShelterManagement::class,'message'])->name('message');
+
 
 Route::get('/test',[UploadController::class,'view']);
 Route::post('/SecondaryIntro',[AnimalShelterManagement::class,'secondaryIntro'])->name('second.intro');
@@ -133,48 +135,66 @@ Route::get('/verify/petowner',[RegisterController::class,'verifyPetUser'])->name
 Route::get('/auto/logout/{shelter_id}',[LoginController::class,'autologout']);
 
 Route::group(['middleware'=>['Authcheck','DonationCheckNotif']],function(){
-    Route::get('/petbook/allocate',[AnimalShelterManagement::class,'petbook_allocate'])->name('petbook.allocate');
-    Route::get('/petbook/viewbook',[AnimalShelterManagement::class,'petbook_viewbook'])->name('petbook.view');
-    Route::get('/petbook/fetch',[AnimalShelterManagement::class,'load_books'])->name('petbook.fetch');
-    Route::get('/petbook/generate',[AnimalShelterManagement::class,'petbook_generate'])->name('petbook.generate');
-    Route::get('/petbook/details/{id}',[AnimalShelterManagement::class,'petbook_details'])->name('petbook.details');
-    Route::get('/petbook/refresh/{vac_id}/{dew_id}',[AnimalShelterManagement::class,'petbook_refresh'])->name('petbook.refresh');
+    Route::group(['middleware'=>['CheckPostCredits']],function(){
+        Route::get('/petbook/allocate',[AnimalShelterManagement::class,'petbook_allocate'])->name('petbook.allocate');
+        Route::get('/petbook/viewbook',[AnimalShelterManagement::class,'petbook_viewbook'])->name('petbook.view');
+        Route::get('/petbook/fetch',[AnimalShelterManagement::class,'load_books'])->name('petbook.fetch');
+        Route::get('/petbook/generate',[AnimalShelterManagement::class,'petbook_generate'])->name('petbook.generate');
+        Route::get('/petbook/details/{id}',[AnimalShelterManagement::class,'petbook_details'])->name('petbook.details');
+        Route::get('/petbook/refresh/{vac_id}/{dew_id}',[AnimalShelterManagement::class,'petbook_refresh'])->name('petbook.refresh');
+    
+        Route::get('/postpet/postdelete/{id}',[AnimalShelterManagement::class,'post_pet_delete'])->name('post.pet.delete');
+        Route::post('/postpet/postupdate/{id}',[AnimalShelterManagement::class,'post_pet_update'])->name('post.pet.update');
+        Route::post('/postpet/postsave/{id}',[AnimalShelterManagement::class,'post_pet_save'])->name('post.pet.save');
+        Route::get('/postpet/load_post',[AnimalShelterManagement::class,'load_post'])->name('post.load');
+        Route::get('/postpet/view',[AnimalShelterManagement::class,'postview'])->name('post.view');
+        Route::get('/postpet/loadfee/{id}',[AnimalShelterManagement::class,'loadfee'])->name('load.fee');
+        Route::get('/postpet/viewupdatepost/{id}',[AnimalShelterManagement::class,'postupdate'])->name('post.update');
+        Route::get('/postpet/create/{id}',[AnimalShelterManagement::class,'postcreate'])->name('post.create');
+        Route::post('/postpet/uploadphoto/{id}',[UploadController::class,'uploadphotopost'])->name('post.uploadphoto');
+        Route::get('/postpet/fetchpostphoto/{id}',[UploadController::class,'fetchpostphotos'])->name('post.fetch');
+        Route::get('/postpet/deletepostphoto',[UploadController::class,'deletepostphotos'])->name('postphoto.delete');
 
-    Route::get('/postpet/postdelete/{id}',[AnimalShelterManagement::class,'post_pet_delete'])->name('post.pet.delete');
-    Route::post('/postpet/postupdate/{id}',[AnimalShelterManagement::class,'post_pet_update'])->name('post.pet.update');
-    Route::post('/postpet/postsave/{id}',[AnimalShelterManagement::class,'post_pet_save'])->name('post.pet.save');
-    Route::get('/postpet/load_post',[AnimalShelterManagement::class,'load_post'])->name('post.load');
-    Route::get('/postpet/view',[AnimalShelterManagement::class,'postview'])->name('post.view');
-    Route::get('/postpet/loadfee/{id}',[AnimalShelterManagement::class,'loadfee'])->name('load.fee');
-    Route::get('/postpet/viewupdatepost/{id}',[AnimalShelterManagement::class,'postupdate'])->name('post.update');
-    Route::get('/postpet/create/{id}',[AnimalShelterManagement::class,'postcreate'])->name('post.create');
-    Route::post('/postpet/uploadphoto/{id}',[UploadController::class,'uploadphotopost'])->name('post.uploadphoto');
-    Route::get('/postpet/fetchpostphoto/{id}',[UploadController::class,'fetchpostphotos'])->name('post.fetch');
-    Route::get('/postpet/deletepostphoto',[UploadController::class,'deletepostphotos'])->name('postphoto.delete');
+        Route::get('/vaccine',[AnimalShelterManagement::class,'vaccine_dewormView']);
+        Route::get('/allocate',[AnimalShelterManagement::class,'allocate_view']);
+        Route::get('/Profile/{shelter_id}',[AnimalShelterManagement::class,'ViewProfile']);
+        Route::get('/test/fetchimage',[UploadController::class,'fetch'])->name('dropzone.fetch');
+        Route::get('/AdoptionPolicy',[AnimalShelterManagement::class,'ViewPolicy']);
+        Route::get('/AnimalManagement',[AnimalShelterManagement::class,'animal_view']);
+        Route::get('/AllocateVaccine/{id}',[AnimalShelterManagement::class,'Allocate_Vaccine_Animal']);
+        Route::get('/AllocationVaccine/{id}/{vac_id}',[AnimalShelterManagement::class,'ViewAllocationVaccine'])->name('vaccine.allocate');
+        Route::get('/AllocationDeworm/{id}/{dew_id}',[AnimalShelterManagement::class,'ViewAllocationDeworm']);
+        Route::get('/AllocateDeworm/{id}',[AnimalShelterManagement::class,'Allocate_Deworm_Animal']); 
+        Route::get('/ViewEditAnimal/{id}',[AnimalShelterManagement::class,'ViewEditAnimal'])->name('ViewEditAnimal'); 
+        Route::get('/Vaccinehistory',[AnimalShelterManagement::class,'ViewVaccineHistory']);
+        Route::get('/Dewormhistory',[AnimalShelterManagement::class,'ViewDewormHistory']);
+        Route::get('/Profile/Edit/{shelter_id}',[AnimalShelterManagement::class,'ViewEditProfile']);
+        Route::get('/Dashboard/deact',[AnimalShelterManagement::class,'ViewDeactDash'])->name('deactpage');
+        Route::get('/Dashboard/request/{shelter_id}',[AnimalShelterManagement::class,'RequestActivation'])->name('request.reactivation');
+        Route::get('/AnimalShelter/viewdonation',[AnimalShelterManagement::class,'viewdonation'])->name('view.donation');
+        Route::get('/AnimalShelter/Adoption',[AnimalShelterManagement::class,'adoptionrequests'])->name('adoption.request.shelter');
 
-    Route::get('/dashboard',[AnimalShelterManagement::class,'Animalshelter_dashboard']);
-    Route::get('/vaccine',[AnimalShelterManagement::class,'vaccine_dewormView']);
-    Route::get('/allocate',[AnimalShelterManagement::class,'allocate_view']);
-    Route::get('/Profile/{shelter_id}',[AnimalShelterManagement::class,'ViewProfile']);
-    Route::get('/test/fetchimage',[UploadController::class,'fetch'])->name('dropzone.fetch');
-    Route::get('/AdoptionPolicy',[AnimalShelterManagement::class,'ViewPolicy']);
-    Route::get('/AnimalManagement',[AnimalShelterManagement::class,'animal_view']);
-    Route::get('/AllocateVaccine/{id}',[AnimalShelterManagement::class,'Allocate_Vaccine_Animal']);
-    Route::get('/AllocationVaccine/{id}/{vac_id}',[AnimalShelterManagement::class,'ViewAllocationVaccine'])->name('vaccine.allocate');
-    Route::get('/AllocationDeworm/{id}/{dew_id}',[AnimalShelterManagement::class,'ViewAllocationDeworm']);
-    Route::get('/AllocateDeworm/{id}',[AnimalShelterManagement::class,'Allocate_Deworm_Animal']); 
-    Route::get('/ViewEditAnimal/{id}',[AnimalShelterManagement::class,'ViewEditAnimal'])->name('ViewEditAnimal'); 
-    Route::get('/Vaccinehistory',[AnimalShelterManagement::class,'ViewVaccineHistory']);
-    Route::get('/Dewormhistory',[AnimalShelterManagement::class,'ViewDewormHistory']);
-    Route::get('/Profile/Edit/{shelter_id}',[AnimalShelterManagement::class,'ViewEditProfile']);
-    Route::get('/Dashboard/deact',[AnimalShelterManagement::class,'ViewDeactDash'])->name('deactpage');
-    Route::get('/Dashboard/request/{shelter_id}',[AnimalShelterManagement::class,'RequestActivation'])->name('request.reactivation');
+        Route::get('/customselection/get_fee',[DropDownController::class,'get_fee'])->name('get.fee');
+        Route::get('/customselection/load_adoption',[DropDownController::class,'load_adoption'])->name('load.adoption');
+        Route::get('/customselection/load_category',[DropDownController::class,'load_category'])->name('load.category');
+        Route::get('/customselection/category',[DropDownController::class,'selection_category'])->name('selection.category');
+        Route::get('/customselection/view',[DropDownController::class,'selection_view'])->name('selection.view');
+        Route::get('/customselection/addcategory',[DropDownController::class,'addcategory'])->name('selection.add');
+        Route::get('/customselection/selectionadoption',[DropDownController::class,'selection_adoption'])->name('selection.adoption');
+        Route::get('/customselection/breed',[DropDownController::class,'selection_breed'])->name('selection.breed');
+        Route::get('/customselection/load_breed',[DropDownController::class,'load_breed'])->name('load.breed');
+        Route::post('/customselection/adddog_breed',[DropDownController::class,'adddog_breed'])->name('adddog.breed');
+        Route::post('/customselection/deletedog_breed/{id}',[DropDownController::class,'deletedogbreed']);
+        Route::post('/customselection/addcat_breed',[DropDownController::class,'addcat_breed'])->name('addcat.breed');
+        Route::post('/customselection/deletecat_breed/{id}',[DropDownController::class,'deletecatbreed']);
+        Route::get('/customselection/addadoptionfee',[DropDownController::class,'addadoptionfee'])->name('selection.addadoptionfee');
+        Route::post('/customselection/selection_adoption_savefee',[DropDownController::class,'selection_adoption_savefee'])->name('selection.adoption.savefee');
+    });
+    Route::get('/dashboard',[AnimalShelterManagement::class,'Animalshelter_dashboard'])->name('dash');
     Route::get('/tempdashboard',[AnimalShelterManagement::class,'Animalshelter_tempdashboard']);
     Route::get('/AnimalShelter/subscription/{id}',[AnimalShelterManagement::class,'choosesubscription'])->name('choose.subscription');
     Route::get('/AnimalShelter/viewwaitsubscription/{id}',[AnimalShelterManagement::class,'viewwaitsubscription'])->name('view.wait.subscription');
-
-    Route::get('/AnimalShelter/viewdonation',[AnimalShelterManagement::class,'viewdonation'])->name('view.donation');
-
+    Route::get('/AnimalShelter/cancelsub/{id}',[AnimalShelterManagement::class,'cancelsub'])->name('cancel.subscription');
 });
 
 Route::group(['middleware'=>['AdminCheck']],function(){ 
@@ -182,49 +202,54 @@ Route::group(['middleware'=>['AdminCheck']],function(){
 });
 
 Route::group(['middleware'=>['PetOwnerCheck']],function(){ 
+    Route::group(['middleware'=>['CheckPostCreditsPetOwner']],function(){
+        Route::get('/Profile/petowner/{petowner_id}',[PetOwnerManagement::class,'ViewProfile']);
+        Route::get('/Profile/Edit/petowner/{petowner_id}',[PetOwnerManagement::class,'ViewEditProfile']);
+        Route::get('/test/fetchimage/petowner',[UploadController::class,'fetchpetownerphotos'])->name('dropzone.fetch.petowner');
+        Route::get('/test/delete/petowner',[UploadController::class,'deletepetownerphoto'])->name('dropzone.delete.petowner');
+        Route::get('/AnimalManagement/petowner',[PetOwnerManagement::class,'animal_view'])->name('pet.view');
+        Route::get('/ViewEditAnimal/petowner/{id}',[PetOwnerManagement::class,'ViewEditAnimal'])->name('edit.pet'); 
+        Route::get('/AdoptionPolicy/petowner',[PetOwnerManagement::class,'ViewPolicy'])->name('view.policy');
+        Route::get('/petbook/petowner/viewbook',[PetOwnerManagement::class,'petbook_viewbook'])->name('petbook.view.petowner');
+        Route::get('/petbook/petowner/fetch',[PetOwnerManagement::class,'load_books'])->name('petbook.fetch.petowner');
+        Route::get('/petbook/petowner/details/{id}',[PetOwnerManagement::class,'petbook_details'])->name('petbook.details.petowner');
+        Route::get('/petbook/petowner/generate',[PetOwnerManagement::class,'petbook_generate'])->name('petbook.generate.petowner');
+        Route::get('/petbook/petowner/details/{id}',[PetOwnerManagement::class,'petbook_details'])->name('petbook.details.petowner');
+        Route::get('/vaccine/petowner',[PetOwnerManagement::class,'vaccine_dewormView'])->name('vaccine.deworm.view');
+        Route::get('/allocate/petowner',[PetOwnerManagement::class,'allocate_view'])->name('allocate.view');
+        Route::get('/AllocateVaccine/petowner/{id}',[PetOwnerManagement::class,'Allocate_Vaccine_Animal'])->name('allocatevaccinedeworm.petowner');
+        Route::get('/AllocationVaccine/view/petowner/{id}/{vac_id}',[PetOwnerManagement::class,'ViewAllocationVaccine'])->name('vaccine.allocate');
+        Route::get('/AllocationDeworm/petowner/{id}/{dew_id}',[PetOwnerManagement::class,'ViewAllocationDeworm']);
+        Route::get('/postpet/view/petowner',[PetOwnerManagement::class,'postview'])->name('post.view.petowner');
+        Route::get('/postpet/load_post/petowner',[PetOwnerManagement::class,'load_post'])->name('post.load.petowner');
+        Route::get('/postpet/create/petowner/{id}',[PetOwnerManagement::class,'postcreate'])->name('post.create.petowner');
+        Route::get('/postpet/fetchpostphoto/petowner/{id}',[UploadController::class,'fetchpostphotos_petowner'])->name('post.fetch.petowner');
+        Route::get('/postpet/deletepostphoto/petowner',[UploadController::class,'deletepostphotos_petowner'])->name('postphoto.delete.petowner');
+        Route::get('/postpet/loadfee/petowner/{id}',[PetOwnerManagement::class,'loadfee'])->name('load.fee.petowner');
+        Route::get('/postpet/viewupdatepost/petowner/{id}',[PetOwnerManagement::class,'postupdate'])->name('post.update.petowner');
+        Route::get('/postpet/postdelete/petowner/{id}',[PetOwnerManagement::class,'post_pet_delete'])->name('post.pet.delete.petowner');
+        Route::get('/customselection/petowner/view',[DropDownController::class,'selection_view_petowner'])->name('selection.view.petowner');
+        Route::get('/customselection/petowner/category',[DropDownController::class,'selection_category_petowner'])->name('selection.category.petowner');
+        Route::get('/customselection/petowner/load_category',[DropDownController::class,'load_category_petowner'])->name('load.category.petowner');
+        Route::get('/customselection/petowner/addcategory',[DropDownController::class,'addcategory_petowner'])->name('selection.add.petowner');
+        Route::get('/customselection/petowner/breed',[DropDownController::class,'selection_breed_petowner'])->name('selection.breed.petowner');
+        Route::get('/customselection/petowner/selectionadoption',[DropDownController::class,'selection_adoption_petowner'])->name('selection.adoption.petowner');
+        Route::get('/customselection/petowner/load_adoption',[DropDownController::class,'load_adoption_petowner'])->name('load.adoption.petowner');
+        Route::get('/customselection/get_fee/petowner',[DropDownController::class,'get_fee_petowner'])->name('get.fee.petowner');
+        
+        Route::get('/PetOwner/Adoption',[PetOwnerManagement::class,'adoptionrequests'])->name('adoption.request.petowner');
+
+    });
     Route::get('/auto/logout/petowner/{petowner_id}',[LoginController::class,'autologoutpetowner']);
     Route::get('/tempdashboard/petowner',[PetOwnerManagement::class,'PetOwner_tempdashboard']);
     Route::get('/pet-owner/dashboard',[PetOwnerManagement::class,'dashboard']);
-    Route::get('/Profile/petowner/{petowner_id}',[PetOwnerManagement::class,'ViewProfile']);
-    Route::get('/Profile/Edit/petowner/{petowner_id}',[PetOwnerManagement::class,'ViewEditProfile']);
-    Route::get('/test/fetchimage/petowner',[UploadController::class,'fetchpetownerphotos'])->name('dropzone.fetch.petowner');
-    Route::get('/test/delete/petowner',[UploadController::class,'deletepetownerphoto'])->name('dropzone.delete.petowner');
+   
     Route::get('/Dashboard/deact/petowner',[PetOwnerManagement::class,'ViewDeactDash'])->name('deactpage.petowner');
     Route::get('/Dashboard/request/petowner/{petowner_id}',[PetOwnerManagement::class,'RequestActivation'])->name('request.reactivation.petowner');
-    Route::get('/AnimalManagement/petowner',[PetOwnerManagement::class,'animal_view'])->name('pet.view');
-    Route::get('/ViewEditAnimal/petowner/{id}',[PetOwnerManagement::class,'ViewEditAnimal'])->name('edit.pet'); 
-    Route::get('/AdoptionPolicy/petowner',[PetOwnerManagement::class,'ViewPolicy'])->name('view.policy');
-    Route::get('/petbook/petowner/viewbook',[PetOwnerManagement::class,'petbook_viewbook'])->name('petbook.view.petowner');
-    Route::get('/petbook/petowner/fetch',[PetOwnerManagement::class,'load_books'])->name('petbook.fetch.petowner');
-    Route::get('/petbook/petowner/details/{id}',[PetOwnerManagement::class,'petbook_details'])->name('petbook.details.petowner');
-    Route::get('/petbook/petowner/generate',[PetOwnerManagement::class,'petbook_generate'])->name('petbook.generate.petowner');
-    Route::get('/petbook/petowner/details/{id}',[PetOwnerManagement::class,'petbook_details'])->name('petbook.details.petowner');
-    Route::get('/vaccine/petowner',[PetOwnerManagement::class,'vaccine_dewormView'])->name('vaccine.deworm.view');
-    Route::get('/allocate/petowner',[PetOwnerManagement::class,'allocate_view'])->name('allocate.view');
-    Route::get('/AllocateVaccine/petowner/{id}',[PetOwnerManagement::class,'Allocate_Vaccine_Animal'])->name('allocatevaccinedeworm.petowner');
-    Route::get('/AllocationVaccine/view/petowner/{id}/{vac_id}',[PetOwnerManagement::class,'ViewAllocationVaccine'])->name('vaccine.allocate');
-    Route::get('/AllocationDeworm/petowner/{id}/{dew_id}',[PetOwnerManagement::class,'ViewAllocationDeworm']);
-    Route::get('/postpet/view/petowner',[PetOwnerManagement::class,'postview'])->name('post.view.petowner');
-    Route::get('/postpet/load_post/petowner',[PetOwnerManagement::class,'load_post'])->name('post.load.petowner');
-    Route::get('/postpet/create/petowner/{id}',[PetOwnerManagement::class,'postcreate'])->name('post.create.petowner');
-    Route::get('/postpet/fetchpostphoto/petowner/{id}',[UploadController::class,'fetchpostphotos_petowner'])->name('post.fetch.petowner');
-    Route::get('/postpet/deletepostphoto/petowner',[UploadController::class,'deletepostphotos_petowner'])->name('postphoto.delete.petowner');
-    Route::get('/postpet/loadfee/petowner/{id}',[PetOwnerManagement::class,'loadfee'])->name('load.fee.petowner');
-    Route::get('/postpet/viewupdatepost/petowner/{id}',[PetOwnerManagement::class,'postupdate'])->name('post.update.petowner');
-    Route::get('/postpet/postdelete/petowner/{id}',[PetOwnerManagement::class,'post_pet_delete'])->name('post.pet.delete.petowner');
-
-
-    Route::get('/customselection/petowner/view',[DropDownController::class,'selection_view_petowner'])->name('selection.view.petowner');
-    Route::get('/customselection/petowner/category',[DropDownController::class,'selection_category_petowner'])->name('selection.category.petowner');
-    Route::get('/customselection/petowner/load_category',[DropDownController::class,'load_category_petowner'])->name('load.category.petowner');
-    Route::get('/customselection/petowner/addcategory',[DropDownController::class,'addcategory_petowner'])->name('selection.add.petowner');
-    Route::get('/customselection/petowner/breed',[DropDownController::class,'selection_breed_petowner'])->name('selection.breed.petowner');
-    Route::get('/customselection/petowner/selectionadoption',[DropDownController::class,'selection_adoption_petowner'])->name('selection.adoption.petowner');
-    Route::get('/customselection/petowner/load_adoption',[DropDownController::class,'load_adoption_petowner'])->name('load.adoption.petowner');
-    Route::get('/customselection/get_fee/petowner',[DropDownController::class,'get_fee_petowner'])->name('get.fee.petowner');
 
     Route::get('/Petowner/viewwaitsubscription/{id}',[PetOwnerManagement::class,'viewwaitsubscription'])->name('owner.view.wait.subscription');
     Route::get('/PetOwner/subscription/{id}',[PetOwnerManagement::class,'choosesubscription'])->name('choose.subscription.petowner');
+    Route::get('/PetOwner/cancelsub/{id}',[PetOwnerManagement::class,'cancelsub'])->name('cancel.subscription.petowner');
 
 });
 
@@ -234,22 +259,6 @@ Route::get('/dashboard/getbreed',[DropDownController::class,'getbreed'])->name('
 Route::get('/dashboard/gettype',[DropDownController::class,'gettype'])->name('get.type');
 Route::get('/allocate/vaccineselection',[DropDownController::class,'vaccinefetch'])->name('vaccine.fetch');
 Route::get('/allocate/dewormselection',[DropDownController::class,'dewormfetch'])->name('deworm.fetch');
-
-Route::get('/customselection/get_fee',[DropDownController::class,'get_fee'])->name('get.fee');
-Route::get('/customselection/load_adoption',[DropDownController::class,'load_adoption'])->name('load.adoption');
-Route::get('/customselection/load_category',[DropDownController::class,'load_category'])->name('load.category');
-Route::get('/customselection/category',[DropDownController::class,'selection_category'])->name('selection.category');
-Route::get('/customselection/view',[DropDownController::class,'selection_view'])->name('selection.view');
-Route::get('/customselection/addcategory',[DropDownController::class,'addcategory'])->name('selection.add');
-Route::get('/customselection/selectionadoption',[DropDownController::class,'selection_adoption'])->name('selection.adoption');
-Route::get('/customselection/breed',[DropDownController::class,'selection_breed'])->name('selection.breed');
-Route::get('/customselection/load_breed',[DropDownController::class,'load_breed'])->name('load.breed');
-Route::post('/customselection/adddog_breed',[DropDownController::class,'adddog_breed'])->name('adddog.breed');
-Route::post('/customselection/deletedog_breed/{id}',[DropDownController::class,'deletedogbreed']);
-Route::post('/customselection/addcat_breed',[DropDownController::class,'addcat_breed'])->name('addcat.breed');
-Route::post('/customselection/deletecat_breed/{id}',[DropDownController::class,'deletecatbreed']);
-Route::get('/customselection/addadoptionfee',[DropDownController::class,'addadoptionfee'])->name('selection.addadoptionfee');
-Route::post('/customselection/selection_adoption_savefee',[DropDownController::class,'selection_adoption_savefee'])->name('selection.adoption.savefee');
 
 Route::group(['middleware'=>['AdopterNotifRequest']],function(){ 
     Route::get('/Reactivation/petowner/{petowner_id}',[AdminController::class,'reactivationpetowner'])->name('approve.reactivation.petowner');

@@ -34,17 +34,17 @@ Subscription Transaction
                             <td>{{$sub->petowner->fname}}</td>
                             @endif
                             @if($sub->shelter)
+                            <td style="text-align:center">
                             @foreach($sub->subscription->proofpayment as $subs)
-                                    <td style="text-align:center">
-                                        <img src="{{asset('uploads/animal-shelter/uploaded-photos/'.$subs->imagename)}}" width="90px" height="70px">
-                                    </td>
+                                <img src="{{asset('uploads/animal-shelter/uploaded-photos/'.$subs->imagename)}}" width="90px" height="70px">   
                             @endforeach
+                            </td>
                             @elseif($sub->petowner)
+                            <td style="text-align:center">
                             @foreach($sub->subscription->proofpayment as $subs)
-                                    <td style="text-align:center">
-                                        <img src="{{asset('uploads/pet-owner/uploaded-photos/'.$subs->imagename)}}" width="90px" height="70px">
-                                    </td>
+                                <img src="{{asset('uploads/pet-owner/uploaded-photos/'.$subs->imagename)}}" width="90px" height="70px">
                             @endforeach
+                            </td>
                             @endif
                             @if($sub->shelter)
                             <td  style="text-align:center">

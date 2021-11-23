@@ -28,7 +28,6 @@ class AnimalShelter extends Model
     }
     public function animals(){
         return $this->hasMany(Animals::class,'shelter_id');
-
     }
 
 }

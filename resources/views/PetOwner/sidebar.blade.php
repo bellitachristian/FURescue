@@ -56,7 +56,7 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Custom Adoption:</h6>
             <a class="collapse-item" href="{{route('view.policy')}}">Adoption Policy</a>
-            <a class="collapse-item" href="#">Approve/Reject</a>
+            <a class="collapse-item" href="{{route('adoption.request.petowner')}}">Approve/Reject</a>
             <a class="collapse-item" href="#">Request for Adoption</a>
         </div>
     </div>

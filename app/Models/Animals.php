@@ -33,6 +33,9 @@ class Animals extends Model
     public function postphotos(){
         return $this->hasMany(UploadedPhotos::class,'animal_id');
     }
+    public function adoption(){
+        return $this->hasMany(Adoption::class,'animal_id');
+    }
     public function category(){
         return $this->belongsTo(Category::class,'id');
     }
