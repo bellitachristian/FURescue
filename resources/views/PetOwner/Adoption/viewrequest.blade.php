@@ -19,7 +19,9 @@ Adoption Requests
                             <th>Animal Photo</th>
                             <th>Animal Name</th>
                             <th>Adopter Name</th>
-                            <th>View</th>
+                            <th>Adopter Email</th>
+                            <th>Adopter Contact</th>
+                            <th>View Credentials</th>
                             <th style="text-align:center">Action</th>
                         </tr>
                     </thead>
@@ -27,15 +29,13 @@ Adoption Requests
                     @foreach($adopter as $adopters)
                         <tr>
                             <td>{{$adopters->id}}</td>
-                            @foreach($adopters->animals as $animalphoto)
                             <td>
-                                <img src="{{asset('uploads/animals/'.$animalphoto->animal_image)}}" width="70px" height="70px" alt="photo">
+                                <img src="{{asset('uploads/animals/'.$adopters->animals->animal_image)}}" width="70px" height="70px" alt="photo">
                             </td>
-                            <td>{{$animalphoto->name}}</td>
-                            @endforeach
-                            @foreach($adopters->adopter as $adoption)
-                            <td>{{$adoption->fname}} {{$adoption->lname}}</td>
-                            @endforeach
+                            <td>{{$adopters->animals->name}}</td>
+                            <td>{{$adopters->adopter->fname}} {{$adopters->adopter->lname}}</td>
+                            <td>{{$adopters->adopter->email}}</td>
+                            <td>{{$adopters->adopter->phonenum}}</td>
                             <td>
                                 <a href="{{route('enlarge',$adopters->id)}}"><i class="far fa-eye"></i></a>
                             </td>
