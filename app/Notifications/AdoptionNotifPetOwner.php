@@ -10,15 +10,15 @@ use Illuminate\Notifications\Notification;
 class AdoptionNotifPetOwner extends Notification
 {
     use Queueable;
-
+    public $data;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -29,7 +29,7 @@ class AdoptionNotifPetOwner extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -55,7 +55,8 @@ class AdoptionNotifPetOwner extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            $this->data['request'],
+            $this->data['check']
         ];
     }
 }
