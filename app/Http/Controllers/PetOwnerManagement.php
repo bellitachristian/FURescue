@@ -1684,7 +1684,6 @@ class PetOwnerManagement extends Controller
          $remaining = $subtotal - 1 ;
          $petowner->TotalCredits = $remaining;
          $petowner->update();
-
      }
 
      function postupdate($id){

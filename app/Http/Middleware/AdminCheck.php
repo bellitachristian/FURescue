@@ -25,14 +25,17 @@ class AdminCheck
         
         if(is_null($admin)){
             $usertype = new Usertype;
+            $usertype->id = 1;
             $usertype ->usertype ="Admin";
             $usertype ->save();
 
             $usertype = new Usertype;
+            $usertype->id = 2;
             $usertype ->usertype ="Animal Shelter";
             $usertype ->save();
 
             $usertype = new Usertype;
+            $usertype->id = 3;
             $usertype ->usertype ="Pet Owner";
             $usertype ->save();
 
