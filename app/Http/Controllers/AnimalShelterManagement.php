@@ -1691,10 +1691,10 @@ class AnimalShelterManagement extends Controller
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
        
         $post = Animals::
-                   where('animals.post_status','posted')
-                -> where('animals.shelter_id', $shelter->id)
+                   where('post_status','posted')
+                -> where('shelter_id', $shelter->id)
                 -> groupBy('status')
-                ->get();
+                ->get();    
         $output = ' <main style ="margin-top:30px" class="grid-new1">';    
             foreach($post as $posts)
             {
