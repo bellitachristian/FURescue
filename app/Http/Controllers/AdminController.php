@@ -543,6 +543,32 @@ class AdminController extends Controller
         if($credits->TotalCredits == "0"){
           $credits->TotalCredits = $subscription->sub_credit;
           $credits->update();
+           //getting the expiry date && the subscription span
+           $span_type = $subscription->sub_span_type;
+           if($span_type == "day"){
+             $convertspan = (int)$subscription->sub_span;
+             $datestart = Carbon::parse($shelter->updated_at);  
+             $expiry = $datestart->addDays($convertspan);
+             //update
+             $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $shelter->update();
+           }
+           elseif($span_type == "month"){
+             $convertspan = (int)$subscription->sub_span;
+             $datestart = Carbon::parse($shelter->updated_at);  
+             $expiry = $datestart->addMonths($convertspan);
+             //update
+             $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $shelter->update();
+           }
+           elseif($span_type == "year"){
+             $convertspan = (int)$subscription->sub_span;
+             $datestart = Carbon::parse($shelter->updated_at);  
+             $expiry = $datestart->addYears($convertspan);
+             //update
+             $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $shelter->update();
+           }
         }
         else{
           if($subscription->sub_credit == "UNLI"){
@@ -643,6 +669,32 @@ class AdminController extends Controller
         if($credits->TotalCredits == "0"){
           $credits->TotalCredits = $subscription->sub_credit;
           $credits->update();
+              //getting the expiry date && the subscription span
+              $span_type = $subscription->sub_span_type;
+              if($span_type == "day"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($petowner->updated_at);  
+                $expiry = $datestart->addDays($convertspan);
+                //update
+                $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+                $petowner->update();
+              }
+              elseif($span_type == "month"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($petowner->updated_at);  
+                $expiry = $datestart->addMonths($convertspan);
+                //update
+                $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+                $petowner->update();
+              }
+              elseif($span_type == "year"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($petowner->updated_at);  
+                $expiry = $datestart->addYears($convertspan);
+                //updates
+                $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+                $petowner->update();
+              }
         }
         else{
           if($subscription->sub_credit == "UNLI"){
