@@ -35,15 +35,20 @@ Welcome Pet Owner!
             </div>  
         </div>
     </div>
-@if($checkdog == "Dog")
-@include('PetOwner.Pop.AddDog')
+@if($dog == "Dog")
 @include('PetOwner.SettingUp.DogBreed')
 @elseif($cat == "Cat")
-@include('PetOwner.Pop.AddCat')
 @include('PetOwner.SettingUp.CatBreed')
 @elseif($both == "Both")
-@include('PetOwner.Pop.AddBoth')
 @include('PetOwner.SettingUp.Bothbreed')
+@endif
+
+@if($cat == "Cat")
+@include('PetOwner.SettingUp.Modal.AddCat')
+@elseif($dog == "Dog")
+@include('PetOwner.SettingUp.Modal.AddDog')
+@elseif($both == "Both")
+@include('PetOwner.SettingUp.Modal.AddBoth')
 @endif
 @endsection
 @push('js')
