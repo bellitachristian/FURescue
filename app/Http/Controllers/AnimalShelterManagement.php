@@ -1718,7 +1718,7 @@ class AnimalShelterManagement extends Controller
                             <label>&nbsp &nbsp<i style="color:green; font-size:12px" class="fa fa-circle"></i> '.$posts->status.'</label><span><label style="float:right"> posted '.$posted->diffForHumans(). ' &nbsp 
                         </div>      
                         ';
-                        }
+                        }   
                         else{
                             $output .= '
                             <div class="dropdown">
