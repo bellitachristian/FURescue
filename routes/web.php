@@ -77,6 +77,9 @@ Route::post('/AnimalShelter/waitingsubscription/{id}',[AnimalShelterManagement::
 Route::post('/PetOwner/waitingsubscription/{id}',[PetOwnerManagement::class,'waitingsub'])->name('waiting.subscription.petowner');
 
 Route::post('/Admin/feedback/{sub_id}/{receiver_id}',[AdminController::class,'feedback']);
+Route::post('/Admin/feedbackadoption/{id}',[AdminController::class,'approveadoptionpayment'])->name('adoption.shelter.payment');
+Route::post('/Admin/rejectfeedbackadoption/{id}',[AdminController::class,'rejectadoptionpayment'])->name('adoption.shelter.payment.reject');
+
 
 Route::post('/Admin/feedbackdonationmessage/{id}',[AnimalShelterManagement::class,'feedbackmessage'])->name('view.feedback.message');
 Route::post('/Admin/feedbackdonationmessageerror/{id}',[AnimalShelterManagement::class,'feedbackmessageerror'])->name('view.feedback.message.error');
@@ -271,7 +274,7 @@ Route::get('/dashboard/gettype',[DropDownController::class,'gettype'])->name('ge
 Route::get('/allocate/vaccineselection',[DropDownController::class,'vaccinefetch'])->name('vaccine.fetch');
 Route::get('/allocate/dewormselection',[DropDownController::class,'dewormfetch'])->name('deworm.fetch');
 
-Route::group(['middleware'=>['AdopterNotifRequest']],function(){ 
+Route::group(['middleware'=>['AdopterNotifRequest','AdoptionPaymentReq']],function(){ 
     Route::get('/Reactivation/petowner/{petowner_id}',[AdminController::class,'reactivationpetowner'])->name('approve.reactivation.petowner');
     Route::get('/Admin/dashboard',[AdminController::class,'dashboard'])->name('admindash');
     Route::get('/Admin/viewpetowner',[AdminController::class,'ViewPetOwners'])->name('viewpetowner');
@@ -305,7 +308,10 @@ Route::group(['middleware'=>['AdopterNotifRequest']],function(){
     Route::get('/Admin/Approveproofpayment/{sub_id}/{user_id}',[AdminController::class,'approveproofpayment'])->name('approve.proof.payment');
     Route::get('/Admin/Rejectproofpayment/{sub_id}/{user_id}',[AdminController::class,'rejectproofpayment'])->name('reject.proof.payment');
     Route::get('/Admin/ViewReactivationAdopter',[AdminController::class,'ViewAdopterRequest'])->name('view.reactivation.adopter');
-    
+    Route::get('/Admin/AdoptionPayment',[AdminController::class,'adoptionpayment'])->name('adoption.payment');
+    Route::get('/Admin/enlargepayment',[AdminController::class,'enlargeadoption'])->name('enlarge.payment');
+
+
 });
 
 //markAllAsRead

@@ -680,7 +680,7 @@ class PetOwnerManagement extends Controller
         $petowner=PetOwner::where('id','=',session('LoggedUserPet'))->first();
         $data = array(
             'LoggedUserInfo' => PetOwner::where('id','=',session('LoggedUserPet'))->first(), 
-            'animal'=> DB::select("select *from animals  where petowner_id ='$petowner->id'"),
+            'animal'=> DB::select("select *from animals  where petowner_id ='$petowner->id'and status ='Available'"),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petownercateg' =>PetOwner::all()->where('id',session('LoggedUserPet')),
           );
@@ -1537,6 +1537,7 @@ class PetOwnerManagement extends Controller
         $post = Animals::
                    where('animals.post_status','posted')
                 -> where('animals.petowner_id', $petowner->id)
+                -> where('status','Available')
                 ->get();
         $output = ' <main style ="margin-top:30px" class="grid-new1">';    
             foreach($post as $posts)
@@ -1760,13 +1761,12 @@ class PetOwnerManagement extends Controller
             return view('PetOwner.Subscription.viewwaitsubscription',$data);
         }
         if($check == 0){
-            $user = Usertype::where('id',$petowner->usertype_id)->first();
             $data =array(
                 'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
                 'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
                 'subs'=>Subscription::find($id),
                 'count'=>SubscriptionTransac::where('sub_id',$id)->where('petowner_id',$petowner->id)->where('status','not approved')->count(),
-                'feedback'=>Feedback::where('receiver',$user->id)->get(),
+                'feedback'=>Feedback::where('owner_id',$petowner->id)->where('owner_type',3)->get(),
             );
             return view('PetOwner.Subscription.viewtransaction',$data);
         }

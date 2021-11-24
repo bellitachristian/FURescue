@@ -27,7 +27,7 @@ Subscription Transaction
                         <tr>
                             <td>{{$sub->id}}</td>
                             <td>{{$sub->subscription->sub_name}}</td>
-                            <td>{{$sub->subscription->sub_price}}</td>
+                            <td>PHP{{$sub->subscription->sub_price}}</td>
                             @if($sub->shelter)
                             <td>{{$sub->shelter->shelter_name}}</td>
                             @elseif($sub->petowner)

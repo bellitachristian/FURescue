@@ -13,6 +13,7 @@ use App\Models\UploadedPhotos;
 use App\Models\Feedback;
 use App\Models\Usertype;
 use App\Models\Adopter;
+use App\Models\AdoptionPayment;
 use App\Models\Adopter_Notif;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -33,6 +34,7 @@ use App\Notifications\RejectProofPetowner;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\File; 
+use Carbon\Carbon;
 
 
 class AdminController extends Controller
@@ -546,6 +548,32 @@ class AdminController extends Controller
           if($subscription->sub_credit == "UNLI"){
             $credits->TotalCredits = "UNLI";
             $credits->update();
+            //getting the expiry date && the subscription span
+            $span_type = $subscription->sub_span_type;
+            if($span_type == "day"){
+              $convertspan = (int)$subscription->sub_span;
+              $datestart = Carbon::parse($shelter->updated_at);  
+              $expiry = $datestart->addDays($convertspan);
+              //update
+              $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+              $shelter->update();
+            }
+            elseif($span_type == "month"){
+              $convertspan = (int)$subscription->sub_span;
+              $datestart = Carbon::parse($shelter->updated_at);  
+              $expiry = $datestart->addMonths($convertspan);
+              //update
+              $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+              $shelter->update();
+            }
+            elseif($span_type == "year"){
+              $convertspan = (int)$subscription->sub_span;
+              $datestart = Carbon::parse($shelter->updated_at);  
+              $expiry = $datestart->addYears($convertspan);
+              //update
+              $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+              $shelter->update();
+            }
           }
           else{
             $credit = (int)$subscription->sub_credit;
@@ -553,6 +581,32 @@ class AdminController extends Controller
             $total = $credit + $subtotal;
             $credits->TotalCredits = $total;
             $credits->update();
+
+            $span_type = $subscription->sub_span_type;
+            if($span_type == "day"){
+              $convertspan = (int)$subscription->sub_span;
+              $datestart = Carbon::parse($shelter->updated_at);  
+              $expiry = $datestart->addDays($convertspan);
+              //update
+              $shelter->expiry_date = Carbon::parse($expiry)->format('F d Y h:i:s A');  
+              $shelter->update();
+            }
+            elseif($span_type == "month"){
+              $convertspan = (int)$subscription->sub_span;
+              $datestart = Carbon::parse($shelter->updated_at);  
+              $expiry = $datestart->addMonths($convertspan);
+              //update
+              $shelter->expiry_date = Carbon::parse($expiry)->format('F d Y h:i:s A');  
+              $shelter->update();
+            }
+            elseif($span_type == "year"){
+              $convertspan = (int)$subscription->sub_span;
+              $datestart = Carbon::parse($shelter->updated_at);  
+              $expiry = $datestart->addYears($convertspan);
+              //update
+              $shelter->expiry_date = Carbon::parse($expiry)->format('F d Y h:i:s A');  
+              $shelter->update();
+            }
           }
         }
         return redirect()->back()->with('status','Approved Successfully');
@@ -584,7 +638,6 @@ class AdminController extends Controller
           'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
           'proof' => UploadedPhotos::where('sub_id',$sub_id)->where('petowner_id',$user_id)->get(),
         );
-
         //check if credits is 0
         $credits = PetOwner::find($user_id);
         if($credits->TotalCredits == "0"){
@@ -595,6 +648,32 @@ class AdminController extends Controller
           if($subscription->sub_credit == "UNLI"){
             $credits->TotalCredits = "UNLI";
             $credits->update();
+             //getting the expiry date && the subscription span
+           $span_type = $subscription->sub_span_type;
+           if($span_type == "day"){
+             $convertspan = (int)$subscription->sub_span;
+             $datestart = Carbon::parse($petowner->updated_at);  
+             $expiry = $datestart->addDays($convertspan);
+             //update
+             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $petowner->update();
+           }
+           elseif($span_type == "month"){
+             $convertspan = (int)$subscription->sub_span;
+             $datestart = Carbon::parse($petowner->updated_at);  
+             $expiry = $datestart->addMonths($convertspan);
+             //update
+             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $petowner->update();
+           }
+           elseif($span_type == "year"){
+             $convertspan = (int)$subscription->sub_span;
+             $datestart = Carbon::parse($petowner->updated_at);  
+             $expiry = $datestart->addYears($convertspan);
+             //updates
+             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $petowner->update();
+           }
           }
           else{
             $credit = (int)$subscription->sub_credit;
@@ -602,6 +681,32 @@ class AdminController extends Controller
             $total = $credit + $subtotal;
             $credits->TotalCredits = $total;
             $credits->update();
+             //getting the expiry date && the subscription span
+           $span_type = $subscription->sub_span_type;
+           if($span_type == "day"){
+             $convertspan = (int)$subscription->sub_span;
+             $datestart = Carbon::parse($petowner->updated_at);  
+             $expiry = $datestart->addDays($convertspan);
+             //update
+             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $petowner->update();
+           }
+           elseif($span_type == "month"){
+             $convertspan = (int)$subscription->sub_span;
+             $datestart = Carbon::parse($petowner->updated_at);  
+             $expiry = $datestart->addMonths($convertspan);
+             //update
+             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $petowner->update();
+           }
+           elseif($span_type == "year"){
+             $convertspan = (int)$subscription->sub_span;
+             $datestart = Carbon::parse($petowner->updated_at);  
+             $expiry = $datestart->addYears($convertspan);
+             //update
+             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $petowner->update();
+           }
           }
         }
         return redirect()->back()->with('status','Approved Successfully');
@@ -628,14 +733,14 @@ class AdminController extends Controller
       $checkshelter = AnimalShelter::where('shelter_name',$receiver)->count();
        if($checkshelter > 0){
         $bind = AnimalShelter::where('shelter_name',$receiver)->first();
-        $user = Usertype::where('id',$bind->usertype_id)->first();
+        $user = Usertype::where('id',2)->first();
         $admin = Usertype::where('usertype','Admin')->first();
         $feedback = new Feedback;
         $feedback->message = $req->feedback;
         $feedback->sender = $admin->id;
-        $feedback->receiver = $user->id;
+        $feedback->owner_id = $bind->id;
+        $feedback->owner_type = $user->id;
         $feedback->sub_id = $sub_id;
-        $feedback->status = 'not read';
         $feedback->save();
 
         $proofphoto = UploadedPhotos::where('sub_id',$sub_id)->where('shelter_id',$bind->id)->get();
@@ -661,14 +766,14 @@ class AdminController extends Controller
       }  
       if($checkshelter == 0){
         $bind = PetOwner::where('email',$receiver)->first();
-        $user = Usertype::where('id',$bind->usertype_id)->first();
+        $user = Usertype::where('id',3)->first();
         $admin = Usertype::where('usertype','Admin')->first();
         $feedback = new Feedback;
         $feedback->message = $req->feedback;
         $feedback->sender = $admin->id;
-        $feedback->receiver = $user->id;
+        $feedback->owner_id = $bind->id;
+        $feedback->owner_type = $user->id;
         $feedback->sub_id = $sub_id;
-        $feedback->status = 'not read';
         $feedback->save();
 
         $proofphoto = UploadedPhotos::where('sub_id',$sub_id)->where('petowner_id',$bind->id)->get();
@@ -691,5 +796,48 @@ class AdminController extends Controller
 
         return redirect()->back()->with('status','Feedback Sent Successfully');
       }
+    }
+    function adoptionpayment(){
+      $data = array(
+        'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+        'payments'=>AdoptionPayment::all()->where('status','pending'),
+      );  
+      return view('Admin.Transaction.Payment',$data);
+    }
+ 
+    function enlargeadoption($id){
+      $data =array(
+          'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+          'images'=>AdoptionPayment::find($id),
+      );
+      return view('Admin.Transaction.enlargepayment',$data);
+    }
+
+    function approveadoptionpayment(Request $req, $id){
+      $check = AdoptionPayment::find($id);
+      $check->status = 'approved';
+      $check->feedback = $req->feedback;
+      //notification
+      $notif = new Adopter_Notf;
+      $notif->notif_type = "Adoption Payment";
+      $notif->notf_from ="Admin";
+      $notif->notif_to = $check->owner_id;
+      $notif->message = " has approved your adoption payment";
+      $notif->update();
+      return redirect()->back()->with('status','Approval feedback sent successfully');
+    }
+
+    function rejectadoptionpayment(Request $req, $id){
+      $check = AdoptionPayment::find($id);
+      $check->status = 'not approved';
+      $check->feedback = $req->feedback;
+      //notification
+      $notif = new Adopter_Notf;
+      $notif->notif_type = "Adoption Payment";
+      $notif->notf_from ="Admin";
+      $notif->notif_to = $check->owner_id;
+      $notif->message = " has disapproved your adoption payment, please check thoroughly of the photo you had sent.";
+      $notif->update();
+      return redirect()->back()->with('status','Disapproval feedback sent successfully');
     }
 } 

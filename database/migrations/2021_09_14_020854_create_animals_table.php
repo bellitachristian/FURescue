@@ -25,7 +25,7 @@ class CreateAnimalsTable extends Migration
             $table->string('history');
             $table->string('color');
             $table->string('info');
-            $table->string('pet_stage');
+            $table->string('pet_stage')->nullable();
             $table->string('status');
             $table->string('fee')->nullable();
             $table->string('post_status')->default('not posted');

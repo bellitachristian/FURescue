@@ -18,11 +18,11 @@ class CreateFeedbackTable extends Migration
             $table->text('message')->nullable();
             $table->unsignedBigInteger('sender')->nullable();
             $table->foreign('sender')->references('id')->on('usertype')->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('receiver')->nullable();
-            $table->foreign('receiver')->references('id')->on('usertype')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('owner_id')->nullable();
+            $table->unsignedBigInteger('owner_type')->nullable();
+            $table->foreign('owner_type')->references('id')->on('usertype')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('sub_id')->nullable();
-            $table->foreign('sub_id')->references('id')->on('subscription')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('status');            
+            $table->foreign('sub_id')->references('id')->on('subscription')->onUpdate('cascade')->onDelete('cascade');      
             $table->timestamps();
         });
     }

@@ -14,6 +14,7 @@ use App\Models\Adoption;
 use App\Models\AdoptionPolicy;
 use App\Models\AllocateVaccine;
 use App\Models\AdoptionFee;
+use App\Models\AdoptionPayment;
 use App\Models\Adopter_Notif;
 use App\Models\Admin;
 use App\Models\Type;
@@ -86,7 +87,7 @@ class AnimalShelterManagement extends Controller
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data = array(
             'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(), 
-            'animal'=> DB::select("select *from animals  where shelter_id ='$shelter->id'"),
+            'animal'=> DB::select("select *from animals  where shelter_id ='$shelter->id' and status ='Available'"),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'sheltercateg' =>AnimalShelter::all()->where('id',session('LoggedUser')),
           );
@@ -262,7 +263,7 @@ class AnimalShelterManagement extends Controller
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();       
         $data = array(
           'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-          'animal'=> DB::select("select *from animals where shelter_id='$shelter->id'"),
+          'animal'=> DB::select("select *from animals where shelter_id='$shelter->id' and status ='Available'"),
           'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first()
         );  
         return view('AnimalShelter.Vaccine & Deworm.Allocate',$data);
@@ -1692,6 +1693,7 @@ class AnimalShelterManagement extends Controller
         $post = Animals::
                    where('animals.post_status','posted')
                 -> where('animals.shelter_id', $shelter->id)
+                -> where('status','Available')
                 ->get();
         $output = ' <main style ="margin-top:30px" class="grid-new1">';    
             foreach($post as $posts)
@@ -1821,13 +1823,12 @@ class AnimalShelterManagement extends Controller
             return view('AnimalShelter.Subscription.viewwaitsubscription',$data);
         }
         if($check == 0){
-            $user = Usertype::where('id',$shelter->usertype_id)->first();
             $data =array(
                 'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
                 'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
                 'subs'=>Subscription::find($id),
                 'count'=>SubscriptionTransac::where('sub_id',$id)->where('shelter_id',$shelter->id)->where('status','not approved')->count(),
-                'feedback'=>Feedback::where('receiver',$user->id)->get(),
+                'feedback'=>Feedback::where('owner_id',$shelter->id)->where('owner_type',2)->get(),
             );
             return view('AnimalShelter.Subscription.viewtransaction',$data);
         }
