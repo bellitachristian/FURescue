@@ -817,8 +817,9 @@ class AdminController extends Controller
       $check = AdoptionPayment::find($id);
       $check->status = 'approved';
       $check->feedback = $req->feedback;
+      $check->update();
       //notification
-      $notif = new Adopter_Notf;
+      $notif = new Adopter_Notif;
       $notif->notif_type = "Adoption Payment";
       $notif->notf_from ="Admin";
       $notif->notif_to = $check->owner_id;
@@ -831,6 +832,7 @@ class AdminController extends Controller
       $check = AdoptionPayment::find($id);
       $check->status = 'not approved';
       $check->feedback = $req->feedback;
+      $check->update();
       //notification
       $notif = new Adopter_Notf;
       $notif->notif_type = "Adoption Payment";
