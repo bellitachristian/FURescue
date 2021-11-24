@@ -33,7 +33,7 @@ class AdoptionPaymentReq
                 foreach($adoptions as $adopt){
                     $notif = array();
                     $notif = [
-                        'request' => $adopt->fname.' '.$adopt->lname.' sent an adoption payment to'. $adopt->owner_id,
+                        'request' => $adopt->fname.' '.$adopt->lname.' sent an adoption payment to '.$adopt->owner_id,
                         'check' =>' check it now'
                     ];
                    Admin::find(1)->notify( new AdoptionPaymentNotif($notif));

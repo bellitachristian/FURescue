@@ -309,7 +309,7 @@ Route::group(['middleware'=>['AdopterNotifRequest','AdoptionPaymentReq']],functi
     Route::get('/Admin/Rejectproofpayment/{sub_id}/{user_id}',[AdminController::class,'rejectproofpayment'])->name('reject.proof.payment');
     Route::get('/Admin/ViewReactivationAdopter',[AdminController::class,'ViewAdopterRequest'])->name('view.reactivation.adopter');
     Route::get('/Admin/AdoptionPayment',[AdminController::class,'adoptionpayment'])->name('adoption.payment');
-    Route::get('/Admin/enlargepayment',[AdminController::class,'enlargeadoption'])->name('enlarge.payment');
+    Route::get('/Admin/enlargepayment/{id}',[AdminController::class,'enlargeadoption'])->name('enlarge.payment');
 
 
 });

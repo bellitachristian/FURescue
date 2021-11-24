@@ -29,7 +29,9 @@ Adoption Payment
                     @foreach($payments as $payment)
                         <tr>
                             <td>{{$payment->id}}</td>
-                            <td></td>
+                            <td>
+                            <img src="{{asset('phpcode/payment/'.$payment->proof)}}" width="70px" height="70px" alt="photo">
+                            </td>
                             <td>{{$payment->animals->name}}</td>
                             <td>{{$payment->adopter->fname}} {{$payment->adopter->lname}}</td>
                             <td>{{$payment->adopter->email}}</td>
