@@ -34,7 +34,7 @@ Animal Shelter Dashboard
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                     <h5 style="font-weight:bold">Adoptable Pets</h5></div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{$countpets}}</div>
                 </div>
                 <div class="col-auto">
                     <i class="fas fa-paw fa-2x text-gray-300"></i>
@@ -54,7 +54,7 @@ Animal Shelter Dashboard
                     </div>
                     <div class="row no-gutters align-items-center">
                         <div class="col-auto">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                         </div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@ Animal Shelter Dashboard
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                     <h5 style="font-weight:bold">Revenue</h5></div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                 </div>
                 <div class="col-auto">
                     <i class="fas fa-money-bill-wave-alt fa-2x text-gray-300"></i>

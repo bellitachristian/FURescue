@@ -284,7 +284,7 @@ class AnimalShelterManagement extends Controller
             'notsub'=> $subscription,
             'notapprove'=> Subscription::whereNotIn('id', $subscription)->pluck('id')->toArray(),
             'countcredits'=>$shelter->TotalCredits,
-            'countpets',
+            'countpets'=>Animals::where('status','Available')->where('post_status','posted')->count(),
             'countrequest',
             'totalrevenue'
         );
