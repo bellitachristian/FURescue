@@ -893,5 +893,5 @@ class AdminController extends Controller
       $notif->message = " has disapproved your adoption payment, please check thoroughly of the photo you had sent.";
       $notif->update();
       return redirect()->back()->with('status','Disapproval feedback sent successfully');
-    }
+    } 
 } 
