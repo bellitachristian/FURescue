@@ -40,7 +40,7 @@ Adoption Payment
                             @elseif($payment->owner_type == "3")
                             <td>{{$payment->owner_id}}</td>
                             @endif
-                            <td>{{$payment->fee}}</td>
+                            <td>PHP{{$payment->fee}}</td>
                             <td>{{$payment->message}}</td>
                             @if($payment->owner_type == "2")
                             <td>
