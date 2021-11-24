@@ -54,10 +54,11 @@ Adoption Requests
         </div>
     </div>
 </div>
-@foreach($adopter as $adopters)
+@if(empty($adopters))
+@else
 @include('PetOwner.Adoption.Modal.message')
 @include('PetOwner.Adoption.Modal.error')
-@endforeach
+@endif
 @endsection
 @push('js')
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
