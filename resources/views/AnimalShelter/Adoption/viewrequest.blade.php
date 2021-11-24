@@ -54,8 +54,11 @@ Adoption Requests
         </div>
     </div>  
 </div>
+@if(empty($adopters))
+@else
 @include('AnimalShelter.Adoption.Modal.message')
 @include('AnimalShelter.Adoption.Modal.error')
+@endif
 @endsection
 @push('js')
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
