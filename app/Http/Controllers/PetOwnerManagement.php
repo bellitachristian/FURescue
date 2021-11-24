@@ -52,7 +52,7 @@ class PetOwnerManagement extends Controller
             'notsub'=> $subscription,
             'notapprove'=> Subscription::whereNotIn('id', $subscription)->pluck('id')->toArray(),
             'countcredits'=>$petowner->TotalCredits,
-            'countpets',
+            'countpets'=>Animals::where('petowner_id',$petowner->id)->where('status','Available')->where('post_status','posted')->count(),
             'countrequest',
             'totalrevenue'
         );
@@ -1837,7 +1837,6 @@ class PetOwnerManagement extends Controller
 
         $animal = Animals::find($message->animal_id);
         $animal->status = 'Adopted';
-        $animal->post_status = 'Adopted';
         $animal->update();
 
         return redirect()->back()->with('status','Feedback has been sent successfully');
