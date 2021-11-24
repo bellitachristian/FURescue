@@ -49,7 +49,7 @@ Pet Management
                     <td>{{ $anim->history}}</td>
                     <td>{{ $anim->info}}</td>
                     <td style="text-align:center">
-                        <a href=""><i class="fas fa-edit" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                        <a href="{{route('view.edit.animal',$anim->id)}}"><i class="fas fa-edit" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                         <a href="#" id="delete"><i class="fas fa-trash-alt" data-toggle="modal" data-target="#DeleteAnimal" title="Delete">&#xE872;</i></a>
                     </td>
                 </tr> 

@@ -173,7 +173,7 @@ Route::group(['middleware'=>['Authcheck']],function(){
         Route::get('/AllocationVaccine/{id}/{vac_id}',[AnimalShelterManagement::class,'ViewAllocationVaccine'])->name('vaccine.allocate');
         Route::get('/AllocationDeworm/{id}/{dew_id}',[AnimalShelterManagement::class,'ViewAllocationDeworm']);
         Route::get('/AllocateDeworm/{id}',[AnimalShelterManagement::class,'Allocate_Deworm_Animal']); 
-        Route::get('/ViewEditAnimal/{id}',[AnimalShelterManagement::class,'ViewEditAnimal'])->name('ViewEditAnimal'); 
+        Route::get('/ViewEditAnimal/{id}',[AnimalShelterManagement::class,'ViewEditAnimal'])->name('view.edit.animal'); 
         Route::get('/Vaccinehistory',[AnimalShelterManagement::class,'ViewVaccineHistory']);
         Route::get('/Dewormhistory',[AnimalShelterManagement::class,'ViewDewormHistory']);
         Route::get('/Profile/Edit/{shelter_id}',[AnimalShelterManagement::class,'ViewEditProfile']);
