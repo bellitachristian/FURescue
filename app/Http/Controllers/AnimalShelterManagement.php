@@ -1693,7 +1693,6 @@ class AnimalShelterManagement extends Controller
         $post = Animals::
                    where('animals.post_status','posted')
                 -> where('animals.shelter_id', $shelter->id)
-                -> where('status','Available')
                 ->get();
         $output = ' <main style ="margin-top:30px" class="grid-new1">';    
             foreach($post as $posts)
@@ -1940,7 +1939,6 @@ class AnimalShelterManagement extends Controller
 
         $animal = Animals::find($message->animal_id);
         $animal->status = 'Adopted';
-        $animal->post_status = 'Adopted';
         $animal->update();
 
         return redirect()->back()->with('status','Feedback has been sent successfully');
