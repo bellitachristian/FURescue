@@ -1693,7 +1693,6 @@ class AnimalShelterManagement extends Controller
         $post = Animals::
                    where('post_status','posted')
                 -> where('shelter_id', $shelter->id)
-                -> groupBy('status')
                 ->get();    
         $output = ' <main style ="margin-top:30px" class="grid-new1">';    
             foreach($post as $posts)
