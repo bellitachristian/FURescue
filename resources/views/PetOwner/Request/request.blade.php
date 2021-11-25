@@ -7,6 +7,40 @@ Request Adoption
 @endpush
 @section("content")
 <div class="row">
+    <div class="col-md">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        <h5 style="font-weight:bold">Request rejected</h5></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-paw fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        <h5 style="font-weight:bold">Request Approved</h5></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-paw fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="col-sm">
         <div class="card shadow mb-4">
             <div class="card-header">
@@ -19,11 +53,7 @@ Request Adoption
                             <th>ID</th>
                             <th>Profile</th>
                             <th>Name</th>
-                            <th>Email</th>
-                            <th>Address</th>
-                            <th>Contact Person</th>
-                            <th>Contact Number</th>
-                            <th>View</th>
+                            <th>View Shelter Details</th>
                             <th style="text-align:center">Action</th>
                         </tr>
                     </thead>
@@ -35,10 +65,6 @@ Request Adoption
                                 <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->profile)}}" width="70px" height="70px" alt="">
                             </td>
                             <td>{{$shelter->shelter_name}}</td>
-                            <td>{{$shelter->email}}</td>
-                            <td>{{$shelter->address}}</td>
-                            <td>{{$shelter->founder_name}}</td>
-                            <td>{{$shelter->contact}}</td>
                             <td>
                                 <a href="{{route('shelter.details',$shelter->id)}}"><i class="far fa-eye"></i></a>
                             </td>
