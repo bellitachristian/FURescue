@@ -12,6 +12,7 @@ use App\Models\Adoption;
 use App\Models\Animals;
 use App\Models\Adopter_Notif;
 use App\Models\AdoptionPolicy;
+use App\Models\AdoptionPayment;
 use App\Models\AdoptionFee;
 use App\Models\PetBook;
 use App\Models\Deworm;
