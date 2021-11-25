@@ -9,6 +9,9 @@ Shelter Details
 <div class="row">
     <div class="col-sm">  
         <div class="card shadow mb-4">
+            <div class="card-header">
+                <a href="{{route('view.request.adoption')}}"><button type="button" class="btn btn-secondary">Back</button></a>
+            </div>
             <div class="card-body">
                     <div class="card-group-row" style="display:flex">
                             <div class="col-sm-4"> 
