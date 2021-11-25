@@ -1961,7 +1961,7 @@ class AnimalShelterManagement extends Controller
             $adoption->paymentflag = "3";
             $adoption->update();
 
-            $checking = AdoptionPayment::where('animal_id',$check->id)->where('owner_type',2)->where('owner_id',$shelter->id)->first();
+            $checking = AdoptionPayment::where('animal_id',$check->id)->where('owner_type',2)->where('owner_id',$shelter->shelter_name)->first();
 
             $receipt = new Receipt;
             $receipt->animal_id = $check->id;
