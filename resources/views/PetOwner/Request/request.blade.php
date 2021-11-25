@@ -12,7 +12,7 @@ Request Adoption
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                         <h5 style="font-weight:bold">Request rejected</h5></div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
@@ -28,7 +28,7 @@ Request Adoption
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                         <h5 style="font-weight:bold">Request Approved</h5></div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
