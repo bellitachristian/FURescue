@@ -90,11 +90,11 @@ Shelter Details
                             </div>       
                         </div>   
                     </div>        
+                </div>
+                <div class="card-footer">
+                    <a href=""><button type="button" class="btn btn-danger">Request</button></a>
                 </div>                                  
             </div>  
-            <div class="card-footer">
-                <a href=""><button type="button" class="btn btn-danger">Request</button></a>
-            </div>
         </div>
     </div>     
 </div>
