@@ -43,7 +43,7 @@ Request Adoption
                                 <a href=""><i class="far fa-eye"></i></a>
                             </td>
                             <td>
-                                <a href=""><button type="button" class="btn btn-danger">Request</button></a>       
+                                <a href=""><button type="button" class="btn btn-success">Request</button></a>       
                             </td>
                         </tr> 
                     @endforeach
