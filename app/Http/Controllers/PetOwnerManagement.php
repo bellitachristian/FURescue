@@ -1862,7 +1862,7 @@ class PetOwnerManagement extends Controller
             $payment->animal_id = $check->id;
             $payment->adopter_id = $message->adopter_id;
             $payment->owner_id = $message->owner_id;
-            $payment->owner_type = "2";
+            $payment->owner_type = 3;
             $payment->paymentMethod = "None";
             $payment->fee = "FREE";
             $payment->status ="approved";
@@ -1875,7 +1875,7 @@ class PetOwnerManagement extends Controller
             $receipt->animal_id = $check->id;
             $receipt->adopter_id = $message->adopter_id;
             $receipt->owner_id = $message->owner_id;
-            $receipt->usertype_id = 2;
+            $receipt->usertype_id = 3;
             $receipt->adoption_id = $id;
             $receipt->payment_id = $checking->id;
             $receipt->status = "pending";
