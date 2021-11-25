@@ -887,7 +887,7 @@ class AdminController extends Controller
       $check->feedback = $req->feedback;
       $check->update();
       //get animal and adoption
-      $adoption = Adoption::where('animal_id',$check->animal_id)->where('status','approved')->first();
+      $adoption = Adoption::where('id',$check->adoption_id)->first();
       $adoption->paymentflag = "0";
       $adoption->update();
       //notification
@@ -895,7 +895,7 @@ class AdminController extends Controller
       $notif->notif_type = "Adoption Payment";
       $notif->notf_from ="Admin";
       $notif->notif_to = $check->owner_id;
-      $notif->message = " has disapproved your adoption payment, please check thoroughly of the photo you had sent.";
+      $notif->message = " has disapproved your adoption payment, please check thoroughly on the photo you had sent.";
       $notif->update();
       return redirect()->back()->with('status','Disapproval feedback sent successfully');
     } 

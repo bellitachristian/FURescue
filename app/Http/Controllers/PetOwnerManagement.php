@@ -17,6 +17,7 @@ use App\Models\PetBook;
 use App\Models\Deworm;
 use App\Models\Vaccine;
 use App\Models\Post;
+use App\Models\AnimalShelter;
 use App\Models\AllocateVaccine;
 use App\Models\AllocateDeworming;
 use App\Models\DewormHistory;
@@ -1868,5 +1869,13 @@ class PetOwnerManagement extends Controller
         return view('PetOwner.Adoption.viewid',$data);
     }
 
-
+    function request_adoption(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'shelters'=>AnimalShelter::where('is_welcome_shelter',"1")->where('is_verified_activation',"0")->get(),
+        );
+        return view('PetOwner.Request.request',$data);
+    }
 }
