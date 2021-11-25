@@ -69,7 +69,7 @@ Request Adoption
                                 <a href="{{route('shelter.details',$shelter->id)}}"><i class="far fa-eye"></i></a>
                             </td>
                             <td>
-                                <a href=""><button type="button" class="btn btn-success">Request</button></a>       
+                                <a href="{{route('select',$shelter->id)}}"><button type="button" class="btn btn-success">Request</button></a>       
                             </td>
                         </tr> 
                     @endforeach

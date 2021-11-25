@@ -1937,4 +1937,14 @@ class PetOwnerManagement extends Controller
         );
         return view('PetOwner.Request.detailshelter',$data);
     }
+    function selection($id){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'shelter'=>AnimalShelter::find($id),
+            'animals'=>Animals::where('petowner_id',$petowner->id)->where('post_status','posted')->where('status','Available')->get(),
+        );
+        return view('PetOwner.Request.animal',$data);
+    }
 }
