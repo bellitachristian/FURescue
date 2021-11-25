@@ -75,12 +75,13 @@ Adoption Payment
 </div>
 @if(empty($payment))
 @else
-@if($payment->owner_type == "2")
-@include('Admin.Transaction.Modal.feedbackadoption')
-@include('Admin.Transaction.Modal.feedbackadoptionerror')
-@elseif($payment->owner_type == "3")
-@include('Admin.Transaction.Modal.feedbackpetowner')
-@include('Admin.Transaction.Modal.feedbackerrorpet')
+    @if($payment->owner_type == "2")
+    @include('Admin.Transaction.Modal.feedbackadoption')
+    @include('Admin.Transaction.Modal.feedbackadoptionerror')
+    @elseif($payment->owner_type == "3")
+    @include('Admin.Transaction.Modal.feedbackpetowner')
+    @include('Admin.Transaction.Modal.feedbackerrorpet')
+    @endif
 @endif
 @endsection
 @push('js')
