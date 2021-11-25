@@ -360,17 +360,24 @@ class UploadController extends Controller
 
     function shelterphoto($id){
         $shelter =AnimalShelter::find($id);
-        $multiple = DB::select("select *from uploaded_photos  where shelter_id ='$shelter->id' and type='profile'");   
-        $output = '<div class="row">';
-        foreach($multiple as $image)
-        {
-         $output .= '
-         <div class="col-md-3" style="margin-bottom:16px;" align="center">
-                   <img src="'.asset('uploads/animal-shelter/uploaded-photos/'.$image->imagename).'" class="img-thumbnail" width="200" height="150" style="height:200px;" />
-               </div>
-         ';
+        $check =UploadedPhotos::where('shelter_id',$shelter->id)->where('type','profile')->count();
+        if($check > 0){
+            $multiple = DB::select("select *from uploaded_photos  where shelter_id ='$shelter->id' and type='profile'");   
+            $output = '<div class="row">';
+            foreach($multiple as $image)
+            {
+             $output .= '
+             <div class="col-md-3" style="margin-bottom:16px;" align="center">
+                       <img src="'.asset('uploads/animal-shelter/uploaded-photos/'.$image->imagename).'" class="img-thumbnail" width="200" height="150" style="height:200px;" />
+                   </div>
+             ';
+            }
+            $output .= '</div>';
+            echo $output;
+        }else{
+            $output = ' <p class="alert alert-danger">No photos</p>';
+            echo $output;
         }
-        $output .= '</div>';
-        echo $output;
+        
     }
 }

@@ -32,9 +32,7 @@ Shelter Details
                             </div>  
                             <div class="col-sm">
                                 <h5 style="color:black; margin-top:5%; margin-bottom:4%">Pets Catered</h5>
-                                <div>sdfsdf
-                                    sdfdffsdfs
-                                    sdfs
+                                <div>
                                 </div>
 
                             </div>
@@ -69,7 +67,7 @@ function load_images()
     url:"{{route('shelter.photo',$shelter->id)}}",
     success:function(data)
     {
-      $('#uploaded_image').html(data);
+        $('#uploaded_image').html(data);    
     }
   })
 }
