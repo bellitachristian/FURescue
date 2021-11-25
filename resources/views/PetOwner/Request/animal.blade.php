@@ -7,11 +7,37 @@ Animals to be Adopted
 @endpush
 @section("content")
 <div class="row">
+    <div class="col-sm-4">
+        <div class="card shadow mb-4">
+            <!-- Animal header -->                            
+            <!-- Animal Content -->
+            <div class="card-body">
+                <div class="form-group-row" style="display:flex">
+                    <div class="col-sm" style="height:500px">
+                        <div style="text-align:center; height:50%">
+                            <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->profile)}}" width="70px" height="70px" alt="">
+                        </div>
+                        <label style="font-height:1">Name of Shelter</label>                        
+                        <input style="margin-bottom:1%" type="text"  value="{{$shelter->shelter_name}}" readOnly class="form-control form-control-sm">
+                        <label >Address</label>
+                        <input style="margin-bottom:5%" type="text" value="{{$shelter->address}}" readOnly class="form-control form-control-sm">
+                        <h5 style="color:black; margin-top:5%; margin-bottom:4%">Shelter Information</h5>
+                        <label >Animal Shelter Contact Person</label>
+                        <input style="margin-bottom:1%" type="text" value ="{{$shelter->founder_name}}" readOnly  class="form-control form-control-sm">
+                        <label >Contact Number</label>
+                        <input style="margin-bottom:1%" type="text" value ="{{$shelter->contact}}" readOnly  class="form-control form-control-sm">
+                        <label >Email</label>
+                        <input style="margin-bottom:5%" type="email" value ="{{$shelter->email}}"readOnly class="form-control form-control-sm">  
+                    </div>    
+                </div>                                                
+            </div>
+        </div>
+    </div>
     <div class="col-sm">
         <div class="card shadow mb-4">
             <div class="card-header">
                 <form id="myForm" action="POST">
-                    <a href="#"><button type="button" class="btn btn-success">Submit Selected</button></a>
+                    <a href="#"><button type="button" class="btn btn-success">Submit All</button></a>
                 </form>
             </div>
             <div class="card-body">
@@ -39,7 +65,7 @@ Animals to be Adopted
                             <td>{{$animal->age}}</td>
                             <td>{{$animal->pet_stage}}</td>
                             <td>
-                                <a href=""><button type="button" class="btn btn-success">Select</button></a>       
+                                <a href="{{route('select.animal',$animal->id)}}"><button type="button" class="btn btn-success">Select</button></a>       
                             </td>
                         </tr> 
                     @endforeach
@@ -48,6 +74,9 @@ Animals to be Adopted
                     @endif
                     </tbody>
                 </table>
+            </div>
+            <div class="card-footer">
+                <a href="{{route('view.request.adoption')}}"><button type="button" class="btn btn-secondary">Back</button></a>
             </div>
         </div>
     </div>
