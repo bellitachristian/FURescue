@@ -11,7 +11,9 @@ Animals to be Adopted
         <div class="card shadow mb-4">
             <div class="card-header">
                 <form id="myForm" action="POST">
-                <a href="#"><button type="button" class="btn btn-danger">Submit Selected</button></a>
+                <button style="border: none; background: transparent; font-size: 14px;" id="MyTableCheckAllButton">
+                <i class="far fa-square"></i>  
+                </button>                
                 </form>
             </div>
             <div class="card-body">
@@ -55,31 +57,47 @@ Animals to be Adopted
 @push('js')
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
-          var table = $('#datatable').DataTable({
-              ajax:'data.json',
-              columnDefs:[
-                  {
-                      targets:0,
-                      checkboxes:{
-                          selectRow:true
-                      }
-                  }
-              ],
-              select:{
-                  style:'multi'
-              },
-              order:[[1,'asc']]
-          });
-          $("#myForm").on('submit', function(e){
-              var form = this;
-              var rowsel = table.column(0).checkboxes.selected();
-              $.each(rowsel, function(index,rowId)){
-                  $(form).append(   
-                    $('input').attr('type','hidden').attr('name','id[]').val(rowId)
-                  )
-             });
-        });
+       $(document).ready(function() {
+    let myTable = $('#datatable').DataTable({
+        columnDefs: [{
+            orderable: false,
+            className: 'select-checkbox',
+            targets: 0,
+        }],
+        select: {
+            style: 'os', // 'single', 'multi', 'os', 'multi+shift'
+            selector: 'td:first-child',
+        },
+        order: [
+            [1, 'asc'],
+        ],
     });
+
+       myTable.on('select deselect draw', function () {
+        var all = myTable.rows({ search: 'applied' }).count(); // get total count of rows
+        var selectedRows = myTable.rows({ selected: true, search: 'applied' }).count(); // get total count of selected rows
+
+        if (selectedRows < all) {
+            $('#datatable i').attr('class', 'fa fa-square-o');
+        } else {
+            $('#MyTableCheckAllButton i').attr('class', 'fa fa-check-square-o');
+        }
+
+    });
+
+    $('#MyTableCheckAllButton').click(function () {
+        var all = myTable.rows({ search: 'applied' }).count(); // get total count of rows
+        var selectedRows = myTable.rows({ selected: true, search: 'applied' }).count(); // get total count of selected rows
+
+
+        if (selectedRows < all) {
+            //Added search applied in case user wants the search items will be selected
+            myTable.rows({ search: 'applied' }).deselect();
+            myTable.rows({ search: 'applied' }).select();
+        } else {
+            myTable.rows({ search: 'applied' }).deselect();
+        }
+    });
+});
     </script>
 @endpush
