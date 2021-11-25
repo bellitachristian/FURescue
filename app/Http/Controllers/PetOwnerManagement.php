@@ -14,6 +14,7 @@ use App\Models\Adopter_Notif;
 use App\Models\AdoptionPolicy;
 use App\Models\AdoptionPayment;
 use App\Models\AdoptionFee;
+use App\Models\Receipt;
 use App\Models\PetBook;
 use App\Models\Deworm;
 use App\Models\Vaccine;
