@@ -1,6 +1,6 @@
 @extends("mainpetowner")
 @section("header")
-Animals to be Adopted
+Request to {{$shelter->shelter_name}}
 @endsection
 @push("css")
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css">   
