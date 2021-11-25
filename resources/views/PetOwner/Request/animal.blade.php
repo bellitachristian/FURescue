@@ -63,7 +63,7 @@ Request to {{$shelter->shelter_name}}
                             <td>{{$animal->age}}</td>
                             <td>{{$animal->pet_stage}}</td>
                             <td>
-                                <a href=""><button type="button" class="btn btn-success">Select</button></a>       
+                                <a href="#" ><button data-toggle="modal" data-target="#message" type="button" class="btn btn-success">Select</button></a>
                             </td>
                         </tr> 
                     @endforeach
@@ -79,6 +79,10 @@ Request to {{$shelter->shelter_name}}
         </div>
     </div>
 </div>
+@if(empty($animal))
+@else
+@include('PetOwner.Request.Modal.message')
+@endif
 @endsection
 @push('js')
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>

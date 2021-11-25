@@ -8,6 +8,22 @@ Request Adoption
 @section("content")
 <div class="row">
     <div class="col-md">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        <h5 style="font-weight:bold">Request Sent</h5></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-paw fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md">
         <div class="card border-left-danger shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -53,7 +69,7 @@ Request Adoption
                             <th>ID</th>
                             <th>Profile</th>
                             <th>Name</th>
-                            <th>View Shelter Details</th>
+                            <th style="text-align:center">View Shelter Details</th>
                             <th style="text-align:center">Action</th>
                         </tr>
                     </thead>
@@ -65,7 +81,7 @@ Request Adoption
                                 <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->profile)}}" width="70px" height="70px" alt="">
                             </td>
                             <td>{{$shelter->shelter_name}}</td>
-                            <td>
+                            <td style="text-align:center">
                                 <a href="{{route('shelter.details',$shelter->id)}}"><i class="far fa-eye"></i></a>
                             </td>
                             <td>
@@ -74,7 +90,7 @@ Request Adoption
                         </tr> 
                     @endforeach
                     @if(empty($shelter))   
-                        <h6 class="alert alert-danger">No data exist for adoption policy! Add Adoption Policy +</h6>
+                        <h6 class="alert alert-danger">No shelters available for request of adoption</h6>
                     @endif
                     </tbody>
                 </table>

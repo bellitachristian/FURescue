@@ -66,6 +66,8 @@ Route::post('/AllocationDeworm/petowner/{id}/{dew_id}',[PetOwnerManagement::clas
 Route::post('/postpet/uploadphoto/petowner/{id}',[UploadController::class,'uploadphotopost_petowner'])->name('post.uploadphoto.petowner');
 Route::post('/postpet/postsave/petowner/{id}',[PetOwnerManagement::class,'post_pet_save'])->name('post.pet.save.petowner');
 Route::post('/postpet/postupdate/petowner/{id}',[PetOwnerManagement::class,'post_pet_update'])->name('post.pet.update.petowner');
+Route::post('/postpet/postupdate/petowner/{id}',[PetOwnerManagement::class,'post_pet_update'])->name('post.pet.update.petowner');
+Route::post('/PetOwner/request/{id}/{shelter_id}',[PetOwnerManagement::class,'selectanimal'])->name('select.request.animal');
 
 Route::post('/Admin/savesubscription',[AdminController::class,'savesubscription'])->name('save.subscription');
 Route::post('/Admin/updatesubscription/{id}',[AdminController::class,'updatesubscription'])->name('update.subscription');
@@ -184,6 +186,7 @@ Route::group(['middleware'=>['Authcheck']],function(){
         Route::get('/Dashboard/request/{shelter_id}',[AnimalShelterManagement::class,'RequestActivation'])->name('request.reactivation');
         Route::get('/AnimalShelter/viewdonation',[AnimalShelterManagement::class,'viewdonation'])->name('view.donation');
         Route::get('/AnimalShelter/Adoption',[AnimalShelterManagement::class,'adoptionrequests'])->name('adoption.request.shelter');
+        Route::get('/AnimalShelter/Requests',[AnimalShelterManagement::class,'petownerrequest'])->name('petowner.request');
 
         Route::get('/customselection/get_fee',[DropDownController::class,'get_fee'])->name('get.fee');
         Route::get('/customselection/load_adoption',[DropDownController::class,'load_adoption'])->name('load.adoption');

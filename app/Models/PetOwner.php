@@ -35,4 +35,8 @@ class PetOwner extends Model
     {
         return $this->hasMany(Subscription::class,'petowner_id');
     }
+    public function uploadedphoto()
+    {
+        return $this->hasMany(UploadedPhotos::class,'petowner_id');
+    }
 }

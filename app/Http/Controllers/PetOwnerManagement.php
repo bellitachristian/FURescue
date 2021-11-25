@@ -18,6 +18,7 @@ use App\Models\Receipt;
 use App\Models\PetBook;
 use App\Models\Deworm;
 use App\Models\Vaccine;
+use App\Models\Requestadoption;
 use App\Models\Post;
 use App\Models\AnimalShelter;
 use App\Models\AllocateVaccine;
@@ -34,6 +35,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\RequestReactivationPetOwner;
+use App\Notifications\RequestAdoptionPet;
 use App\Notifications\Checkproofpetowner;
 use Illuminate\Support\Facades\Notification;
 use Carbon\Carbon;
@@ -1917,11 +1919,13 @@ class PetOwnerManagement extends Controller
     }
 
     function request_adoption(){
+
         $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'shelters'=>AnimalShelter::where('is_welcome_shelter',"1")->where('is_verified_activation',"0")->get(),
+            'shelters'=>AnimalShelter::where('is_welcome_shelter',"1")->where('is_verified_activation',"0")->where('request','not requested')->get(),
+            'countsentreq'=>AnimalShelter::where('is_welcome_shelter',"1")->where('is_verified_activation',"0")->where('request','not requested')->get(),
         );
         return view('PetOwner.Request.request',$data);
     }
@@ -1943,8 +1947,34 @@ class PetOwnerManagement extends Controller
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'shelter'=>AnimalShelter::find($id),
-            'animals'=>Animals::where('petowner_id',$petowner->id)->where('post_status','posted')->where('status','Available')->get(),
+            'animals'=>Animals::where('petowner_id',$petowner->id)->where('post_status','posted')->where('status','Available')->where('request','not requested')->get(),
         );
         return view('PetOwner.Request.animal',$data);
+    }
+
+    function selectanimal(Request $req,$id, $shelter_id){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $adoptreq = new Requestadoption;
+        $adoptreq->petowner_id = $petowner->id;
+        $adoptreq->shelter_id = $shelter_id;
+        $adoptreq->animal_id = $id;
+        $adoptreq->message = $req->message;
+        $adoptreq->save();
+
+        $animal = Animals::find($id);
+        $animal->request='requested';
+        $animal->update();
+        $shelter = AnimalShelter::find($shelter_id);
+        $shelter->request='requested';
+        $shelter->update();
+
+        $notif = array();
+            $notif = [
+                'petowner_name' => $petowner->fname.' '. $petowner->lname.'(Pet Owner) has sent a request for adoption',
+                'request' => ' please check it now',
+            ];
+            AnimalShelter::find($shelter_id)->notify(new RequestAdoptionPet($notif));
+            
+        return redirect()->back()->with('status','Request for adoption has been sent successfully');
     }
 }

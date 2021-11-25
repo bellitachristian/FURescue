@@ -19,6 +19,7 @@ use App\Models\AdoptionPayment;
 use App\Models\Adopter_Notif;
 use App\Models\Admin;
 use App\Models\Type;
+use App\Models\Requestadoption;
 use App\Models\Feedback;
 use App\Models\Post;
 use App\Models\Breed;
@@ -2013,5 +2014,13 @@ class AnimalShelterManagement extends Controller
         return view('AnimalShelter.Donation.reviewdonation',$data);
     }
 
+    function petownerrequest(){
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'requests'=>Requestadoption::where('status','pending')->get(),
+        );
+        return view('AnimalShelter.Request.viewrequest',$data);
+    }
 }
 
