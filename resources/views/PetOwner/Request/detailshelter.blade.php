@@ -11,9 +11,9 @@ Shelter Details
         <div class="card shadow mb-4">
             <div class="card-body">
                     <div class="card-group-row" style="display:flex">
-                            <div class="col-sm"> 
+                            <div class="col-sm-4"> 
                                 <div style="text-align:center">
-                                    <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->profile)}}" style="border-radius:50%;"height="100" width="130" alt="">
+                                    <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->profile)}}" style="border-radius:50%;"height="150" width="170" alt="">
                                 </div>       
                                 <label style="font-height:1">Name of Shelter</label>                        
                                 <input style="margin-bottom:1%" type="text"  value="{{$shelter->shelter_name}}" readOnly class="form-control form-control-sm">
