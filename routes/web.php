@@ -253,6 +253,9 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
         Route::get('/PetOwner/enlarge/{id}',[PetOwnerManagement::class,'enlarge'])->name('enlarge.petowner');
         Route::get('/PetOwner/request',[PetOwnerManagement::class,'request_adoption'])->name('view.request.adoption');
 
+        Route::get('/PetOwner/getshelterdetails/{id}',[PetOwnerManagement::class,'shelter_detail'])->name('shelter.details');
+        Route::get('/PetOwner/photos/{id}',[UploadController::class,'shelterphoto'])->name('shelter.photo');
+
     });
     Route::get('/auto/logout/petowner/{petowner_id}',[LoginController::class,'autologoutpetowner']);
     Route::get('/tempdashboard/petowner',[PetOwnerManagement::class,'PetOwner_tempdashboard']);

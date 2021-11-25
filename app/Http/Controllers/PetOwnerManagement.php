@@ -1878,4 +1878,13 @@ class PetOwnerManagement extends Controller
         );
         return view('PetOwner.Request.request',$data);
     }
+    function shelter_detail($id){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'shelters'=>AnimalShelter::find($id),
+        );
+        return view('PetOwner.Request.detailshelter',$data);
+    }
 }

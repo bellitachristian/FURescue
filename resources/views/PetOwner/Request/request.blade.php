@@ -40,7 +40,7 @@ Request Adoption
                             <td>{{$shelter->founder_name}}</td>
                             <td>{{$shelter->contact}}</td>
                             <td>
-                                <a href=""><i class="far fa-eye"></i></a>
+                                <a href="{{route('shelter.details',$shelter->id)}}"><i class="far fa-eye"></i></a>
                             </td>
                             <td>
                                 <a href=""><button type="button" class="btn btn-success">Request</button></a>       
