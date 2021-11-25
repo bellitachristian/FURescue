@@ -1883,7 +1883,7 @@ class PetOwnerManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'shelters'=>AnimalShelter::find($id),
+            'shelter'=>AnimalShelter::find($id),
         );
         return view('PetOwner.Request.detailshelter',$data);
     }
