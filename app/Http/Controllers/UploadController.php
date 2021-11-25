@@ -368,7 +368,7 @@ class UploadController extends Controller
             {
              $output .= '
              <div class="col-md-3" style="margin-bottom:16px;" align="center">
-                       <img src="'.asset('uploads/animal-shelter/uploaded-photos/'.$image->imagename).' width="200" height="150" style="height:200px;" />
+                       <img src="'.asset('uploads/animal-shelter/uploaded-photos/'.$image->imagename).'"  width="200" height="150" style="height:200px;" />
                    </div>
              ';
             }
