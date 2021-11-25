@@ -7,6 +7,7 @@ Shelter Details
 @endpush
 @section("content")
 <div class="row">
+    <div style="display:flex">
     <div class="col-sm">  
         <div class="card shadow mb-4">
             <div class="card-header">
@@ -94,6 +95,7 @@ Shelter Details
             </div>
         </div>
     </div>        
+    </div>
 </div>
     
 <div class="row">
