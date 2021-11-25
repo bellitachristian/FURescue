@@ -1940,7 +1940,7 @@ class AnimalShelterManagement extends Controller
         $message->update();
 
         $animal = Animals::find($message->animal_id);
-        $animal->status = 'Adopted';
+        $animal->status = 'Ongoing';
         $animal->update();
 
         $check = Animals::find($message->animal_id);
