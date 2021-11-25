@@ -7,13 +7,13 @@ Animals to be Adopted
 @endpush
 @section("content")
 <div class="row">
-    <div class="col-sm">
+    <div class="col-sm-4">
         <div class="card shadow mb-4">
             <div class="card-body">
                 <div class="form-group-row" style="display:flex">
                     <div class="col-sm">
                         <div style="text-align:center">
-                            <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->profile)}}" width="70px" height="70px" alt="">
+                            <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->profile)}}" width="170px" height="150px" alt="">
                         </div>
                         <label style="font-height:1">Name of Shelter</label>                        
                         <input style="margin-bottom:1%" type="text"  value="{{$shelter->shelter_name}}" readOnly class="form-control form-control-sm">
