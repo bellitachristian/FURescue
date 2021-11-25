@@ -73,7 +73,6 @@ Adoption Payment
         </div>
     </div>
 </div>
-@foreach($payments as $payment)
 @if($payment->owner_type == "2")  
 @include('Admin.Transaction.Modal.feedbackadoption')
 @include('Admin.Transaction.Modal.feedbackadoptionerror')
@@ -81,7 +80,6 @@ Adoption Payment
 @include('Admin.Transaction.Modal.feedbackpetowner')
 @include('Admin.Transaction.Modal.feedbackerrorpet')
 @endif
-@endforeach
 @endsection
 @push('js')
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
