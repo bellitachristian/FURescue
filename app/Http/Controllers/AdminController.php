@@ -885,6 +885,10 @@ class AdminController extends Controller
       $check->status = 'not approved';
       $check->feedback = $req->feedback;
       $check->update();
+      //get animal and adoption
+      $adoption = Adoption::where('animal_id',$check->animal_id)->where('status','approved')->first();
+      $adoption->paymentflag = "0";
+      $adoption->update();
       //notification
       $notif = new Adopter_Notif;
       $notif->notif_type = "Adoption Payment";
