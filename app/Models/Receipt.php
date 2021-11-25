@@ -9,5 +9,4 @@ class Receipt extends Model
 {
     use HasFactory;
     protected $table='receipt';
-    
 }

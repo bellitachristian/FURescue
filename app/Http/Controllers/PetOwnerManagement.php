@@ -1854,6 +1854,31 @@ class PetOwnerManagement extends Controller
         $animal->status = 'Ongoing';
         $animal->update();
 
+        $check = Animals::find($message->animal_id);
+        if($check->fee = "FREE"){
+            $payment = new AdoptionPayment;
+            $payment->animal_id = $check->id;
+            $payment->adopter_id = $message->adopter_id;
+            $payment->owner_id = $message->owner_id;
+            $payment->owner_type = "2";
+            $payment->paymentMethod = "None";
+            $payment->fee = "FREE";
+            $payment->adoption_id = $message->id;
+            $payment->save();
+
+            $checking = AdoptionPayment::where('animal_id',$check->id)->where('owner_type',2)->where('owner_id',$petowner->id)->first();
+
+            $receipt = new Receipt;
+            $receipt->animal_id = $check->id;
+            $receipt->adopter_id = $message->adopter_id;
+            $receipt->owner_id = $message->owner_id;
+            $receipt->usertype_id = 2;
+            $receipt->adoption_id = $id;
+            $receipt->payment_id = $checking->id;
+            $receipt->status = "pending";
+            $receipt->save();
+        }
+
         return redirect()->back()->with('status','Feedback has been sent successfully');
     }
 
