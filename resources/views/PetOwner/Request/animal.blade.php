@@ -7,13 +7,11 @@ Animals to be Adopted
 @endpush
 @section("content")
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm">
         <div class="card shadow mb-4">
-            <!-- Animal header -->                            
-            <!-- Animal Content -->
             <div class="card-body">
                 <div class="form-group-row" style="display:flex">
-                    <div class="col-sm" style="height:500px">
+                    <div class="col-sm">
                         <div style="text-align:center; height:50%">
                             <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->profile)}}" width="70px" height="70px" alt="">
                         </div>
