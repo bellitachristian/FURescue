@@ -1951,6 +1951,7 @@ class AnimalShelterManagement extends Controller
             $payment->owner_type = 2;
             $payment->paymentMethod = "None";
             $payment->fee = "FREE";
+            $payment->status = "approved";
             $payment->adoption_id = $message->id;
             $payment->save();
 
