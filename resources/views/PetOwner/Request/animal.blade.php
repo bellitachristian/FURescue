@@ -65,7 +65,7 @@ Animals to be Adopted
                             <td>{{$animal->age}}</td>
                             <td>{{$animal->pet_stage}}</td>
                             <td>
-                                <a href="{{route('select.animal',$animal->id)}}"><button type="button" class="btn btn-success">Select</button></a>       
+                                <a href=""><button type="button" class="btn btn-success">Select</button></a>       
                             </td>
                         </tr> 
                     @endforeach
