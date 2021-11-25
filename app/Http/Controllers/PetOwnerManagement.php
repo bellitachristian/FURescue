@@ -1869,6 +1869,11 @@ class PetOwnerManagement extends Controller
             $payment->adoption_id = $message->id;
             $payment->save();
 
+            //get animal and adoption
+            $adoption = Adoption::find($id);
+            $adoption->paymentflag = "3";
+            $adoption->update();
+
             $checking = AdoptionPayment::where('animal_id',$check->id)->where('owner_type',3)->where('owner_id',$petowner->id)->first();
 
             $receipt = new Receipt;
