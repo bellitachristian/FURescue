@@ -32,6 +32,7 @@ Animals to be Adopted
                         <tr>
                             <td>{{$animal->id}}</td>
                             <td>
+                                <img src="{{asset('uploads/animals/'.$animal->animal_image)}}" width="70px" height="70px" alt="">
                             </td>
                             <td>{{$animal->name}}</td>
                             <td>{{$animal->breed}}</td>
