@@ -8,7 +8,7 @@ Request Adoption
 @section("content")
 <div class="row">
     <div class="col-md">
-        <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card border-left-danger shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -24,7 +24,7 @@ Request Adoption
         </div>
     </div>
     <div class="col-md">
-        <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card border-left-success shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -40,7 +40,7 @@ Request Adoption
         </div>
     </div>
 </div>
-<div class="row">
+<div style="margin-top:2%" class="row">
     <div class="col-sm">
         <div class="card shadow mb-4">
             <div class="card-header">
