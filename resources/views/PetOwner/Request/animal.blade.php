@@ -3,7 +3,7 @@
 Animals to be Adopted
 @endsection
 @push("css")
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css">   
+<link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css" rel="stylesheet" />
 @endpush
 @section("content")
 <div class="row">
@@ -57,70 +57,42 @@ Animals to be Adopted
 </div>
 @endsection
 @push('js')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"></script>
     <script type="text/javascript">
      $(document).ready(function (){
-   var table = $('#example').DataTable({
-      'ajax': {
-         'url': '/lab/articles/jquery-datatables-how-to-add-a-checkbox-column/ids-arrays.txt'
-      },
-      'columnDefs': [{
-         'targets': 0,
-         'searchable': false,
-         'orderable': false,
-         'className': 'dt-body-center',
-         'render': function (data, type, full, meta){
-             return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
-         }
-      }],
-      'order': [[1, 'asc']]
-   });
+        var table = $('#example').DataTable({
+            'ajax': '/lab/jquery-datatables-checkboxes/ids-arrays.txt',
+            'columnDefs': [
+                {
+                    'targets': 0,
+                    'checkboxes': {
+                    'selectRow': true
+                    }
+                }
+            ],
+            'select': {
+                'style': 'multi'
+            },
+            'order': [[1, 'asc']]
+        });
 
-   // Handle click on "Select all" control
-   $('#example-select-all').on('click', function(){
-      // Get all rows with search applied
-      var rows = table.rows({ 'search': 'applied' }).nodes();
-      // Check/uncheck checkboxes for all rows in the table
-      $('input[type="checkbox"]', rows).prop('checked', this.checked);
-   });
+        // Handle form submission event
+        $('#frm-example').on('submit', function(e){
+            var form = this;
 
-   // Handle click on checkbox to set state of "Select all" control
-   $('#example tbody').on('change', 'input[type="checkbox"]', function(){
-      // If checkbox is not checked
-      if(!this.checked){
-         var el = $('#example-select-all').get(0);
-         // If "Select all" control is checked and has 'indeterminate' property
-         if(el && el.checked && ('indeterminate' in el)){
-            // Set visual state of "Select all" control
-            // as 'indeterminate'
-            el.indeterminate = true;
-         }
-      }
-   });
+            var rows_selected = table.column(0).checkboxes.selected();
 
-   // Handle form submission event
-   $('#frm-example').on('submit', function(e){
-      var form = this;
-
-      // Iterate over all checkboxes in the table
-      table.$('input[type="checkbox"]').each(function(){
-         // If checkbox doesn't exist in DOM
-         if(!$.contains(document, this)){
-            // If checkbox is checked
-            if(this.checked){
-               // Create a hidden element
-               $(form).append(
-                  $('<input>')
-                     .attr('type', 'hidden')
-                     .attr('name', this.name)
-                     .val(this.value)
-               );
-            }
-         }
-      });
-   });
-
-});
+            // Iterate over all selected checkboxes
+            $.each(rows_selected, function(index, rowId){
+                // Create a hidden element
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'id[]')
+                        .val(rowId)
+                );
+            });
+        });
+    });
     </script>
 @endpush
