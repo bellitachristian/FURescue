@@ -73,7 +73,9 @@ Adoption Payment
         </div>
     </div>
 </div>
-@if($payment->owner_type == "2")  
+@if(empty($payment))
+@else
+@if($payment->owner_type == "2")
 @include('Admin.Transaction.Modal.feedbackadoption')
 @include('Admin.Transaction.Modal.feedbackadoptionerror')
 @elseif($payment->owner_type == "3")
