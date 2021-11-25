@@ -6,8 +6,8 @@ Shelter Details
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css" integrity="sha512-jU/7UFiaW5UBGODEopEqnbIAHOI8fO6T99m7Tsmqs2gkdujByJfkCbbfPSN4Wlqlb9TGnsuC0YgUgWkRBK7B9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section("content")
-<div style="display:flex">
 <div class="row">
+    <div style="display:flex">
     <div class="col-sm">  
         <div class="card shadow mb-4">
             <div class="card-header">
@@ -110,7 +110,7 @@ Shelter Details
         </div>
     </div>
 </div> 
-</div>
+
 @endsection
 @push('js')
 <script type ="text/javascript">
