@@ -1538,7 +1538,6 @@ class PetOwnerManagement extends Controller
         $post = Animals::
                    where('animals.post_status','posted')
                 -> where('animals.petowner_id', $petowner->id)
-                -> where('status','Available')
                 ->get();
         $output = ' <main style ="margin-top:30px" class="grid-new1">';    
             foreach($post as $posts)
@@ -1565,6 +1564,21 @@ class PetOwnerManagement extends Controller
                         </div>      
                         ';
                         }
+                        elseif($posts->status == "Ongoing"){
+                            $output .= '
+                            <div class="dropdown">
+                            <a type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i> </label></span>
+                            </a> 
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                ';
+                                    $deletepost = Post::where('animal_id',$posts->id)->first(); $output .= '
+                                    <a style="text-decoration:none" href="#"><button style="text-decoration:none" class="dropdown-item" value="'.$deletepost->id.'" id="remove">Remove</button></a>
+                                </div> 
+                            <label>&nbsp &nbsp<i style="color:orange; font-size:12px" class="fa fa-circle"></i> '.$posts->status.'</label><span><label style="float:right"> posted '.$posted->diffForHumans(). ' &nbsp 
+                        </div> 
+                        ';
+                        }
                         else{
                             $output .= '
                             <div class="dropdown">
@@ -1576,7 +1590,7 @@ class PetOwnerManagement extends Controller
                                     $deletepost = Post::where('animal_id',$posts->id)->first(); $output .= '
                                     <a style="text-decoration:none" href="#"><button style="text-decoration:none" class="dropdown-item" value="'.$deletepost->id.'" id="remove">Remove</button></a>
                                 </div> 
-                            <label>&nbsp &nbsp<i style="color:red; font-size:12px" class="fa fa-circle"></i> '.$posts->status.'</label><span><label style="float:right"> posted '.$posted->diffForHumans(). ' &nbsp 
+                            <label>&nbsp &nbsp<i style="color:yellow; font-size:12px" class="fa fa-circle"></i> '.$posts->status.'</label><span><label style="float:right"> posted '.$posted->diffForHumans(). ' &nbsp 
                         </div> 
                         ';
                         }
@@ -1837,7 +1851,7 @@ class PetOwnerManagement extends Controller
         $message->update();
 
         $animal = Animals::find($message->animal_id);
-        $animal->status = 'Adopted';
+        $animal->status = 'Ongoing';
         $animal->update();
 
         return redirect()->back()->with('status','Feedback has been sent successfully');
@@ -1884,6 +1898,9 @@ class PetOwnerManagement extends Controller
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'shelter'=>AnimalShelter::find($id),
+            'countpets'=>Animals::where('shelter_id',$id)->where('status','Available')->count(),
+            'countprocess'=>Animals::where('shelter_id',$id)->where('status','Ongoing')->count(),
+            'countadopted'=>Animals::where('shelter_id',$id)->where('status','Adopted')->count(),
         );
         return view('PetOwner.Request.detailshelter',$data);
     }
