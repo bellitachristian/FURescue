@@ -95,9 +95,7 @@ Shelter Details
             </div>
         </div>
     </div>        
-    </div>
 </div>
-    
 <div class="row">
     <div class="col-sm">
         <div class="card shadow mb-4">
@@ -112,6 +110,7 @@ Shelter Details
         </div>
     </div>
 </div> 
+</div>
 @endsection
 @push('js')
 <script type ="text/javascript">
