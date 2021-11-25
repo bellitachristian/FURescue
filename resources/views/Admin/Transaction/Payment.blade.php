@@ -58,7 +58,7 @@ Adoption Payment
                             </td>
                             @elseif($payment->owner_type == "3")
                             <td  style="text-align:center">
-                                <a href=""><button style="margin-bottom:3px" data-toggle="modal" data-target="#adoption" class="btn btn-success" type="button">Approve</button></a>
+                                <a href="#"><button style="margin-bottom:3px" data-toggle="modal" data-target="#adoption" class="btn btn-success" type="button">Approve</button></a>
                                 <a href="#"><button style="width:90px" data-toggle="modal" data-target="#adoption1"  class="btn btn-danger" type="button">Reject</button></a>
                             </td>
                             @endif
