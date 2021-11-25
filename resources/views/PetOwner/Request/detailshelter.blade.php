@@ -35,8 +35,7 @@ Shelter Details
                 </div>                                  
             </div>  
         </div>
-    </div>             
-</div>
+    </div>     
     <div class="col-sm">
         <div class="card">
             <div class="card-header">
@@ -94,7 +93,9 @@ Shelter Details
                 </div>
             </div>
         </div>
-    </div>
+    </div>        
+</div>
+    
 <div class="row">
     <div class="col-sm">
         <div class="card shadow mb-4">
