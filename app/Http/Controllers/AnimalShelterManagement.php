@@ -1944,15 +1944,15 @@ class AnimalShelterManagement extends Controller
         $animal->update();
 
         $check = Animals::find($message->animal_id);
-        if($check->fee = "FREE"){
+        if($check->fee == "FREE"){
             $payment = new AdoptionPayment;
             $payment->animal_id = $check->id;
             $payment->adopter_id = $message->adopter_id;
-            $payment->owner_id = $message->owner_id;
+            $payment->owner_id = $shelter->shelter_name;
             $payment->owner_type = 2;
             $payment->paymentMethod = "None";
             $payment->fee = "FREE";
-            $payment->status = "approved";
+            $payment->status = "FREE";
             $payment->adoption_id = $message->id;
             $payment->save();
 

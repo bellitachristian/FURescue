@@ -1859,15 +1859,15 @@ class PetOwnerManagement extends Controller
         $animal->update();
 
         $check = Animals::find($message->animal_id);
-        if($check->fee = "FREE"){
+        if($check->fee == "FREE"){
             $payment = new AdoptionPayment;
             $payment->animal_id = $check->id;
             $payment->adopter_id = $message->adopter_id;
-            $payment->owner_id = $message->owner_id;
+            $payment->owner_id = $petowner->fname.' '.$petowner->lname;
             $payment->owner_type = 3;
             $payment->paymentMethod = "None";
             $payment->fee = "FREE";
-            $payment->status ="approved";
+            $payment->status ="FREE";
             $payment->adoption_id = $message->id;
             $payment->save();
 
@@ -1919,13 +1919,13 @@ class PetOwnerManagement extends Controller
     }
 
     function request_adoption(){
-
         $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $check = Requestadoption::where('petowner_id',$petowner->id)->where('status','pending')->pluck('shelter_id')->toArray();
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'shelters'=>AnimalShelter::where('is_welcome_shelter',"1")->where('is_verified_activation',"0")->where('request','not requested')->get(),
-            'countsentreq'=>AnimalShelter::where('is_welcome_shelter',"1")->where('is_verified_activation',"0")->where('request','not requested')->get(),
+            'shelters'=>AnimalShelter::whereNotIn('id',$check)->get(),
+            'countsentreq'=>'',
         );
         return view('PetOwner.Request.request',$data);
     }
@@ -1943,11 +1943,12 @@ class PetOwnerManagement extends Controller
     }
     function selection($id){
         $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $check = Requestadoption::where('petowner_id',$petowner->id)->where('status','pending')->pluck('animal_id')->toArray();
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'shelter'=>AnimalShelter::find($id),
-            'animals'=>Animals::where('petowner_id',$petowner->id)->where('post_status','posted')->where('status','Available')->where('request','not requested')->get(),
+            'animals'=>Animals::whereNotIn('id',$check)->get(),
         );
         return view('PetOwner.Request.animal',$data);
     }
@@ -1958,16 +1959,10 @@ class PetOwnerManagement extends Controller
         $adoptreq->petowner_id = $petowner->id;
         $adoptreq->shelter_id = $shelter_id;
         $adoptreq->animal_id = $id;
+        $adoptreq->status ="pending";
         $adoptreq->message = $req->message;
         $adoptreq->save();
-
-        $animal = Animals::find($id);
-        $animal->request='requested';
-        $animal->update();
-        $shelter = AnimalShelter::find($shelter_id);
-        $shelter->request='requested';
-        $shelter->update();
-
+    
         $notif = array();
             $notif = [
                 'petowner_name' => $petowner->fname.' '. $petowner->lname.'(Pet Owner) has sent a request for adoption',
