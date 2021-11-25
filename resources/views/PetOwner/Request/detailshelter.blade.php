@@ -42,11 +42,11 @@ Shelter Details
                                                     <div class="row no-gutters align-items-center">
                                                         <div class="col mr-2">
                                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                            <h5 style="font-weight:bold"></h5>Total Available Pets for Adoption</div>
+                                                            <h5 style="font-weight:bold">Total Available Pets for Adoption</h5></div>
                                                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{$countpets}}</div>
                                                         </div>
                                                         <div class="col-auto">
-                                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                            <i class="fas fa-paw fa-2x text-gray-300"></i>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -58,11 +58,11 @@ Shelter Details
                                                     <div class="row no-gutters align-items-center">
                                                         <div class="col mr-2">
                                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                            <h5 style="font-weight:bold"></h5>Total Pets in Process for Adoption</div>
+                                                            <h5 style="font-weight:bold">Total Pets in Process for Adoption</h5></div>
                                                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{$countprocess}}</div>
                                                         </div>
                                                         <div class="col-auto">
-                                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                            <i class="fas fa-paw fa-2x text-gray-300"></i>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -79,7 +79,7 @@ Shelter Details
                                                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{$countadopted}}</div>
                                                         </div>
                                                         <div class="col-auto">
-                                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                                            <i class="fas fa-paw fa-2x text-gray-300"></i>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -92,6 +92,9 @@ Shelter Details
                     </div>        
                 </div>                                  
             </div>  
+            <div class="card-footer">
+                <a href=""><button type="button" class="btn btn-danger">Request</button></a>
+            </div>
         </div>
     </div>     
 </div>
