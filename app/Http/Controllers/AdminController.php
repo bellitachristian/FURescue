@@ -13,6 +13,7 @@ use App\Models\UploadedPhotos;
 use App\Models\Feedback;
 use App\Models\Usertype;
 use App\Models\Adopter;
+use App\Models\Adoption;
 use App\Models\AdoptionPayment;
 use App\Models\Adopter_Notif;
 use Illuminate\Support\Facades\DB;
