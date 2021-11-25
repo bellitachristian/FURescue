@@ -31,6 +31,9 @@ Request Adoption
                     @foreach($shelters as $shelter)
                         <tr>
                             <td>{{$shelter->id}}</td>
+                            <td>
+                                <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->profile)}}" width="70px" height="70px" alt="">
+                            </td>
                             <td>{{$shelter->shelter_name}}</td>
                             <td>{{$shelter->email}}</td>
                             <td>{{$shelter->address}}</td>
