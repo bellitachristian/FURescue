@@ -26,6 +26,7 @@ use App\Models\AllocateDeworming;
 use App\Models\DewormHistory;
 use App\Models\VaccineHistory;
 use App\Models\AnimalMasterList;
+use App\Models\AdoptionSlip;
 use App\Models\UploadedPhotos;
 use App\Models\Feedback;
 use App\Models\Subscription;
@@ -37,6 +38,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Notifications\RequestReactivationPetOwner;
 use App\Notifications\RequestAdoptionPet;
 use App\Notifications\Checkproofpetowner;
+use App\Notifications\CancelReq;
 use Illuminate\Support\Facades\Notification;
 use Carbon\Carbon;
 
@@ -1925,12 +1927,13 @@ class PetOwnerManagement extends Controller
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'shelters'=>AnimalShelter::whereNotIn('id',$check)->get(),
-            'countsentreq'=>'',
+            'countsentreq'=> Requestadoption::where('petowner_id',$petowner->id)->where('status','pending')->count(),
+            'countrejectreq'=> Requestadoption::where('petowner_id',$petowner->id)->where('status','rejected')->count(),
+            'countapprovereq'=> Requestadoption::where('petowner_id',$petowner->id)->where('status','approved')->count(),
         );
         return view('PetOwner.Request.request',$data);
     }
     function shelter_detail($id){
-        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
@@ -1943,12 +1946,12 @@ class PetOwnerManagement extends Controller
     }
     function selection($id){
         $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
-        $check = Requestadoption::where('petowner_id',$petowner->id)->where('status','pending')->pluck('animal_id')->toArray();
+        $check = Requestadoption::where('petowner_id',$petowner->id)->where('status','pending')->where('process','none')->pluck('animal_id')->toArray();
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'shelter'=>AnimalShelter::find($id),
-            'animals'=>Animals::whereNotIn('id',$check)->get(),
+            'animals'=>Animals::whereNotIn('id',$check)->where('post_status','posted')->where('status','Available')->get(),
         );
         return view('PetOwner.Request.animal',$data);
     }
@@ -1960,6 +1963,7 @@ class PetOwnerManagement extends Controller
         $adoptreq->shelter_id = $shelter_id;
         $adoptreq->animal_id = $id;
         $adoptreq->status ="pending";
+        $adoptreq->process ="none";
         $adoptreq->message = $req->message;
         $adoptreq->save();
     
@@ -1972,4 +1976,88 @@ class PetOwnerManagement extends Controller
             
         return redirect()->back()->with('status','Request for adoption has been sent successfully');
     }
+
+    function sent(){
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'shelters'=>Requestadoption::where('status','pending')->get(),
+        );
+        return view('PetOwner.Request.Process.sent',$data);
+    }
+
+    function complete(){
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'shelters'=>Requestadoption::where('status','approved')->where('process','complete')->get(),
+        );
+        return view('PetOwner.Request.Process.complete',$data);
+    }
+
+    function reject(){
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'shelters'=>Requestadoption::where('status','rejected')->get(),
+        );
+        return view('PetOwner.Request.Process.reject',$data);
+    }
+    function approve(){
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'shelters'=>Requestadoption::where('status','approved')->get(),
+        );
+        return view('PetOwner.Request.Process.approve',$data);
+    }
+    function review($id){
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'shelter'=>AnimalShelter::find($id),
+            'countpets'=>Animals::where('shelter_id',$id)->where('status','Available')->count(),
+            'countprocess'=>Animals::where('shelter_id',$id)->where('status','Ongoing')->count(),
+            'countadopted'=>Animals::where('shelter_id',$id)->where('status','Adopted')->count(),
+        );
+        return view('PetOwner.Request.Process.review',$data);
+    }
+
+    function cancel($id,$shelter_id){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+
+        $cancelreq = Requestadoption::find($id);
+        $cancelreq->delete();
+        
+        $notif = array();
+            $notif = [
+                'petowner_name' => $petowner->fname.' '. $petowner->lname.'(Pet Owner) has cancelled his request for adoption',
+                'cancel' => ' have a great day ahead',
+            ];
+            AnimalShelter::find($shelter_id)->notify(new CancelReq($notif));
+            
+        return redirect()->back()->with('status','Request for adoption has been cancelled successfully');
+    }
+
+    function remove($id){
+        $cancelreq = Requestadoption::find($id);
+        $cancelreq->delete();
+        
+        return redirect()->back()->with('status','Removed successfully');
+    }
+
+    function generateslip($id){
+        $adoption = Requestadoption::find($id);
+        $animal = Animals::find($adoption->id);
+        $generate = new AdoptionSlip;
+        $generate->slip_number ="";
+        $generate->date_approve = $adoption->animal->updated_at;
+        $generate->animal_id = $adoption->animal_id;
+        $generate->shelter_id = $adoption->shelter_id;
+        $generate->petowner_id = $adoption->petowner_id;
+        $generate->save();
+         
+        return redirect()->back()->with('status','Generated successfully');
+    }
+
 }

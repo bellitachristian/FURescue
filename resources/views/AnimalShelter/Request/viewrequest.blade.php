@@ -25,19 +25,19 @@ Pet Owner's Request for Adoption
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($requests as $request)
+                    @foreach($response as $resp)
                         <tr>
-                            <td>{{$request->id}}</td>
+                            <td>{{$resp->id}}</td>
                             <td>
-                                <img src="{{asset('uploads/pet-owner/profile/'.$request->petowner->profile)}}" width="70px" height="70px" alt="photo">
+                                <img src="{{asset('uploads/pet-owner/profile/'.$resp->petowner->profile)}}" width="70px" height="70px" alt="photo">
                             </td>
-                            <td>{{$request->petowner->fname}} {{$request->petowner->lname}}</td>
+                            <td>{{$resp->petowner->fname}} {{$resp->petowner->lname}}</td>
                             <td>
-                                <img src="{{asset('uploads/animals/'.$request->animal->animal_image)}}" width="70px" height="70px" alt="photo">
+                                <img src="{{asset('uploads/animals/'.$resp->animal->animal_image)}}" width="70px" height="70px" alt="photo">
                             </td>
-                            <td>{{$request->animal->name}}</td>
+                            <td>{{$resp->animal->name}}</td>
                             <td style="text-align:center">
-                                 <a href="{{}}"><i class="far fa-eye"></i></a>
+                                 <a href="{{url('/View/PetOwner/request/'.$resp->animal->id. '/'.$resp->petowner->id)}}"><i class="far fa-eye"></i></a>
                             </td>
                             <td style="text-align:center">
                                 <a href="#" ><button data-toggle="modal" data-target="#message" type="button" class="btn btn-success">Approve</button></a>
@@ -45,7 +45,7 @@ Pet Owner's Request for Adoption
                             </td>
                         </tr> 
                     @endforeach
-                    @if(empty($request))   
+                    @if(empty($resp))   
                         <h6 class="alert alert-danger">No adoption request found!</h6>
                     @endif
                     </tbody>
@@ -54,7 +54,7 @@ Pet Owner's Request for Adoption
         </div>
     </div>
 </div>
-@if(empty($request))
+@if(empty($resp))
 @else
 @include('AnimalShelter.Request.Modal.message')
 @include('AnimalShelter.Request.Modal.error')

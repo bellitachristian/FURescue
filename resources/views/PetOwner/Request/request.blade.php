@@ -13,8 +13,8 @@ Request Adoption
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        <h5 style="font-weight:bold">Request Sent</h5></div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                        <a href="{{route('sent')}}"><h5 style="font-weight:bold">Request Sent</h5></div></a> 
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{$countsentreq}}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-paw fa-2x text-gray-300"></i>
@@ -29,8 +29,24 @@ Request Adoption
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                        <h5 style="font-weight:bold">Request rejected</h5></div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                        <a href="{{route('rejected')}}" style="color:#df4759"><h5 style="font-weight:bold">Request rejected</h5></div></a>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{$countrejectreq}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-paw fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        <a href="{{route('approved')}}" style="color: #ffc107"><h5 style="font-weight:bold">Request Approved</h5></div></a>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{$countapprovereq}}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-paw fa-2x text-gray-300"></i>
@@ -45,8 +61,8 @@ Request Adoption
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                        <h5 style="font-weight:bold">Request Approved</h5></div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                        <a href="{{route('complete')}}" style="color:#42ba96"><h5 style="font-weight:bold">Completed</h5></div></a>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-paw fa-2x text-gray-300"></i>
@@ -84,7 +100,7 @@ Request Adoption
                             <td style="text-align:center">
                                 <a href="{{route('shelter.details',$shelter->id)}}"><i class="far fa-eye"></i></a>
                             </td>
-                            <td>
+                            <td style="text-align:center">
                                 <a href="{{route('select',$shelter->id)}}"><button type="button" class="btn btn-success">Request</button></a>       
                             </td>
                         </tr> 

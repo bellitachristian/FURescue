@@ -87,6 +87,9 @@ Route::post('/Admin/feedbackdonationmessage/{id}',[AnimalShelterManagement::clas
 Route::post('/Admin/feedbackdonationmessageerror/{id}',[AnimalShelterManagement::class,'feedbackmessageerror'])->name('view.feedback.message.error');
 Route::post('/AnimalShelter/message/{id}',[AnimalShelterManagement::class,'message'])->name('message');
 Route::post('/AnimalShelter/error/{id}',[AnimalShelterManagement::class,'error'])->name('error');
+Route::post('/AnimalShelter/response/{id}',[AnimalShelterManagement::class,'approvereq'])->name('response');
+Route::post('/AnimalShelter/rejectresponse/{id}',[AnimalShelterManagement::class,'rejectreq'])->name('reject');
+
 
 Route::post('/PetOwner/message/{id}',[PetOwnerManagement::class,'message'])->name('message.petowner');
 Route::post('/PetOwner/error/{id}',[PetOwnerManagement::class,'error'])->name('error.petowner');
@@ -187,6 +190,9 @@ Route::group(['middleware'=>['Authcheck']],function(){
         Route::get('/AnimalShelter/viewdonation',[AnimalShelterManagement::class,'viewdonation'])->name('view.donation');
         Route::get('/AnimalShelter/Adoption',[AnimalShelterManagement::class,'adoptionrequests'])->name('adoption.request.shelter');
         Route::get('/AnimalShelter/Requests',[AnimalShelterManagement::class,'petownerrequest'])->name('petowner.request');
+        Route::get('/AnimalShelter/photos/{id}',[UploadController::class,'petownerphoto'])->name('petowner.photo');
+        Route::get('/AnimalShelter/petowneranimals/{id}',[UploadController::class,'animalphoto'])->name('animal.photo');
+        Route::get('/View/PetOwner/request/{animal_id}/{petowner_id}',[AnimalShelterManagement::class,'viewpetownerdetails']);
 
         Route::get('/customselection/get_fee',[DropDownController::class,'get_fee'])->name('get.fee');
         Route::get('/customselection/load_adoption',[DropDownController::class,'load_adoption'])->name('load.adoption');
@@ -259,6 +265,14 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
         Route::get('/PetOwner/getshelterdetails/{id}',[PetOwnerManagement::class,'shelter_detail'])->name('shelter.details');
         Route::get('/PetOwner/photos/{id}',[UploadController::class,'shelterphoto'])->name('shelter.photo');
         Route::get('/PetOwner/shelter/animals/{id}',[PetOwnerManagement::class,'selection'])->name('select');
+        Route::get('/PetOwner/sent',[PetOwnerManagement::class,'sent'])->name('sent');
+        Route::get('/PetOwner/reject',[PetOwnerManagement::class,'reject'])->name('rejected');
+        Route::get('/PetOwner/review/{id}',[PetOwnerManagement::class,'review'])->name('review');
+        Route::get('/PetOwner/approve',[PetOwnerManagement::class,'approve'])->name('approved');
+        Route::get('/PetOwner/cancel/{id}/{shelter_id}',[PetOwnerManagement::class,'cancel'])->name('cancel');
+        Route::get('/PetOwner/remove/{id}',[PetOwnerManagement::class,'remove'])->name('remove');
+        Route::get('/PetOwner/complete',[PetOwnerManagement::class,'complete'])->name('complete');
+        Route::get('/PetOwner/generate/{id}',[PetOwnerManagement::class,'generate'])->name('generate');
 
     });
     Route::get('/auto/logout/petowner/{petowner_id}',[LoginController::class,'autologoutpetowner']);

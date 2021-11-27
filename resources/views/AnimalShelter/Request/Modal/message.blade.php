@@ -8,7 +8,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="" method="POST">  
+                <form action="{{route('response',$resp->id)}}" method="POST">  
                     @csrf
                     <div class="modal-body">
                         <textarea name="feedback" id="" class="form-control" cols="30" rows="10"></textarea>

@@ -10,7 +10,7 @@ Shelter Details
     <div class="col-sm">  
         <div class="card shadow mb-4">
             <div class="card-header">
-                <a href="{{route('view.request.adoption')}}"><button type="button" class="btn btn-secondary">Back</button></a>
+                <a href="{{route('sent')}}"><button type="button" class="btn btn-secondary">Back</button></a>
             </div>
             <div class="card-body">
                     <div class="card-group-row" style="display:flex">
@@ -91,10 +91,10 @@ Shelter Details
                         </div>   
                     </div>
                     <div class="card-footer">
-                    <a href="{{route('select',$shelter->id)}}"><button type="button" class="btn btn-danger">Request</button></a>
-                    </div>           
+                        <a href=""><button class="btn btn-danger">Cancel Request</button></a>
+                    </div>
                 </div>                               
-            </div>  
+            </div> 
         </div>
     </div>     
 </div>

@@ -38,6 +38,8 @@ use Carbon\Carbon;
 use App\Mail\ApproveReactivation;
 use App\Notifications\ApproveReactivationNotif;
 use App\Notifications\ConfirmReactivationNotif;
+use App\Notifications\RejectRequestNotif;
+use App\Notifications\ApproveRequest;
 use App\Notifications\Checkproofsubscriptionpayment;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
@@ -1721,6 +1723,21 @@ class AnimalShelterManagement extends Controller
                         </div>      
                         ';
                         }   
+                        elseif($posts->status == "Ongoing"){
+                            $output .= '
+                            <div class="dropdown">
+                            <a type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i> </label></span>
+                            </a> 
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                ';
+                                    $deletepost = Post::where('animal_id',$posts->id)->first(); $output .= '
+                                    <a style="text-decoration:none" href="#"><button style="text-decoration:none" class="dropdown-item" value="'.$deletepost->id.'" id="remove">Remove</button></a>
+                                </div> 
+                            <label>&nbsp &nbsp<i style="color:orange; font-size:12px" class="fa fa-circle"></i> '.$posts->status.'</label><span><label style="float:right"> posted '.$posted->diffForHumans(). ' &nbsp 
+                        </div> 
+                        ';
+                        }
                         else{
                             $output .= '
                             <div class="dropdown">
@@ -2018,9 +2035,54 @@ class AnimalShelterManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'requests'=>Requestadoption::where('status','pending')->get(),
+            'response'=>Requestadoption::where('status','pending')->get(),
         );
         return view('AnimalShelter.Request.viewrequest',$data);
+    }
+    function viewpetownerdetails($animal_id,$petowner_id){
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'petowner'=>PetOwner::find($petowner_id),
+            'animal'=>Animals::find($animal_id)
+        );
+        return view('AnimalShelter.Request.viewpetowner',$data);
+    }
+    function approvereq(Request $req,$id){
+        $approve = Requestadoption::find($id);
+        $approve->feedback = $req->feedback;
+        $approve->status = "approved";
+        $approve->process = "ongoing";
+        $approve->update(); 
+
+        $animal = Animals::find($approve->animal_id);
+        $animal->status ="Ongoing";
+        $animal->update(); 
+
+        $approvereq = array();
+        $approvereq = [
+            'petowner_name' => 'Great News! your request of adoption was approved by '.$approve->shelter->shelter_name,
+            'approve' =>' please proceed to Request Approved to generate your adoption slip.'
+        ];
+     
+        PetOwner::find($approve->petowner_id)->notify( new ApproveRequest($approvereq));
+        return redirect()->back()->with('status','Adoption request has been approved successfully');
+    }
+    function rejectreq(Request $req,$id){
+        $approve = Requestadoption::find($id);
+        $approve->feedback = $req->feedback;
+        $approve->status = "rejected";
+        $approve->process = "denied";
+        $approve->update(); 
+
+        $approvereq = array();
+        $approvereq = [
+            'petowner_name' => 'Your request for adoption to  '.$approve->shelter->shelter_name.' has been rejected',
+            'reject' =>' you can try requesting to other shelters.'
+        ];
+     
+        PetOwner::find($approve->petowner_id)->notify( new RejectRequestNotif($approvereq));
+        return redirect()->back()->with('status','Adoption request has been rejected successfully');
     }
 }
 
