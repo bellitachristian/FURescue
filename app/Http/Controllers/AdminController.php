@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\File; 
 use Carbon\Carbon;
+use App\Helpers\Helper;
 
 
 class AdminController extends Controller
@@ -881,6 +882,7 @@ class AdminController extends Controller
       $notif->notif_message = " has approved your adoption payment";
       $notif->save();
       //saving in receipt
+      $slip = Helper::IDGenerator(new Receipt, 'receipt_no', 5, 'RPT');
       $receipt = new Receipt;
       $receipt->adopter_id = $check->adopter_id;
       $receipt->animal_id = $check->animal_id;
@@ -888,6 +890,7 @@ class AdminController extends Controller
       $receipt->owner_id = $check->owner_id;
       $receipt->adoption_id = $check->adoption_id;
       $receipt->payment_id =$check->id;
+      $receipt->receipt_no = $slip;
       $receipt->status = "pending";
       $receipt->save();
       //Animals
