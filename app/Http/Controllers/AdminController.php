@@ -875,7 +875,7 @@ class AdminController extends Controller
       //notification
       $notif = new Adopter_Notif;
       $notif->notif_type = "Adoption Payment";
-      $notif->notf_from ="Admin";
+      $notif->notif_from ="Admin";
       $notif->notif_to = $check->adopter_id;
       $notif->message = " has approved your adoption payment";
       $notif->save();
