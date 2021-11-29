@@ -19,5 +19,8 @@ class AdoptionSlip extends Model
     public function animal(){
         return $this->belongsTo(Animals::class,'animal_id');
     }
+    public function reqadoption(){
+        return $this->belongsTo(Requestadoption::class,'reqadoption_id');
+    }
 
 }

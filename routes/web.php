@@ -272,7 +272,8 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
         Route::get('/PetOwner/cancel/{id}/{shelter_id}',[PetOwnerManagement::class,'cancel'])->name('cancel');
         Route::get('/PetOwner/remove/{id}',[PetOwnerManagement::class,'remove'])->name('remove');
         Route::get('/PetOwner/complete',[PetOwnerManagement::class,'complete'])->name('complete');
-        Route::get('/PetOwner/generate/{id}',[PetOwnerManagement::class,'generate'])->name('generate');
+        Route::get('/PetOwner/generate/{id}',[PetOwnerManagement::class,'generateslip'])->name('generate');
+        Route::get('/PetOwner/generated',[PetOwnerManagement::class,'generated'])->name('generated');
 
     });
     Route::get('/auto/logout/petowner/{petowner_id}',[LoginController::class,'autologoutpetowner']);

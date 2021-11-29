@@ -33,7 +33,7 @@ Shelter Details
                             <div class="col-sm">
                                 <div class="card">
                                     <div class="card-header">
-                                    <h5 style="color:black">Catered Pets</h5>
+                                    <h5 style="color:black">Summary</h5>
                                     </div>
                                     <div class="card-body">
                                         <div class="col-md">

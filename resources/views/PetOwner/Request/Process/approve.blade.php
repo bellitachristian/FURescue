@@ -1,12 +1,12 @@
 @extends("mainpetowner")
 @section("header")
-Approved Request
+Approved Request /<a href="{{route('generated')}}"> Generated Slip</a>
 @endsection
 @push("css")
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css">   
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css">
 @endpush
 @section("content")
-<div style="display:flex">
+<div style="display:flex" class="row">
     <div class="col-sm">
         <div class="card shadow mb-4">
             <div class="card-header">
@@ -16,16 +16,18 @@ Approved Request
                 <table id="datatable" class="table table-light table-hover">
                     <thead>
                         <tr>
+                            <th style="text-align:center"><input input id="all" type="checkbox"></th>
                             <th>ID</th>
-                            <th>Profile</th>
-                            <th>Name</th>
-                            <th style="text-align:center">Feedback</th>
+                            <th>Shelter Profile</th>
+                            <th>Shelter Name</th>
+                            <th style="text-align:center">Feedback message</th>
                             <th style="text-align:center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach($shelters as $shelter)
                         <tr>
+                            <td style="text-align:center"><input type="checkbox" class="item" name="" id="" value="{{$animal->id}}"></td>
                             <td>{{$shelter->id}}</td>
                             <td>
                                 <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->shelter->profile)}}" width="70px" height="70px" alt="">
@@ -35,11 +37,11 @@ Approved Request
                                 {{$shelter->feedback}}
                             </td >
                             <td style="text-align:center">
-                                <a href="{{route('select',$shelter->id)}}"><button type="button" class="btn btn-success">Generate Adoption Slip</button></a>       
+                                <a href="{{route('generate',$shelter->id)}}"><button type="button" class="btn btn-success">Generate Adoption Slip</button></a>
                             </td>
-                        </tr> 
+                        </tr>
                     @endforeach
-                    @if(empty($shelter))   
+                    @if(empty($shelter))
                         <h6 class="alert alert-danger">No approve request</h6>
                     @endif
                     </tbody>
@@ -47,46 +49,6 @@ Approved Request
             </div>
             <div class="card-header">
                 <a href="{{route('view.request.adoption')}}"><button type="button" class="btn btn-secondary">Back</button></a>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm">
-        <div class="card shadow mb-4">
-            <div class="card-header">
-                <h4 style="color:black">Generated Slip</h4>
-            </div>
-            <div class="card-body">
-                <table id="datatable1" class="table table-light table-hover">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Slip Number</th>
-                            <th>Approved Date</th>
-                            <th style="text-align:center">View Slip</th>
-                            <th style="text-align:center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($shelters as $shelter)
-                        <tr>
-                            <td>{{$shelter->id}}</td>
-                            <td>
-                                <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->shelter->profile)}}" width="70px" height="70px" alt="">
-                            </td>
-                            <td>{{$shelter->shelter->shelter_name}}</td>
-                            <td style="text-align:center">
-                                {{$shelter->feedback}}
-                            </td >
-                            <td style="text-align:center">
-                                <a href="{{route('generate',$shelter->id)}}"><button type="button" class="btn btn-success">Generate Adoption Slip</button></a>       
-                            </td>   
-                        </tr> 
-                    @endforeach
-                    @if(empty($shelter))   
-                        <h6 class="alert alert-danger">No generated slip</h6>
-                    @endif
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
@@ -99,9 +61,17 @@ Approved Request
     <script type="text/javascript">
         $(document).ready(function(){
           var table = $('#datatable').DataTable();
-        });
-        $(document).ready(function(){
-          var table = $('#datatable1').DataTable();
+          $("#all").change(function(){
+              $("input:checkbox").prop("checked",$(this).prop("checked"))
+          })
+          $(".item").change(function(){
+              if($(this).prop("checked")==false){
+                  $("#all").prop("checked",false)
+              }
+              if($(".item:checked").length == $("item").length){
+                  $("#all").prop("checked",true)
+              }
+          })
         });
     </script>
 @endpush

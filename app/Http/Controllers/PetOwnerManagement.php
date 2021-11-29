@@ -40,6 +40,7 @@ use App\Notifications\RequestAdoptionPet;
 use App\Notifications\Checkproofpetowner;
 use App\Notifications\CancelReq;
 use Illuminate\Support\Facades\Notification;
+use App\Helpers\Helper;
 use Carbon\Carbon;
 
 
@@ -1995,8 +1996,18 @@ class PetOwnerManagement extends Controller
         return view('PetOwner.Request.Process.complete',$data);
     }
 
-    function reject(){
+    function generated(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
         $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'generated'=>AdoptionSlip::all(),
+        );
+        return view('PetOwner.Request.Process.generated',$data);
+    }
+
+    function reject(){
+        $data =array( 
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'shelters'=>Requestadoption::where('status','rejected')->get(),
@@ -2004,12 +2015,18 @@ class PetOwnerManagement extends Controller
         return view('PetOwner.Request.Process.reject',$data);
     }
     function approve(){
-        $data =array(
-            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'shelters'=>Requestadoption::where('status','approved')->get(),
-        );
-        return view('PetOwner.Request.Process.approve',$data);
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        foreach($petowner->animals as $animals){
+            $check = AdoptionSlip::where('petowner_id',$petowner->id)->where('animal_id',$animals->id)->pluck('reqadoption_id')->toArray();
+        
+            $data =array(
+                'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+                'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+                'shelters'=>Requestadoption::whereNotIn('id',$check)->get(),
+            );
+            return view('PetOwner.Request.Process.approve',$data);
+        }
+       
     }
     function review($id){
         $data =array(
@@ -2048,13 +2065,16 @@ class PetOwnerManagement extends Controller
 
     function generateslip($id){
         $adoption = Requestadoption::find($id);
+        $slip = Helper::IDGenerator(new AdoptionSlip, 'slip_number', 5, 'SLP');
         $animal = Animals::find($adoption->id);
         $generate = new AdoptionSlip;
-        $generate->slip_number ="";
-        $generate->date_approve = $adoption->animal->updated_at;
+        $generate->slip_number =$slip;
+        $generate->date_approve = Carbon::parse($adoption->animal->updated_at)->format('F d, Y h:i:s A');  
         $generate->animal_id = $adoption->animal_id;
         $generate->shelter_id = $adoption->shelter_id;
         $generate->petowner_id = $adoption->petowner_id;
+        $generate->status ="pending";
+        $generate->reqadoption_id = $id;
         $generate->save();
          
         return redirect()->back()->with('status','Generated successfully');

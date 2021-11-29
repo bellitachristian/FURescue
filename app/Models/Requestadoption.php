@@ -19,4 +19,7 @@ class Requestadoption extends Model
     public function animal(){
         return $this->belongsTo(Animals::class,'animal_id');
     }
+    public function slip(){
+        return $this->hasMany(Animals::class,'reqadoption_id');
+    }
 }

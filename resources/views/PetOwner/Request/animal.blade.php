@@ -35,13 +35,14 @@ Request to {{$shelter->shelter_name}}
         <div class="card shadow mb-4">
             <div class="card-header">
                 <form id="myForm" action="POST">
-                    <a href="#"><button type="button" class="btn btn-success">Submit All</button></a>
+                    <a href="#"><button type="button" class="btn btn-success">Submit Selected</button></a>
                 </form>
             </div>
             <div class="card-body">
                 <table id="datatable" class="table table-light table-hover">
                     <thead>
                         <tr>
+                            <th style="text-align:center"><input input id="all" type="checkbox"></th>
                             <th>ID</th>
                             <th>Animal Photo</th>
                             <th>Name</th>
@@ -54,6 +55,7 @@ Request to {{$shelter->shelter_name}}
                     <tbody>
                     @foreach($animals as $animal)
                         <tr>
+                            <td style="text-align:center"><input type="checkbox" class="item" name="" id="" value="{{$animal->id}}"></td>
                             <td>{{$animal->id}}</td>
                             <td>
                                 <img src="{{asset('uploads/animals/'.$animal->animal_image)}}" width="70px" height="70px" alt="">
@@ -88,8 +90,18 @@ Request to {{$shelter->shelter_name}}
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-          var table = $('#datatable').DataTable({
-        });
+          var table = $('#datatable').DataTable();
+          $("#all").change(function(){
+              $("input:checkbox").prop("checked",$(this).prop("checked"))
+          })
+          $(".item").change(function(){
+              if($(this).prop("checked")==false){
+                  $("#all").prop("checked",false)
+              }
+              if($(".item:checked").length == $("item").length){
+                  $("#all").prop("checked",true)
+              }
+          })
     });
     </script>
 @endpush

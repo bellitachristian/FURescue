@@ -16,6 +16,7 @@ Sent Request
                 <table id="datatable" class="table table-light table-hover">
                     <thead>
                         <tr>
+                            <th style="text-align:center"><input input id="all" type="checkbox"></th>
                             <th>ID</th>
                             <th>Profile</th>
                             <th>Name</th>
@@ -26,6 +27,7 @@ Sent Request
                     <tbody>
                     @foreach($shelters as $shelter)
                         <tr>
+                            <td style="text-align:center"><input type="checkbox" class="item" name="" id="" value="{{$animal->id}}"></td>
                             <td>{{$shelter->id}}</td>
                             <td>
                                 <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->shelter->profile)}}" width="70px" height="70px" alt="">
@@ -58,6 +60,17 @@ Sent Request
     <script type="text/javascript">
         $(document).ready(function(){
           var table = $('#datatable').DataTable();
+          $("#all").change(function(){
+              $("input:checkbox").prop("checked",$(this).prop("checked"))
+          })
+          $(".item").change(function(){
+              if($(this).prop("checked")==false){
+                  $("#all").prop("checked",false)
+              }
+              if($(".item:checked").length == $("item").length){
+                  $("#all").prop("checked",true)
+              }
+          })
         });
     </script>
 @endpush

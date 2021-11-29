@@ -76,12 +76,13 @@ Request Adoption
     <div class="col-sm">
         <div class="card shadow mb-4">
             <div class="card-header">
-                <a href=""><button type="button" class="btn btn-danger">Request All</button></a>
+                <a href=""><button type="button" class="btn btn-danger">Request Selected</button></a>
             </div>
             <div class="card-body">
                 <table id="datatable" class="table table-light table-hover">
                     <thead>
                         <tr>
+                            <th style="text-align:center"><input id="all" type="checkbox"></th>
                             <th>ID</th>
                             <th>Profile</th>
                             <th>Name</th>
@@ -92,6 +93,7 @@ Request Adoption
                     <tbody>
                     @foreach($shelters as $shelter)
                         <tr>
+                            <td style="text-align:center"><input type="checkbox" class="item" name="" id="" value="{{$shelter->id}}"></td>
                             <td>{{$shelter->id}}</td>
                             <td>
                                 <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->profile)}}" width="70px" height="70px" alt="">
@@ -121,6 +123,17 @@ Request Adoption
     <script type="text/javascript">
         $(document).ready(function(){
           var table = $('#datatable').DataTable();
+          $("#all").change(function(){
+              $("input:checkbox").prop("checked",$(this).prop("checked"))
+          })
+          $(".item").change(function(){
+              if($(this).prop("checked")==false){
+                  $("#all").prop("checked",false)
+              }
+              if($(".item:checked").length == $("item").length){
+                  $("#all").prop("checked",true)
+              }
+          })
         });
     </script>
 @endpush

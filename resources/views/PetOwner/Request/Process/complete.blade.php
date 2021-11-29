@@ -1,6 +1,6 @@
 @extends("mainpetowner")
 @section("header")
-Request Completed
+Completed Request
 @endsection
 @push("css")
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css">   
@@ -10,7 +10,6 @@ Request Completed
     <div class="col-sm">
         <div class="card shadow mb-4">
             <div class="card-header">
-                <a href=""><button type="button" class="btn btn-success">Generate All</button></a>
             </div>
             <div class="card-body">
                 <table id="datatable" class="table table-light table-hover">
