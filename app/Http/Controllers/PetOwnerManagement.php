@@ -2026,6 +2026,11 @@ class PetOwnerManagement extends Controller
             );
             return view('PetOwner.Request.Process.approve',$data);
         }
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'shelters'=>Requestadoption::whereNotIn('id',$check)->get(),
+        );
         return view('PetOwner.Request.Process.approve',$data);
        
     }
