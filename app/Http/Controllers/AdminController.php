@@ -889,6 +889,7 @@ class AdminController extends Controller
       $receipt->adoption_id = $check->adoption_id;
       $receipt->payment_id =$check->id;
       $receipt->status = "pending";
+      $receipt->save();
       //Animals
       $animal = Animals::find($check->animal_id);
       $animal->status = "Adopted";
