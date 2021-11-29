@@ -14,6 +14,7 @@ use App\Models\Feedback;
 use App\Models\Usertype;
 use App\Models\Adopter;
 use App\Models\Adoption;
+use App\Models\Receipt;
 use App\Models\AdoptionPayment;
 use App\Models\Adopter_Notif;
 use Illuminate\Support\Facades\DB;
@@ -875,9 +876,22 @@ class AdminController extends Controller
       $notif = new Adopter_Notif;
       $notif->notif_type = "Adoption Payment";
       $notif->notf_from ="Admin";
-      $notif->notif_to = $check->owner_id;
+      $notif->notif_to = $check->adopter_id;
       $notif->message = " has approved your adoption payment";
-      $notif->update();
+      $notif->save();
+      //saving in receipt
+      $receipt = new Receipt;
+      $receipt->adopter_id = $check->adopter_id;
+      $receipt->animal_id = $check->animal_id;
+      $receipt->usertype_id = $check->owner_type;
+      $receipt->owner_id = $check->owner_id;
+      $receipt->adoption_id = $check->adoption_id;
+      $receipt->payment_id =$check->id;
+      $receipt->status = "pending";
+      //Animals
+      $animal = Animals::find($check->animal_id);
+      $animal->status = "Adopted";
+      $animal->update();
       return redirect()->back()->with('status','Approval feedback sent successfully');
     }
 
@@ -896,7 +910,7 @@ class AdminController extends Controller
       $notif->notf_from ="Admin";
       $notif->notif_to = $check->owner_id;
       $notif->message = " has disapproved your adoption payment, please check thoroughly on the photo you had sent.";
-      $notif->update();
+      $notif->save();
       return redirect()->back()->with('status','Disapproval feedback sent successfully');
     } 
 } 
