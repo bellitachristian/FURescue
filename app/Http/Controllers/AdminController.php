@@ -877,7 +877,7 @@ class AdminController extends Controller
       $notif->notif_type = "Adoption Payment";
       $notif->notif_from ="Admin";
       $notif->notif_to = $check->adopter_id;
-      $notif->message = " has approved your adoption payment";
+      $notif->notif_message = " has approved your adoption payment";
       $notif->save();
       //saving in receipt
       $receipt = new Receipt;
@@ -907,9 +907,9 @@ class AdminController extends Controller
       //notification
       $notif = new Adopter_Notif;
       $notif->notif_type = "Adoption Payment";
-      $notif->notf_from ="Admin";
-      $notif->notif_to = $check->owner_id;
-      $notif->message = " has disapproved your adoption payment, please check thoroughly on the photo you had sent.";
+      $notif->notif_from ="Admin";
+      $notif->notif_to = $check->adopter_id;
+      $notif->notif_message = " has disapproved your adoption payment, please check thoroughly on the photo you had sent.";
       $notif->save();
       return redirect()->back()->with('status','Disapproval feedback sent successfully');
     } 
