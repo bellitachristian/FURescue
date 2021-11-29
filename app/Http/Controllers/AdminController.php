@@ -14,6 +14,7 @@ use App\Models\Feedback;
 use App\Models\Usertype;
 use App\Models\Adopter;
 use App\Models\Adoption;
+use App\Models\Animals;
 use App\Models\Receipt;
 use App\Models\AdoptionPayment;
 use App\Models\Adopter_Notif;
