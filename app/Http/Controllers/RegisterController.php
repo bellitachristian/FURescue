@@ -12,11 +12,12 @@ use Illuminate\Support\Collection;
 use App\Models\PetOwner;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\File;    
 use Illuminate\Filesystem\Filesystem;
 use App\Mail\SignupEmail;
 use App\Mail\SignupPetOwner;
 use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -207,6 +208,10 @@ class RegisterController extends Controller
             $shelter ->contact = $req->contact;
             $shelter ->usertype_id = 2; 
             $shelter ->verfication_code =sha1(time());
+            $shelter ->start_day = $req->start_day;
+            $shelter ->end_day = $req->end_day;
+            $shelter ->start_time = Carbon::parse($req->intime)->format('h:i A');
+            $shelter ->end_time = Carbon::parse($req->outime)->format('h:i A');
             $shelter ->save();
             
             $data = array();

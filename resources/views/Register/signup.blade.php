@@ -116,10 +116,43 @@
                                 <input type="text" name="contact" required class="form-control"placeholder="Enter Contact number" value ="{{old('contact')}}">
                                 <span class="text-danger">@error('contact'){{$message}}@enderror</span>
                             </div>  
-                    </div>
+                        <div class="col-sm-3">
+                            <label class="text-sm">Starting point(Day)</label>
+                            <select class="form-control form-control-sm" id="start" required name="start_day">
+                                <option value="">---Select Start Day---</option>
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>    
+                        </div>  
+                        <div class="col-sm-3">
+                            <label class="text-sm">Ending point(Day)</label>
+                            <select class="form-control form-control-sm" id="end" required name="end_day">
+                                <option value="">---Select End Day---</option>
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>     
+                        </div>
+                    </div>       
                     <div class="form-group row">
-                     
-                    </div>                  
+                    <div class="col-sm-3">
+                            <label class="text-sm">Start Time(Intime)</label>
+                            <input type="time" min="06:00:00" and max="12:00:00" required name="intime">
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="text-sm">End Time(Outime)</label>
+                           <input type="time" min="13:00:00" and max="19:00:00" required name="outime">
+                        </div>
+                    </div>
                     <button type="submit" style="margin-top:5%" class="btn btn-block btn-primary">Sign Up</button>
                     <br>
                     <a href="/User/login">I already have an account, log in</a>
@@ -145,4 +178,5 @@
             }
 });
 </script>
+
 

@@ -1935,10 +1935,11 @@ class AnimalShelterManagement extends Controller
         return redirect()->back()->with('status','You cancelled your sent subscription proof of payment');
     }
     function adoptionrequests(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'adopter'=>Adoption::all()->where('status','pending')->where('owner_type',2),
+            'adopter'=>Adoption::all()->where('status','pending')->where('owner_id',$shelter->id)->where('owner_type',2),
         );
         return view('AnimalShelter.Adoption.viewrequest',$data);
     }

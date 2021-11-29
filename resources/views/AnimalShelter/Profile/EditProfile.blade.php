@@ -36,12 +36,41 @@
                                     <span class="text-danger">@error('contact'){{$message}}@enderror</span>
                                     
                                     <label style="font-size:14px" >Email</label> 
-                                    <input style="margin-bottom:2%" type="email" value="{{$shelter->email}}" class="form-control form-control-sm" required id="name" name="email">
+                                    <input disabled style="margin-bottom:2%" type="email" value="{{$shelter->email}}" class="form-control form-control-sm" required id="name" name="email">
                                     <span class="text-danger">@error('email'){{$message}}@enderror</span>
+
+                                    <label class="text-sm">Start-Day</label>
+                                    <select class="form-control form-control-sm" required name="start_day">
+                                    <option value="{{$shelter->start_day}}">{{$shelter->start_day}}</option>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option> 
+                                    <option value="Friday">Friday</option>
+                                    <option value="Saturday">Saturday</option>
+                                    <option value="Sunday">Sunday</option>
+                                    </select>
+                                    <label class="text-sm">End-Day</label>
+                                    <select class="form-control form-control-sm" required name="end_day">
+                                    <option value="{{$shelter->end_day}}">{{$shelter->end_day}}</option>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option> 
+                                    <option value="Friday">Friday</option>
+                                    <option value="Saturday">Saturday</option>
+                                    <option value="Sunday">Sunday</option>
+                                    </select>
+
+                                    <label style="font-size:14px" >Start Time</label> 
+                                    <input style="margin-bottom:2%" type="time" value="{{$shelter->start_time}}" class="form-control form-control-sm" required id="name" name="intime">
+
+                                    <label style="font-size:14px" >End Time</label> 
+                                    <input style="margin-bottom:2%" type="time" value="{{$shelter->end_time}}" class="form-control form-control-sm" required id="name" name="outime">
 
                                     <input type="password" value ="{{$shelter->password}}" hidden class="form-control form-control-sm" id="name" name="password">
                                     <button style="margin-bottom:2%; float:right" type="button" onclick="location.href='#'" data-toggle="modal" data-target="#EditPass">Change Password</button>
-                                
+
                                     <h5 style="color:black; margin-top:5%; margin-bottom:4%">Account Information</h5>
                                     
                                     <label style="font-size:14px" >Gcash Number</label> 

@@ -28,6 +28,10 @@ Profile
                                 <input style="margin-bottom:1%" type="text" value ="{{$shelter->contact}}" readOnly  class="form-control form-control-sm">
                                 <label >Email</label>
                                 <input style="margin-bottom:5%" type="email" value ="{{$shelter->email}}"readOnly class="form-control form-control-sm">
+                                <label >Open-In</label>
+                                <input style="margin-bottom:5%" type="text" value ="{{$shelter->start_day}}-{{$shelter->end_day}}"readOnly class="form-control form-control-sm">
+                                <label >Open-At</label>
+                                <input style="margin-bottom:5%" type="text" value ="{{$shelter->start_time}}-{{$shelter->end_time}}"readOnly class="form-control form-control-sm">
                                 
                             </div>
                             <div class="col-sm">
