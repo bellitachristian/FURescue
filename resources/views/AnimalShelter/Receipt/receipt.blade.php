@@ -32,7 +32,7 @@ Receipts
                             <td>{{$receipt->id}}</td>
                             <td>{{$receipt->receipt_no}}</td>
                             <td>
-                                <img src="{{asset('phpcode/adopter/'.$receipt->adopter->photo)}}" width="70px" height="70px" alt="photo">
+                                <img src="{{asset('/phpcode/adopter/'.$receipt->adopter->photo)}}" width="70px" height="70px" alt="photo">
                             </td>
                             <td>{{$receipt->adopter->fname}} {{$receipt->adopter->lname}}</td>
                             <td>{{$receipt->adopter->email}}</td>
