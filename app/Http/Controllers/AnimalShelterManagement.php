@@ -2085,5 +2085,15 @@ class AnimalShelterManagement extends Controller
         PetOwner::find($approve->petowner_id)->notify( new RejectRequestNotif($approvereq));
         return redirect()->back()->with('status','Adoption request has been rejected successfully');
     }
+
+    function receipt(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'receipts'=>Receipt::where('status','pending')->where('owner_id',$shelter->shelter_name)->get(),
+        );
+        return view('AnimalShelter.Receipt.receipt',$data);
+    }
 }
 
