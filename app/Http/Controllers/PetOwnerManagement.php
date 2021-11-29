@@ -2016,23 +2016,27 @@ class PetOwnerManagement extends Controller
     }
     function approve(){
         $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
-        foreach($petowner->animals as $animals){
-            $check = AdoptionSlip::where('petowner_id',$petowner->id)->where('animal_id',$animals->id)->pluck('reqadoption_id')->toArray();
-        
+        $checkanimals = Animals::where('petowner_id',$petowner->id)->count();
+        if($checkanimals==0){
             $data =array(
                 'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
                 'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-                'shelters'=>Requestadoption::whereNotIn('id',$check)->get(),
+                'shelters'=>Requestadoption::where('petowner_id',$petowner->id)->get(),
             );
             return view('PetOwner.Request.Process.approve',$data);
         }
-        $data =array(
-            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'shelters'=>Requestadoption::whereNotIn('id',$check)->get(),
-        );
-        return view('PetOwner.Request.Process.approve',$data);
-       
+        else{
+            foreach($petowner->animals as $animals){
+                $check = AdoptionSlip::where('petowner_id',$petowner->id)->where('animal_id',$animals->id)->pluck('reqadoption_id')->toArray();
+            
+                $data =array(
+                    'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+                    'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+                    'shelters'=>Requestadoption::whereNotIn('id',$check)->get(),
+                );
+                return view('PetOwner.Request.Process.approve',$data);
+            }
+        }
     }
     function review($id){
         $data =array(
