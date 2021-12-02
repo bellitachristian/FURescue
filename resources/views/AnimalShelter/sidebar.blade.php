@@ -59,6 +59,7 @@
             <a class="collapse-item" href="{{route('adoption.request.shelter')}}">Approve/Reject</a>
             <a class="collapse-item" href="{{route('receipt')}}">Adoption Receipt</a>
             <a class="collapse-item" href="{{route('petowner.request')}}">Request/s from Pet Owner</a>
+            <a class="collapse-item" href="{{route('generate.view')}}">Adoption Slip</a>
         </div>
     </div>
 </li>

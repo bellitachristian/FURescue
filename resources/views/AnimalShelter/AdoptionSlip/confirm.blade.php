@@ -1,16 +1,15 @@
-@extends("mainpetowner")
+@extends("main")
 @section("header")
-<a href="{{route('approved')}}">Approved Request </a>/ Generated Slip
+Confirmed Adoption Slip
 @endsection
 @push("css")
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css">
 @endpush
 @section("content")
 <div class="row">    
-<div class="col-sm">
+    <div class="col-sm">
         <div class="card shadow mb-4">
             <div class="card-header">
-                <h4 style="color:black">Generated Slip</h4>
             </div>
             <div class="card-body">
                 <table id="datatable1" class="table table-light table-hover">
@@ -23,7 +22,7 @@
                             <th style="text-align:center">Animal Photo</th>
                             <th style="text-align:center">Animal Name</th>
                             <th style="text-align:center">Approved Date</th>
-                            <th style="text-align:center">Print Slip</th>
+                            <th style="text-align:center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,7 +40,7 @@
                             <td style="text-align:center">{{$generate->animal->name}}</td>
                             <td style="text-align:center">{{$generate->date_approve}}</td>
                             <td style="text-align:center">
-                                <a href="{{route('print.view',$generate->id)}}"><i class="fas fa-print"></i></a>
+                                <button disabled class="btn btn-success">Confirmed</button>
                             </td>
                         </tr>
                     @endforeach
@@ -50,6 +49,9 @@
                     @endif
                     </tbody>
                 </table>
+            </div>
+            <div class="card-footer">
+                <a href="{{route('generate.view')}}"><button class="btn btn-secondary">Back</button></a>
             </div>
         </div>
     </div>

@@ -194,6 +194,14 @@ Route::group(['middleware'=>['Authcheck']],function(){
         Route::get('/AnimalShelter/petowneranimals/{id}',[UploadController::class,'animalphoto'])->name('animal.photo');
         Route::get('/View/PetOwner/request/{animal_id}/{petowner_id}',[AnimalShelterManagement::class,'viewpetownerdetails']);
         Route::get('/View/Receipt',[AnimalShelterManagement::class,'receipt'])->name('receipt');
+        Route::get('/View/Slip',[AnimalShelterManagement::class,'generated'])->name('generate.view');
+        Route::get('/Confirm/Slip/{id}',[AnimalShelterManagement::class,'confirmadoption'])->name('adoption.confirm');
+        Route::get('/Confirmed/Slip',[AnimalShelterManagement::class,'confirmed'])->name('adoption.confirmed.view');
+        Route::get('Receipt/Confirmed/Slip',[AnimalShelterManagement::class,'confirmreceipt'])->name('adoption.confirmed.result');
+
+        Route::get('AnimalManagement/New',[AnimalShelterManagement::class,'newpets'])->name('new.pets');
+
+
 
         Route::get('/customselection/get_fee',[DropDownController::class,'get_fee'])->name('get.fee');
         Route::get('/customselection/load_adoption',[DropDownController::class,'load_adoption'])->name('load.adoption');
@@ -262,6 +270,7 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
 
         Route::get('/PetOwner/enlarge/{id}',[PetOwnerManagement::class,'enlarge'])->name('enlarge.petowner');
         Route::get('/PetOwner/request',[PetOwnerManagement::class,'request_adoption'])->name('view.request.adoption');
+        Route::get('/PetOwner/print/{id}',[PetOwnerManagement::class,'printview'])->name('print.view');
 
         Route::get('/PetOwner/getshelterdetails/{id}',[PetOwnerManagement::class,'shelter_detail'])->name('shelter.details');
         Route::get('/PetOwner/photos/{id}',[UploadController::class,'shelterphoto'])->name('shelter.photo');

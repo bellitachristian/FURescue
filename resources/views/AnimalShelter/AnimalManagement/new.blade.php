@@ -1,29 +1,11 @@
 @extends("main")
 @section("header")
-Pet Management
+Newly Transferred
 @endsection
 @push("css")
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css">   
 @endpush
 @section("content")
-<div class="row">
-    <div class="col-sm-4">
-        <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                        <a href="{{route('new.pets')}}" style="color:#42ba96"><h5 style="font-weight:bold;">Newly Transferred Pets</h5></div></a> 
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{$count}}</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-paw fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div style="margin-top:1%" class="row">
     <div class="col-md">
@@ -31,7 +13,7 @@ Pet Management
             <div
                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <div>
-                <button class="btn btn-danger" data-toggle="modal" data-target="#AddAnimalModal" >Add Pet +</button>
+                    <a href="/AnimalManagement"><button class="btn btn-secondary">Back</button></a>
                 </div>
             </div>
             <!-- Animal Content -->
@@ -72,7 +54,7 @@ Pet Management
                         </tr> 
                     @endforeach($animal as $anim)
                     @if(empty($anim))   
-                        <h6 class="alert alert-danger">No data for pets exist! Add Pet +</h6>
+                        <h6 class="alert alert-danger">No newly transferred pets</h6>
                     @endif
                     </tbody>
                 </table>

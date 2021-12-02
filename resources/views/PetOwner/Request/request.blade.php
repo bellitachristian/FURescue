@@ -62,7 +62,7 @@ Request Adoption
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                         <a href="{{route('complete')}}" style="color:#42ba96"><h5 style="font-weight:bold">Completed</h5></div></a>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{$countcomplete}}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-paw fa-2x text-gray-300"></i>
@@ -72,7 +72,7 @@ Request Adoption
         </div>
     </div>
 </div>
-<div style="margin-top:2%" class="row">
+<div style="margin-top:1%" class="row">
     <div class="col-sm">
         <div class="card shadow mb-4">
             <div class="card-header">

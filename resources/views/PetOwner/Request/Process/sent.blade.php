@@ -27,7 +27,7 @@ Sent Request
                     <tbody>
                     @foreach($shelters as $shelter)
                         <tr>
-                            <td style="text-align:center"><input type="checkbox" class="item" name="" id="" value="{{$animal->id}}"></td>
+                            <td style="text-align:center"><input type="checkbox" class="item" name="" id="" value="{{$shelter->id}}"></td>
                             <td>{{$shelter->id}}</td>
                             <td>
                                 <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->shelter->profile)}}" width="70px" height="70px" alt="">

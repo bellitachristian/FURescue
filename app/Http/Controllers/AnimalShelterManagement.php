@@ -15,6 +15,7 @@ use App\Models\Adoption;
 use App\Models\AdoptionPolicy;
 use App\Models\AllocateVaccine;
 use App\Models\AdoptionFee;
+use App\Models\AdoptionSlip;
 use App\Models\AdoptionPayment;
 use App\Models\Adopter_Notif;
 use App\Models\Admin;
@@ -40,6 +41,7 @@ use App\Notifications\ApproveReactivationNotif;
 use App\Notifications\ConfirmReactivationNotif;
 use App\Notifications\RejectRequestNotif;
 use App\Notifications\ApproveRequest;
+use App\Notifications\SuccessAdoption;
 use App\Notifications\Checkproofsubscriptionpayment;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
@@ -94,6 +96,7 @@ class AnimalShelterManagement extends Controller
             'animal'=> DB::select("select *from animals  where shelter_id ='$shelter->id' and status ='Available'"),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'sheltercateg' =>AnimalShelter::all()->where('id',session('LoggedUser')),
+            'count'=>Animals::where('owner_id',$shelter->id)->count(),
           );
           return view('AnimalShelter.AnimalManagement.Animal',$data);
     }
@@ -170,7 +173,7 @@ class AnimalShelterManagement extends Controller
         $history->save();
 
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
-        $animal = Animals::where('shelter_id',$shelter->id)->where('id',$id)->first();
+        $animal = Animals::where('shelter_id',$shelter->id)->orWhere('owner_id',$shelter->id)->first();
         $getIdMaster = AnimalMasterList::where('animal_image',$animal->animal_image)->where('shelter_id',$shelter->id)->count();
         if($getIdMaster > 0){
             $masterlist = AnimalMasterList::where('animal_image',$animal->animal_image)->where('shelter_id',$shelter->id)->first();
@@ -205,7 +208,7 @@ class AnimalShelterManagement extends Controller
         $history->save();
         
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
-        $animal = Animals::where('shelter_id',$shelter->id)->where('id',$id)->first();
+        $animal = Animals::where('shelter_id',$shelter->id)->orWhere('owner_id',$shelter->id)->first();
         $getIdMaster = AnimalMasterList::where('animal_image',$animal->animal_image)->where('shelter_id',$shelter->id)->count();
         if($getIdMaster > 0){
             $masterlist = AnimalMasterList::where('animal_image',$animal->animal_image)->where('shelter_id',$shelter->id)->first();
@@ -267,7 +270,7 @@ class AnimalShelterManagement extends Controller
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();       
         $data = array(
           'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-          'animal'=> DB::select("select *from animals where shelter_id='$shelter->id' and status ='Available'"),
+          'animal'=> DB::select("select *from animals where (shelter_id='$shelter->id' or owner_id ='$shelter->id') and (status ='Available')"),
           'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first()
         );  
         return view('AnimalShelter.Vaccine & Deworm.Allocate',$data);
@@ -288,7 +291,14 @@ class AnimalShelterManagement extends Controller
             'notsub'=> $subscription,
             'notapprove'=> Subscription::whereNotIn('id', $subscription)->pluck('id')->toArray(),
             'countcredits'=>$shelter->TotalCredits,
-            'countpets'=>Animals::where('shelter_id',$shelter->id)->where('status','Available')->where('post_status','posted')->count(),
+            'countpets'=>Animals::
+                                where('status','Available')
+                                ->where('post_status','posted')
+                                -> where(function($query) use($shelter){
+                                    $query-> where('shelter_id', $shelter->id)
+                                            ->orWhere('owner_id',$shelter->id);
+                                })
+                                ->count(),
             'countrequest'=>Adoption::where('owner_id',$shelter->id)->where('owner_type',2)->where('status','pending')->count(),
             'totalrevenue'
         );
@@ -1088,6 +1098,7 @@ class AnimalShelterManagement extends Controller
     function UpdateAnimal(Request $req, $id){
         try {
             $animal = Animals::find($id);
+            $check = AnimalMasterList::where('animal_image',$animal->animal_image)->count();
             if($req->hasfile('animal_image')){
                 $destination = 'uploads/animals/'.$animal->animal_image;
                 if(File::exists($destination)){
@@ -1108,6 +1119,31 @@ class AnimalShelterManagement extends Controller
             $animal->history = $req->history;
             $animal->info = $req->info;
             $animal->update();
+            if($check > 0){
+                $master = AnimalMasterList::where('animal_image',$animal->animal_image)->first();
+                $category = Category::where('id',$animal->category)->first();
+                if($req->hasfile('animal_image')){
+                    $destination = 'uploads/animals/'.$animal->animal_image;
+                    if(File::exists($destination)){
+                        File::delete($destination);
+                    }
+                    $file = $req->file('animal_image');
+                    $extention =$file->getClientOriginalExtension();
+                    $filename =time().'.'.$extention;
+                    $file->move('uploads/animals/',$filename);
+                    $master->animal_image = $filename;      
+                }
+                $master->name = $req->name;
+                $master->age = $req->age;
+                $master->category = $category->category_name;
+                $master->breed = $req->breed;
+                $master->pet_stage = $req->stage;
+                $master->color =$req->color;
+                $master->history = $req->history;
+                $master->info = $req->info;
+                $master->update();
+            }
+            
             return redirect()->back()->with('status','Animal Updated Successfully');      
         } catch (\Throwable $th) {
             return redirect()->back()->with('status1','Something went wrong! Try again later');
@@ -1365,16 +1401,15 @@ class AnimalShelterManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'animal'=> DB::select("select *from animals  where petbooked = 'Not generated' and shelter_id ='$shelter->id'"),
+            'animal'=> DB::select("select *from animals  where (shelter_id ='$shelter->id' OR owner_id ='$shelter->id') AND (petbooked = 'Not generated')"),
             'petbook' => PetBook::where('shelter_id',$shelter->id),
         );
         return view('AnimalShelter.Pet Book.ViewBook',$data);
-
     }
 
     function load_books(){
      $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
-     $petbook = DB::select("select *from animal_master_list where shelter_id ='$shelter->id'");   
+     $petbook = DB::select("select *from animal_master_list where shelter_id ='$shelter->id' OR  owner_id ='$shelter->id'");   
      $output = '<div class="row">';
      foreach($petbook as $books)
      {
@@ -1417,11 +1452,12 @@ class AnimalShelterManagement extends Controller
     }
 
     function petbook_details(Request $req,$id){
-
-        $vachistory = VaccineHistory::where('petbook_id',$id)->count();
-        $dewhistory = DewormHistory::where('petbook_id',$id)->count();
+        $masterlist = AnimalMasterlist::find($id);
+        $animal = Animals::where('animal_image',$masterlist->animal_image)->first();
+        $vachistory = VaccineHistory::where('petbook_id',$id)->orWhere('animal_id',$animal->id)->count();
+        $dewhistory = DewormHistory::where('petbook_id',$id)->orWhere('animal_id',$animal->id)->count();
         if($vachistory > 0 && $dewhistory == 0){
-            $vachistory1 = VaccineHistory::where('petbook_id',$id)->first();
+            $vachistory1 = VaccineHistory::where('petbook_id',$id)->orWhere('animal_id',$animal->id)->first();
             $animals = Animals::where('id',$vachistory1->animal_id)->first();
             $data =array(
                 'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -1433,7 +1469,7 @@ class AnimalShelterManagement extends Controller
             return view('AnimalShelter.Pet Book.details',$data);
         }
         if($dewhistory >0 && $vachistory == 0){
-            $dewhistory1 = DewormHistory::where('petbook_id',$id)->first();
+            $dewhistory1 = DewormHistory::where('petbook_id',$id)->orWhere('animal_id',$animal->id)->first();
             $animals = Animals::where('id',$dewhistory1->animal_id)->first();
             $data =array(
                 'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -1444,9 +1480,9 @@ class AnimalShelterManagement extends Controller
             );
             return view('AnimalShelter.Pet Book.details',$data);
         }
-        if($dewhistory >0 && $vachistory > 0){
-            $vachistory1 = VaccineHistory::where('petbook_id',$id)->first();
-            $dewhistory1 = DewormHistory::where('petbook_id',$id)->first();
+        if($dewhistory >0 && $vachistory > 0 ){
+            $vachistory1 = VaccineHistory::where('petbook_id',$id)->orWhere('animal_id',$animal->id)->first();
+            $dewhistory1 = DewormHistory::where('petbook_id',$id)->orWhere('animal_id',$animal->id)->first();
             $animals = Animals::where('id',$vachistory1->animal_id)->first();
             $animals1 = Animals::where('id',$dewhistory1->animal_id)->first();
             $data =array(
@@ -1471,12 +1507,11 @@ class AnimalShelterManagement extends Controller
         }
       
     }
-
     function petbook_generate(Request $req){
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $vaccine = VaccineHistory::where('animal_id',$req->get('id'))->first();
         $deworm = DewormHistory::where('animal_id',$req->get('id'))->first();
-        $animal = Animals::where('shelter_id',$shelter->id)->where('id',$req->get('id'))->first();
+        $animal = Animals::where('shelter_id',$shelter->id)->orWhere('owner_id',$shelter->id)->where('id',$req->get('id'))->first();
         $category = Category::where('id',$animal->category)->first();
         $animalmasterlist = AnimalMasterList::where('animal_image',$animal->animal_image)->where('shelter_id',$shelter->id)->count();
 
@@ -1514,7 +1549,7 @@ class AnimalShelterManagement extends Controller
                 $deworm->petbook_id = $getId->id;   
                 $deworm->update();
             } 
-            $animalcheck = Animals::where('shelter_id',$shelter->id)->where('id',$req->get('id'))->count();
+            $animalcheck = Animals::where('shelter_id',$shelter->id)->orWhere('owner_id',$shelter->id)->where('id',$req->get('id'))->count();
             if($animalcheck > 0) {
                 $animal->petbooked ="PetBooked";
                 $animal->update();
@@ -1527,7 +1562,14 @@ class AnimalShelterManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'animal' =>Animals::all()->where('post_status','not posted')->where('status','Available')->where('shelter_id','=',$shelter->id)
+            'animal' =>Animals::
+                        where('post_status','not posted')
+                        ->where('status','Available')
+                        ->where(function($query)use($shelter){
+                            $query->where('shelter_id','=',$shelter->id)
+                            ->orWhere('owner_id',$shelter->id);
+                        })
+                        ->get(),
         );
         return view('AnimalShelter.Post Pet.createpost',$data);
     }
@@ -1693,10 +1735,12 @@ class AnimalShelterManagement extends Controller
 
      function load_post(){
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
-       
         $post = Animals::
                    where('post_status','posted')
-                -> where('shelter_id', $shelter->id)
+                -> where(function($query) use($shelter){
+                    $query-> where('shelter_id', $shelter->id)
+                            ->orWhere('owner_id',$shelter->id);
+                })
                 ->get();    
         $output = ' <main style ="margin-top:30px" class="grid-new1">';    
             foreach($post as $posts)
@@ -1765,11 +1809,22 @@ class AnimalShelterManagement extends Controller
                             <div class="col-sm"> 
                                 <div style="display:flex">';
                                     foreach($posts->postphotos as $pics){
-                                        $output .= '
-                                        <div class="col-sm"> 
-                                        <img src="'.asset('uploads/animal-shelter/uploaded-photos/Post/'.$pics->imagename).'" width="100%" height="100%" alt="">
-                                        </div>
-                                        ';
+                                        $check = Animals::where('id',$pics->animal_id)->where('owner_id','none')->count();
+                                        if($check > 0){
+                                            $output .= '
+                                            <div class="col-sm"> 
+                                            <img src="'.asset('uploads/animal-shelter/uploaded-photos/Post/'.$pics->imagename).'" width="100%" height="100%" alt="">
+                                            </div>
+                                            ';
+                                        }
+                                        else
+                                        {
+                                            $output .= '
+                                            <div class="col-sm"> 
+                                            <img src="'.asset('uploads/pet-owner/uploaded-photos/Post/'.$pics->imagename).'" width="100%" height="100%" alt="">
+                                            </div>
+                                            '; 
+                                        }
                                     }
                                     $output .= '    
                                 </div> 
@@ -2092,8 +2147,95 @@ class AnimalShelterManagement extends Controller
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'receipts'=>Receipt::where('status','pending')->where('owner_id',$shelter->shelter_name)->get(),
+            'count'=>Receipt::where('status','confirmed')->where('owner_id',$shelter->shelter_name)->count(),
         );
         return view('AnimalShelter.Receipt.receipt',$data);
+    }
+    function generated(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'generated'=>AdoptionSlip::all()->where('shelter_id',$shelter->id)->where('status','pending'),
+            'countconfirm'=>AdoptionSlip::all()->where('shelter_id',$shelter->id)->where('status','confirmed')->count()
+        );
+        return view('AnimalShelter.AdoptionSlip.slip',$data);
+    }
+
+    function confirmed(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'generated'=>AdoptionSlip::all()->where('shelter_id',$shelter->id)->where('status','confirmed'),
+        );
+        return view('AnimalShelter.AdoptionSlip.confirm',$data);
+    }
+
+    function confirmreceipt(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'receipts'=>Receipt::all()->where('shelter_id',$shelter->id)->where('status','confirmed'),
+        );
+        return view('AnimalShelter.Receipt.confirmed',$data);
+    }
+
+    function newpets(){
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data = array(
+            'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(), 
+            'animal'=> DB::select("select *from animals  where owner_id ='$shelter->id'"),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'sheltercateg' =>AnimalShelter::all()->where('id',session('LoggedUser')),
+          );
+          return view('AnimalShelter.AnimalManagement.new',$data);
+    }
+
+    function confirmadoption($id){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $confirm = AdoptionSlip::find($id);
+        $confirm->status = "confirmed";
+        $confirm->save();
+
+        $animals = Animals::find($confirm->animal_id);
+        $animals->status = "Available";
+        $animals->post_status = "not posted";
+        foreach($shelter->category as $categ){
+            $animals->category = $categ->id;
+        }
+        $animals->ownertype = "Animal Shelter";
+        $animals->owner_id =$shelter->id;
+        $animals->update();
+
+        $requestadopt = Requestadoption::find($confirm->reqadoption_id);
+        $requestadopt->process = "completed";
+        $requestadopt->update();
+
+        $checkmaster = AnimalMasterList::where('animal_image',$animals->animal_image)->count();
+        if($checkmaster > 0){
+            $masterlist = AnimalMasterList::where('animal_image',$animals->animal_image)->first();
+            $masterlist->ownertype ="Animal Shelter";
+            $masterlist->owner_id = $shelter->id;
+            $masterlist->update();
+        
+        }
+        $success = array();
+        $success = [
+            'success' => 'You have successfully adopted '.$confirm->animal->name.' from '.$confirm->petowner->fname.' '.$confirm->petowner->lname,
+            'info' => ' you can check it in your pet management',
+        ];
+        AnimalShelter::find($shelter->id)->notify(new SuccessAdoption($success));
+
+        $success = array(); 
+        $success = [
+            'success' =>$confirm->animal->name.' has been successfully adopted by '.$shelter->shelter_name,
+            'info' => ' you can check it in the completed section in request for adoption',
+        ];
+        PetOwner::find($confirm->petowner_id)->notify(new SuccessAdoption($success));
+
+        return redirect()->back()->with('status','Adoption slip confirmed successfully');
     }
 }
 

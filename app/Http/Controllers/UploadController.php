@@ -11,6 +11,7 @@ use App\Models\AnimalShelter;
 use App\Models\Post;
 use App\Models\Subscription;
 use App\Models\PetOwner;
+use App\Models\Animals;
 use App\Models\UploadedPhotos;
 
 class UploadController extends Controller
@@ -180,23 +181,43 @@ class UploadController extends Controller
 
     function fetchpostphotos($id)
     {
-     $multiple = UploadedPhotos::all()->where('animal_id',$id);   
-     $output = '<div class="row">';
-     foreach($multiple as $image)
-     {
-      $output .= '
-      <div class="col-md-3" style="margin-bottom:16px;" align="center">
-                <div style="display:flex">
-                    <img style="width:200px; height:150px; padding:3px" src="'.asset('uploads/animal-shelter/uploaded-photos/Post/' . $image->imagename).'"/>
-                    <button style="margin-top:1%" type="button" class="btn btn-secondary remove_image" id="'.$image->imagename.'">Remove</button>
-                </div>
-            </div>
-      ';
+     $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+     $checkanimal = Animals::where('id',$id)->where('ownertype','Animal Shelter')->count();
+     if($checkanimal == 0){
+        $multiple = UploadedPhotos::all()->where('animal_id',$id);   
+        $output = '<div class="row">';
+        foreach($multiple as $image)
+        { 
+         $output .= '
+         <div class="col-md-3" style="margin-bottom:16px;" align="center">
+                   <div style="display:flex">
+                       <img style="width:200px; height:150px; padding:3px" src="'.asset('uploads/animal-shelter/uploaded-photos/Post/' . $image->imagename).'"/>
+                       <button style="margin-top:1%" type="button" class="btn btn-secondary remove_image" id="'.$image->imagename.'">Remove</button>
+                   </div>
+               </div>
+         ';
+        }
+        $output .= '</div>';
+        echo $output;
      }
-     $output .= '</div>';
-     echo $output;
+     else{
+        $multiple = UploadedPhotos::all()->where('animal_id',$id);   
+        $output = '<div class="row">';
+        foreach($multiple as $image)
+        {
+         $output .= '
+         <div class="col-md-3" style="margin-bottom:16px;" align="center">
+                   <div style="display:flex">
+                       <img style="width:200px; height:150px; padding:3px" src="'.asset('uploads/pet-owner/uploaded-photos/Post/' . $image->imagename).'"/>
+                       <button style="margin-top:1%" type="button" class="btn btn-secondary remove_image" id="'.$image->imagename.'">Remove</button>
+                   </div>
+               </div>
+         ';
+        }
+        $output .= '</div>';
+        echo $output;
+        }
     }
-
     function fetchpostphotos_petowner($id)
     {
      $multiple = UploadedPhotos::all()->where('animal_id',$id);   

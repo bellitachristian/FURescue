@@ -16,29 +16,35 @@ Completed Request
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Profile</th>
-                            <th>Name</th>
-                            <th style="text-align:center">Feedback</th>
-                            <th style="text-align:center">Action</th>
+                            <th style="text-align:center">Slip Number</th>
+                            <th style="text-align:center">Shelter Profile</th>
+                            <th style="text-align:center">Shelter Name</th>
+                            <th style="text-align:center">Animal Photo</th>
+                            <th style="text-align:center">Animal Name</th>
+                            <th style="text-align:center">Approved Date</th>
+                            <th style="text-align:center">Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($shelters as $shelter)
+                    @foreach($generated as $generate)
                         <tr>
-                            <td>{{$shelter->id}}</td>
-                            <td>
-                                <img src="{{asset('uploads/animal-shelter/profile/'.$shelter->shelter->profile)}}" width="70px" height="70px" alt="">
+                            <td style="text-align:center">{{$generate->id}}</td>
+                            <td style="text-align:center" >{{$generate->slip_number}}</td>
+                            <td style="text-align:center">
+                                <img src="{{asset('uploads/animal-shelter/profile/'.$generate->shelter->profile)}}" width="70px" height="70px" alt="">
                             </td>
-                            <td>{{$shelter->shelter->shelter_name}}</td>
+                            <td style="text-align:center">{{$generate->shelter->shelter_name}}</td>
                             <td style="text-align:center">
-                                {{$shelter->feedback}}
+                                <img src="{{asset('uploads/animals/'.$generate->animal->animal_image)}}" width="70px" height="70px" alt="">
                             </td >
+                            <td style="text-align:center">{{$generate->animal->name}}</td>
+                            <td style="text-align:center">{{$generate->date_approve}}</td>
                             <td style="text-align:center">
-                                <a href="{{route('select',$shelter->id)}}"><button type="button" class="btn btn-success">Generate Adoption Slip</button></a>       
-                            </td>   
-                        </tr> 
+                                <button disabled class="btn btn-success">Completed</button>
+                            </td>
+                        </tr>
                     @endforeach
-                    @if(empty($shelter))   
+                    @if(empty($generate))
                         <h6 class="alert alert-danger">No completed request</h6>
                     @endif
                     </tbody>

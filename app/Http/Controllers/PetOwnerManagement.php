@@ -80,7 +80,7 @@ class PetOwnerManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'animal' =>Animals::all()->where('post_status','not posted')->where('status','Available')->where('petowner_id','=',$petowner->id)
+            'animal' =>Animals::all()->where('post_status','not posted')->where('status','Available')->where('petowner_id','=',$petowner->id)->where('owner_id','none')
         );
         return view('PetOwner.Post Pet.createpost',$data);
     }
@@ -89,7 +89,7 @@ class PetOwnerManagement extends Controller
         $petowner=PetOwner::where('id','=',session('LoggedUserPet'))->first();       
         $data = array(
           'LoggedUserInfo' => PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-          'animal'=> DB::select("select *from animals where petowner_id='$petowner->id'"),
+          'animal'=> DB::select("select *from animals where petowner_id='$petowner->id' and owner_id='none'"),
           'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first()
         );  
         return view('PetOwner.Vaccine & Deworm.Allocate',$data);
@@ -343,11 +343,10 @@ class PetOwnerManagement extends Controller
 
     function petbook_viewbook(){
         $petowner=PetOwner::where('id','=',session('LoggedUserPet'))->first(); 
-
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'animal'=> DB::select("select *from animals  where petbooked = 'Not generated' and petowner_id ='$petowner->id'"),
+            'animal'=> Animals::where('petbooked','Not generated')->where('petowner_id',$petowner->id)->where('ownertype','none')->get(),
             'petbook' => PetBook::where('petowner_id',$petowner->id),
         );
         return view('PetOwner.Pet Book.ViewBook',$data);
@@ -355,12 +354,12 @@ class PetOwnerManagement extends Controller
 
     function load_books(){
         $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
-        $petbook = DB::select("select *from animal_master_list where petowner_id ='$petowner->id'");   
+        $petbook = AnimalMasterList::where('petowner_id',$petowner->id)->where('ownertype','none')->get();
         $output = '<div class="row">';
         foreach($petbook as $books)
         {
          $output .= '
-         <div class="flip-card">
+         <div class="flip-card"> 
            <div id="color" class="flip-card-inner">
                <div class="flip-card-front">
                    <img src="'.asset('uploads/animals/' . $books->animal_image).'" alt="">
@@ -683,12 +682,12 @@ class PetOwnerManagement extends Controller
             return redirect()->back()->with('status1','Something went wrong! Try again later');
         }    
     }
-
+ 
     function animal_view(){
         $petowner=PetOwner::where('id','=',session('LoggedUserPet'))->first();
         $data = array(
             'LoggedUserInfo' => PetOwner::where('id','=',session('LoggedUserPet'))->first(), 
-            'animal'=> DB::select("select *from animals  where petowner_id ='$petowner->id'and status ='Available'"),
+            'animal'=> DB::select("select *from animals  where petowner_id ='$petowner->id' and owner_id ='none' and status ='Available'"),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petownercateg' =>PetOwner::all()->where('id',session('LoggedUserPet')),
           );
@@ -1555,7 +1554,7 @@ class PetOwnerManagement extends Controller
             <div class="col-sm">
                 <div class="card shadow mb-4">
                     <div class="card-header">';
-                        if($posts->status == "Available"){
+                        if($posts->status == "Available" && $posts->owner_id =="none"){
                         $output .= '
                         <div class="dropdown">
                             <a type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -1586,6 +1585,21 @@ class PetOwnerManagement extends Controller
                         </div> 
                         ';
                         }
+                        elseif($posts->status == "Available" && $posts->owner_id !="none"){
+                            $output .= '
+                            <div class="dropdown">
+                            <a type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i> </label></span>
+                            </a> 
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                ';
+                                    $deletepost = Post::where('animal_id',$posts->id)->first(); $output .= '
+                                    <a style="text-decoration:none" href="#"><button style="text-decoration:none" class="dropdown-item" value="'.$deletepost->id.'" id="remove">Remove</button></a>
+                                </div> 
+                            <label>&nbsp &nbsp<i style="color:red; font-size:12px" class="fa fa-circle"></i> Adopted</label><span><label style="float:right"> posted '.$posted->diffForHumans(). ' &nbsp 
+                        </div> 
+                        ';
+                        }
                         else{
                             $output .= '
                             <div class="dropdown">
@@ -1597,7 +1611,7 @@ class PetOwnerManagement extends Controller
                                     $deletepost = Post::where('animal_id',$posts->id)->first(); $output .= '
                                     <a style="text-decoration:none" href="#"><button style="text-decoration:none" class="dropdown-item" value="'.$deletepost->id.'" id="remove">Remove</button></a>
                                 </div> 
-                            <label>&nbsp &nbsp<i style="color:yellow; font-size:12px" class="fa fa-circle"></i> '.$posts->status.'</label><span><label style="float:right"> posted '.$posted->diffForHumans(). ' &nbsp 
+                            <label>&nbsp &nbsp<i style="color:red; font-size:12px" class="fa fa-circle"></i> '.$posts->status.'</label><span><label style="float:right"> posted '.$posted->diffForHumans(). ' &nbsp 
                         </div> 
                         ';
                         }
@@ -1748,20 +1762,24 @@ class PetOwnerManagement extends Controller
         $post = Post::find($id);
         $animal = Animals::where('id',$post->animal_id)->first();
         $photos = UploadedPhotos::all()->where('animal_id',$animal->id);
-
-        $animal->post_status = "not posted";
-        $animal->update();
-
-        DB::table('uploaded_photos')->where('animal_id',$animal->id)->delete();
-        foreach($photos as $photo){
-        $destination = 'uploads/pet-owner/uploaded-photos/Post/'.$photo->imagename;
-            if(File::exists($destination)){ 
-                File::delete($destination);
-            }   
+        $check = Animals::find($post->animal_id)->where('owner_id','none')->count();
+        if($check == 0){
+            $post->delete();
         }
-        $post->delete();
+        else{
+            $animal->post_status = "not posted";
+            $animal->update();
+            DB::table('uploaded_photos')->where('animal_id',$animal->id)->delete();
+            foreach($photos as $photo){
+            $destination = 'uploads/pet-owner/uploaded-photos/Post/'.$photo->imagename;
+                if(File::exists($destination)){ 
+                    File::delete($destination);
+                }   
+            }
+            $post->delete();
+        }
+       
      }
-
      function choosesubscription($id){
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
@@ -1931,6 +1949,7 @@ class PetOwnerManagement extends Controller
             'countsentreq'=> Requestadoption::where('petowner_id',$petowner->id)->where('status','pending')->count(),
             'countrejectreq'=> Requestadoption::where('petowner_id',$petowner->id)->where('status','rejected')->count(),
             'countapprovereq'=> Requestadoption::where('petowner_id',$petowner->id)->where('status','approved')->count(),
+            'countcomplete'=> Requestadoption::where('petowner_id',$petowner->id)->where('process','completed')->count(),
         );
         return view('PetOwner.Request.request',$data);
     }
@@ -1988,10 +2007,11 @@ class PetOwnerManagement extends Controller
     }
 
     function complete(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'shelters'=>Requestadoption::where('status','approved')->where('process','complete')->get(),
+            'generated'=>AdoptionSlip::where('status','confirmed')->where('petowner_id',$petowner->id)->get(),
         );
         return view('PetOwner.Request.Process.complete',$data);
     }
@@ -2001,7 +2021,7 @@ class PetOwnerManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'generated'=>AdoptionSlip::all(),
+            'generated'=>AdoptionSlip::all()->where('petowner_id',$petowner->id),
         );
         return view('PetOwner.Request.Process.generated',$data);
     }
@@ -2026,17 +2046,14 @@ class PetOwnerManagement extends Controller
             return view('PetOwner.Request.Process.approve',$data);
         }
         else{
-            foreach($petowner->animals as $animals){
-                $check = AdoptionSlip::where('petowner_id',$petowner->id)->where('animal_id',$animals->id)->pluck('reqadoption_id')->toArray();
-            
-                $data =array(
-                    'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-                    'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-                    'shelters'=>Requestadoption::whereNotIn('id',$check)->get(),
-                );
-                return view('PetOwner.Request.Process.approve',$data);
-            }
-        }
+            $check = AdoptionSlip::where('petowner_id',$petowner->id)->pluck('reqadoption_id')->toArray();
+            $data =array(
+                'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+                'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+                'shelters'=>Requestadoption::whereNotIn('id',$check)->get(),
+            );
+            return view('PetOwner.Request.Process.approve',$data);
+        } 
     }
     function review($id){
         $data =array(
@@ -2088,6 +2105,17 @@ class PetOwnerManagement extends Controller
         $generate->save();
          
         return redirect()->back()->with('status','Generated successfully');
+    }
+
+    function printview($id){
+        $ldate = date('F d, Y');
+        $data =array( 
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'slip'=>AdoptionSlip::find($id),
+            'today'=>$ldate,
+        );
+        return view('PetOwner.Request.Process.print',$data);
     }
 
 }
