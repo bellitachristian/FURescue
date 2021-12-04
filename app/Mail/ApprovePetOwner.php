@@ -28,6 +28,6 @@ class ApprovePetOwner extends Mailable
      */
     public function build()
     {
-        return $this->from('furescue1@gmail.com','furescue')->subject('Welcome Pet Owner!')->view('Mail.PetOwner-approve-email',['mail_data'=> $this->approve_petowner_data]);
+        return $this->from('furescueteam@gmail.com','furescue')->subject('Welcome Pet Owner!')->view('Mail.PetOwner-approve-email',['mail_data'=> $this->approve_petowner_data]);
     }
 }

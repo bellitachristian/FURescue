@@ -28,6 +28,6 @@ class SignupEmail extends Mailable
      */
     public function build()
     {
-        return $this->from('furescue1@gmail.com','furescue')->subject('Welcome Animal Shelter!')->view('Mail.Verify-account-email',['mail_data'=> $this->sign_mail_data]);
+        return $this->from('furescueteam@gmail.com','furescue')->subject('Welcome Animal Shelter!')->view('Mail.Verify-account-email',['mail_data'=> $this->sign_mail_data]);
     }
 }

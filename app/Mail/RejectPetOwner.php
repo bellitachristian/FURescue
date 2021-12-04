@@ -28,6 +28,6 @@ class RejectPetOwner extends Mailable
      */
     public function build()
     {
-        return $this->from('furescue1@gmail.com','furescue')->subject('Special Notice!')->view('Mail.Shelter-reject-email',['mail_data'=> $this->reject_petowner_data]);
+        return $this->from('furescueteam@gmail.com','furescue')->subject('Special Notice!')->view('Mail.Shelter-reject-email',['mail_data'=> $this->reject_petowner_data]);
     }
 }

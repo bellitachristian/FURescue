@@ -76,7 +76,7 @@ class PetOwnerManagement extends Controller
                         whereHas('petownerPhoto',function($query)use($petowner){
                           $query->where('petowner_id',$petowner->id);
                         })
-                        ->where('is_verified_petowner','2')
+                        ->where('is_verified_petowner','0')
                         ->where('grace','!=','0')
                         ->count();
         $data =array(

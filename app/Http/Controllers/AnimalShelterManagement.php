@@ -45,33 +45,34 @@ use App\Notifications\ApproveRequest;
 use App\Notifications\SuccessAdoption;
 use App\Notifications\ApproveRejectShelterNotif;
 use App\Notifications\Checkproofsubscriptionpayment;
+use App\Notifications\ApproveProofPayment;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\DB;
 
 class AnimalShelterManagement extends Controller
 {
-    function vaccine_dewormView(){     
-        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();       
+    function vaccine_dewormView(){
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data = array(
           'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
           'vac'=> DB::select("select *from vaccine where shelter_id='$shelter->id'"),
           'deworm'=> DB::select("select *from deworm where shelter_id='$shelter->id'"),
-          'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first() 
-        );   
+          'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first()
+        );
         return view('AnimalShelter.Vaccine & Deworm.Vaccine',$data);
     }
     function ViewVaccineHistory(){
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data = array(
-            'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(), 
+            'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'animal'=> DB::select("select *from animals  where shelter_id ='$shelter->id'"),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'apply'=> DB::table('allocatevaccine')
                    -> join('animals','allocatevaccine.animal_id',"=",'animals.id')
                    -> join('vaccine','allocatevaccine.vac_id',"=",'vaccine.id')
                    -> where('animals.shelter_id', $shelter->id)
-                   -> get() 
+                   -> get()
           );
            return view('AnimalShelter.Vaccine & Deworm.VaccineHistory',$data);
     }
@@ -79,14 +80,14 @@ class AnimalShelterManagement extends Controller
     function ViewDewormHistory(){
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data = array(
-            'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(), 
+            'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'animal'=> DB::select("select *from animals  where shelter_id ='$shelter->id'"),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'apply'=> DB::table('allocatedeworm')
                    -> join('animals','allocatedeworm.animal_id',"=",'animals.id')
                    -> join('deworm','allocatedeworm.dew_id',"=",'deworm.id')
                    -> where('animals.shelter_id', $shelter->id)
-                   -> get() 
+                   -> get()
           );
            return view('AnimalShelter.Vaccine & Deworm.DewormHistory',$data);
     }
@@ -94,7 +95,7 @@ class AnimalShelterManagement extends Controller
     function animal_view(){
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data = array(
-            'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(), 
+            'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'animal'=> DB::select("select *from animals  where shelter_id ='$shelter->id' and status ='Available'"),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'sheltercateg' =>AnimalShelter::all()->where('id',session('LoggedUser')),
@@ -114,7 +115,7 @@ class AnimalShelterManagement extends Controller
     }
 
     function EditVaccine(Request $req, $id){
-       $vaccine = $req->vac_name;  
+       $vaccine = $req->vac_name;
        $description = $req->desc;
        DB::update("update vaccine set vac_name = '$vaccine', vac_desc ='$description' where id ='$id'");
        return redirect()->back()->with('status','Vaccine Updated Successfully');
@@ -127,8 +128,8 @@ class AnimalShelterManagement extends Controller
     function Allocate_Deworm_Animal($id){
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $dewormhistory = Animals::whereHas('allocatedeworm', function($q) use ($id) {
-            $q->where('animal_id','=',$id);    
-        })->pluck('id')->toArray();     
+            $q->where('animal_id','=',$id);
+        })->pluck('id')->toArray();
         $data = array(
             'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'deworm'=> Deworm::find($id),
@@ -137,14 +138,14 @@ class AnimalShelterManagement extends Controller
             'notallocated' => Animals::whereNotIn('id', $allocateddeworm)->where('shelter_id',$shelter->id)->get()->toArray()
         );
         return view('AnimalShelter.Vaccine & Deworm.Allocate_Pet',$data);
-    } 
-    function Allocate_Vaccine_Animal($id){       
+    }
+    function Allocate_Vaccine_Animal($id){
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $vaccinehistory = Vaccine::whereHas('allocatevaccine', function($q) use ($id) {
-            $q->where('animal_id','=',$id);    
+            $q->where('animal_id','=',$id);
         })->pluck('id')->toArray();
         $dewormhistory = Deworm::whereHas('allocatedeworm', function($q) use ($id) {
-            $q->where('animal_id','=',$id);    
+            $q->where('animal_id','=',$id);
         })->pluck('id')->toArray();
         $data = array(
             'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -155,15 +156,15 @@ class AnimalShelterManagement extends Controller
         );
         return view('AnimalShelter.Vaccine & Deworm.Allocate_Pet',$data);
     }
-    
+
     function Allocation_Deworm(Request $req, $id, $dew_id){
         $deworm = Deworm::where('id',$dew_id)->first();
         $allocate = new AllocateDeworming;
         $allocate->dew_id = $dew_id;
         $allocate->animal_id = $id;
         $allocate->dew_date = $req->dew_date;
-        $allocate->dew_expiry_date = $req->dew_expiry; 
-        $allocate->save();     
+        $allocate->dew_expiry_date = $req->dew_expiry;
+        $allocate->save();
 
         $history = new DewormHistory;
         $history->dew_name = $deworm->dew_name;
@@ -188,7 +189,7 @@ class AnimalShelterManagement extends Controller
             }
         }
 
-        return redirect('AllocateVaccine/'.$id)->with('status','Deworm Allocated Successfully');     
+        return redirect('AllocateVaccine/'.$id)->with('status','Deworm Allocated Successfully');
     }
 
     function Allocation_Vaccine(Request $req, $id, $vac_id){
@@ -197,8 +198,8 @@ class AnimalShelterManagement extends Controller
         $allocate->vac_id = $vac_id;
         $allocate->animal_id = $id;
         $allocate->vac_date = $req->vac_date;
-        $allocate->vac_expiry_date = $req->vac_expiry; 
-        $allocate->save();        
+        $allocate->vac_expiry_date = $req->vac_expiry;
+        $allocate->save();
 
         $history = new VaccineHistory;
         $history->vac_name = $vaccine->vac_name;
@@ -208,7 +209,7 @@ class AnimalShelterManagement extends Controller
         $history->animal_id = $id;
         $history->stats = "Active";
         $history->save();
-        
+
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $animal = Animals::where('shelter_id',$shelter->id)->orWhere('owner_id',$shelter->id)->first();
         $getIdMaster = AnimalMasterList::where('animal_image',$animal->animal_image)->where('shelter_id',$shelter->id)->count();
@@ -222,12 +223,12 @@ class AnimalShelterManagement extends Controller
                 $vachistory->update();
             }
         }
-    
-        return redirect('AllocateVaccine/'.$id)->with('status','Vaccine Allocated Successfully');     
+
+        return redirect('AllocateVaccine/'.$id)->with('status','Vaccine Allocated Successfully');
     }
 
     function EditDeworm(Request $req, $id){
-        $deworm = $req->dew_name;  
+        $deworm = $req->dew_name;
         $description = $req->desc;
         DB::update("update deworm set dew_name = '$deworm', dew_desc ='$description' where id ='$id'");
         return redirect()->back()->with('status','Deworm Updated Successfully');
@@ -249,7 +250,7 @@ class AnimalShelterManagement extends Controller
     }
 
     function ViewAllocationVaccine($id,$vac_id){
-  
+
         $data = array(
             'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'animal'=> Animals::find($id),
@@ -269,12 +270,12 @@ class AnimalShelterManagement extends Controller
         return view('AnimalShelter.Vaccine & Deworm.AllocationDeworming',$data);
     }
     function allocate_view(){
-        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();       
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data = array(
           'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
           'animal'=> DB::select("select *from animals where (shelter_id='$shelter->id' or owner_id ='$shelter->id') and (status ='Available')"),
           'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first()
-        );  
+        );
         return view('AnimalShelter.Vaccine & Deworm.Allocate',$data);
     }
 
@@ -283,9 +284,9 @@ class AnimalShelterManagement extends Controller
 
         $id = $shelter->id;
         $subscription = Subscription::whereHas('subscription_transaction', function($q) use ($id) {
-            $q->where('shelter_id','=',$id); 
+            $q->where('shelter_id','=',$id);
             $q->where('status','=','approved');
-        })->pluck('id')->toArray(); 
+        })->pluck('id')->toArray();
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -312,7 +313,7 @@ class AnimalShelterManagement extends Controller
         whereHas('shelterPhoto',function($query)use($shelter){
           $query->where('shelter_id',$shelter->id);
         })
-        ->where('is_verified_shelter','2')
+        ->where('is_verified_shelter','0')
         ->where('grace','!=','0')
         ->count();
         $data =array(
@@ -327,13 +328,13 @@ class AnimalShelterManagement extends Controller
         $shelter = AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $exists = Category::first();
         try {
-            if($req->dogs == "Dog"){ 
+            if($req->dogs == "Dog"){
                 $dogs = Category::where('category_name','=',$req->dogs)->where('shelter_id','=',$shelter->id)->count();
                 if(is_null($exists)){
                     $category = new Category;
                     $category->category_name = $req->dogs;
                     $category->shelter_id = $shelter->id;
-                    $category->save();          
+                    $category->save();
                 }
                 else{
                     if($dogs == 0){
@@ -350,7 +351,7 @@ class AnimalShelterManagement extends Controller
                     'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
                     'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first()
                 );
-                return view('AnimalShelter.SettingUp.SecondIntro',$data);    
+                return view('AnimalShelter.SettingUp.SecondIntro',$data);
             }
             elseif($req->cats == "Cat"){
                 $cats = Category::where('category_name','=',$req->cats)->where('shelter_id','=',$shelter->id)->count();
@@ -375,12 +376,12 @@ class AnimalShelterManagement extends Controller
                     'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
                     'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first()
                 );
-                return view('AnimalShelter.SettingUp.SecondIntro',$data);   
+                return view('AnimalShelter.SettingUp.SecondIntro',$data);
             }
             else{
                 $dog = Category::where('category_name','=','Dog')->where('shelter_id','=',$shelter->id)->count();
                 $cat = Category::where('category_name','=','Cat')->where('shelter_id','=',$shelter->id)->count();
-                if(is_null($exists)){ 
+                if(is_null($exists)){
                     $category = new Category;
                     $category->category_name = 'Dog';
                     $category->shelter_id = $shelter->id;
@@ -403,7 +404,7 @@ class AnimalShelterManagement extends Controller
                         $category->shelter_id = $shelter->id;
                         $category->save();
                     }
-                }    
+                }
                 $data =array(
                     'dog' => "",
                     'cat' => "",
@@ -411,7 +412,7 @@ class AnimalShelterManagement extends Controller
                     'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
                     'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first()
                 );
-                return view('AnimalShelter.SettingUp.SecondIntro',$data);    
+                return view('AnimalShelter.SettingUp.SecondIntro',$data);
             }
         } catch (\Throwable $th) {
             return redirect()->back()->with('status1','Something went wrong pls try again!');
@@ -458,8 +459,8 @@ class AnimalShelterManagement extends Controller
             }
         }
         else{
-            
-        } 
+
+        }
         $data = array(
             'dog' => "",
             'cat' => "Cat",
@@ -479,8 +480,8 @@ class AnimalShelterManagement extends Controller
             $catbreed = new Breed;
             $catbreed->breed_name = $req->breed_name;
             $catbreed->categ_id = $categ_id->id;
-            $catbreed->save();     
-        }     
+            $catbreed->save();
+        }
         $data = array(
             'dog' => "",
             'cat' => "Cat",
@@ -496,7 +497,7 @@ class AnimalShelterManagement extends Controller
         $categ_id = Category::where('category_name','=', 'Cat')->where('shelter_id','=',$shelter->id)->first();
         $breed = DB::delete("Delete from breed where id ='$req->id'");
         $data = array(
-            'dog' => "",    
+            'dog' => "",
             'cat' => "Cat",
             'both' =>"",
             'breed'=> DB::select("select *from breed  where categ_id ='$categ_id->id'"),
@@ -510,11 +511,11 @@ class AnimalShelterManagement extends Controller
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $categ_cat = Category::where('category_name','=', 'Cat')->where('shelter_id','=',$shelter->id)->first();
         $breed1 = Breed::where('categ_id',$categ_cat->id)->count();
-        
+
         if($breed1 > 0 || $breed1 <= 0){
             foreach($req->cat as $cats){
                 if($cats == "Cross-breed"){
-                    $exist = Breed::where('breed_name',$cats)->where('categ_id',$categ_cat->id)->count(); 
+                    $exist = Breed::where('breed_name',$cats)->where('categ_id',$categ_cat->id)->count();
                     if($exist == 0){
                         if($req->catbreed ==""){
                             $breed = new Breed;
@@ -527,11 +528,11 @@ class AnimalShelterManagement extends Controller
                             $breed->breed_name = $cats.''.'('.$req->catbreed.')';
                             $breed->categ_id = $categ_cat->id;
                             $breed->save();
-                        }    
-                    }        
+                        }
+                    }
                 }
                 else{
-                    $exist = Breed::where('breed_name',$cats)->where('categ_id',$categ_cat->id)->count(); 
+                    $exist = Breed::where('breed_name',$cats)->where('categ_id',$categ_cat->id)->count();
                     if($exist == 0){
                         $breed = new Breed;
                         $breed->breed_name = $cats;
@@ -549,12 +550,12 @@ class AnimalShelterManagement extends Controller
             if($type2 > 0){
                 if($petbreed1 > 0){
                     $shelter->is_welcome_shelter = "1";
-                    $shelter->update();      
+                    $shelter->update();
                 }
             }
         }
         $data =array(
-            'dog' => "",    
+            'dog' => "",
             'cat' => "Cat",
             'both' =>"",
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -636,8 +637,8 @@ class AnimalShelterManagement extends Controller
             }
         }
         else{
-           
-        } 
+
+        }
         $data = array(
             'dog' => "Dog",
             'cat' => "",
@@ -657,11 +658,11 @@ class AnimalShelterManagement extends Controller
             $dogbreed = new Breed;
             $dogbreed->breed_name = $req->breed_name;
             $dogbreed->categ_id = $categ_id->id;
-            $dogbreed->save();     
-        }     
+            $dogbreed->save();
+        }
         $data = array(
             'dog' => "Dog",
-            'cat' => "",    
+            'cat' => "",
             'both' =>"",
             'breed'=> DB::select("select *from breed  where categ_id ='$categ_id->id'"),
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -691,7 +692,7 @@ class AnimalShelterManagement extends Controller
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $categ_dog = Category::where('category_name','=', 'Dog')->where('shelter_id','=',$shelter->id)->first();
         $breed = Breed::where('categ_id',$categ_dog->id)->count();
-        if($breed > 0 || $breed <= 0){ 
+        if($breed > 0 || $breed <= 0){
             foreach($req->dog as $dogs){
                 if($dogs == "Cross-breed")
                 {
@@ -708,8 +709,8 @@ class AnimalShelterManagement extends Controller
                             $breed->breed_name = $dogs.''.'('.$req->dogbreed.')';
                             $breed->categ_id = $categ_dog->id;
                             $breed->save();
-                        }    
-                    }  
+                        }
+                    }
                 }
                 else{
                     $exist = Breed::where('breed_name',$dogs)->where('categ_id',$categ_dog->id)->count();
@@ -719,10 +720,10 @@ class AnimalShelterManagement extends Controller
                         $breed->categ_id = $categ_dog->id;
                         $breed->save();
                     }
-                }           
+                }
             }
-        } 
-       
+        }
+
         $categ = Category::where('shelter_id',$shelter->id)->count();
         $type1 = Type::where('categ_id',$categ_dog->id)->count();
         $petbreed = Breed::where('categ_id',$categ_dog->id)->count();
@@ -736,7 +737,7 @@ class AnimalShelterManagement extends Controller
             }
         }
         $data =array(
-            'dog' => "Dog",    
+            'dog' => "Dog",
             'cat' => "",
             'both' =>"",
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -795,7 +796,7 @@ class AnimalShelterManagement extends Controller
                 $dogbreed = new Breed;
                 $dogbreed->breed_name = $req->breed_dogname;
                 $dogbreed->categ_id = $categ_dog->id;
-                $dogbreed->save();   
+                $dogbreed->save();
             }
         }
         elseif($req->breed_catname){
@@ -804,13 +805,13 @@ class AnimalShelterManagement extends Controller
                 $catbreed = new Breed;
                 $catbreed->breed_name = $req->breed_catname;
                 $catbreed->categ_id = $categ_cat->id;
-                $catbreed->save(); 
+                $catbreed->save();
             }
 
         }
         $data = array(
             'dog' => "",
-            'cat' => "",    
+            'cat' => "",
             'both' =>"Both",
             'breed1'=> DB::select("select *from breed  where categ_id ='$categ_dog->id'"),
             'breed2'=> DB::select("select *from breed  where categ_id ='$categ_cat->id'"),
@@ -845,13 +846,13 @@ class AnimalShelterManagement extends Controller
         $categ_cat = Category::where('category_name','=', 'Cat')->where('shelter_id','=',$shelter->id)->first();
         $type = Type::where('categ_id',$categ_dog->id)->count();
         $type1 = Type::where('categ_id',$categ_cat->id)->count();
-        if($type == 0 && $type1 == 0){ 
+        if($type == 0 && $type1 == 0){
             foreach($req->dog as $dogss){
                 if($dogss == "Puppy"){
                     $type = new Type;
                     $type->type_name = $dogss.''.'('.$req->pup.')';
                     $type->categ_id = $categ_dog->id;
-                    $type->save();  
+                    $type->save();
                 }
                 elseif($dogss == "Adolescent"){
                     $type = new Type;
@@ -871,7 +872,7 @@ class AnimalShelterManagement extends Controller
                     $type->categ_id = $categ_dog->id;
                     $type->save();
                 }
-               
+
             }
             foreach($req->cat as $catss){
 
@@ -879,36 +880,36 @@ class AnimalShelterManagement extends Controller
                     $type = new Type;
                     $type->type_name = $catss.''.'('.$req->kit.')';
                     $type->categ_id = $categ_cat->id;
-                    $type->save();     
+                    $type->save();
                 }
                 elseif($catss == "Junior"){
                     $type = new Type;
                     $type->type_name = $catss.''.'('.$req->jun.')';
                     $type->categ_id = $categ_cat->id;
-                    $type->save();     
-                }    
+                    $type->save();
+                }
                 elseif($catss == "Prime"){
                     $type = new Type;
                     $type->type_name = $catss.''.'('.$req->prim.')';
                     $type->categ_id = $categ_cat->id;
-                    $type->save();     
-                }    
+                    $type->save();
+                }
                 elseif($catss == "Mature"){
                     $type = new Type;
                     $type->type_name = $catss.''.'('.$req->mat.')';
                     $type->categ_id = $categ_cat->id;
-                    $type->save();     
-                }      
+                    $type->save();
+                }
                 elseif($catss == "Senior"){
                     $type = new Type;
                     $type->type_name = $catss.''.'('.$req->sen.')';
                     $type->categ_id = $categ_cat->id;
-                    $type->save();     
-                }     
+                    $type->save();
+                }
             }
-        } 
+        }
         else{
-           
+
         }
         $data = array(
             'dog' => "",
@@ -919,7 +920,7 @@ class AnimalShelterManagement extends Controller
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first()
         );
-        return view('AnimalShelter.SettingUp.ThirdIntro',$data); 
+        return view('AnimalShelter.SettingUp.ThirdIntro',$data);
     }
 
     function savebothbreed(Request $req){
@@ -928,7 +929,7 @@ class AnimalShelterManagement extends Controller
         $categ_cat = Category::where('category_name','=', 'Cat')->where('shelter_id','=',$shelter->id)->first();
         $breed = Breed::where('categ_id',$categ_dog->id)->count();
         $breed1 = Breed::where('categ_id',$categ_cat->id)->count();
-        if($breed > 0 || $breed <= 0){ 
+        if($breed > 0 || $breed <= 0){
             foreach($req->dog as $dogs){
                 if($dogs == "Cross-breed")
                 {
@@ -945,7 +946,7 @@ class AnimalShelterManagement extends Controller
                             $breed->breed_name = $dogs.''.'('.$req->dogbreed.')';
                             $breed->categ_id = $categ_dog->id;
                             $breed->save();
-                        }    
+                        }
 
                     }
                 }
@@ -958,9 +959,9 @@ class AnimalShelterManagement extends Controller
                         $breed->save();
                     }
                 }
-               
+
             }
-        } 
+        }
         if($breed1 > 0 || $breed1 <= 0){
             foreach($req->cat as $cats){
                 if($cats == "Cross-breed"){
@@ -977,7 +978,7 @@ class AnimalShelterManagement extends Controller
                             $breed->breed_name = $cats.''.'('.$req->catbreed.')';
                             $breed->categ_id = $categ_cat->id;
                             $breed->save();
-                        }    
+                        }
 
                     }
                 }
@@ -1007,7 +1008,7 @@ class AnimalShelterManagement extends Controller
             }
         }
         $data =array(
-            'dog' => "",    
+            'dog' => "",
             'cat' => "",
             'both' =>"Both",
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -1023,7 +1024,7 @@ class AnimalShelterManagement extends Controller
         $catfee = AdoptionFee::where('categ_id',$categ_cat->id)->count();
         if($dogfee == 0 && $catfee == 0){
             foreach($req->fee as $fees){
-                if($fees == "Free"){ 
+                if($fees == "Free"){
                     $dogfees = new AdoptionFee;
                     $dogfees->type = "Free";
                     $dogfees->dog_fee = "FREE";
@@ -1071,20 +1072,20 @@ class AnimalShelterManagement extends Controller
         return view('AnimalShelter.welcomepage',$data);
 
     }
-  
+
     function AddAnimal(Request $req){
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $stats ='Available';
         $owner = new PetOwner;
         $deworm = new Deworm;
-        $vaccine = new Vaccine; 
+        $vaccine = new Vaccine;
         $animal = new Animals;
         if($req->hasfile('animal_image')){
             $file = $req->file('animal_image');
             $extention =$file->getClientOriginalExtension();
             $filename =time().'.'.$extention;
             $file->move('uploads/animals/',$filename);
-            $animal ->animal_image = $filename;      
+            $animal ->animal_image = $filename;
         }
         $animal->name = $req->name;
         $animal->category = $req->category;
@@ -1098,9 +1099,9 @@ class AnimalShelterManagement extends Controller
         $animal->pet_stage = $req->stage;
         $animal->status = $stats;
         $animal->petbooked ="Not generated";
-        $animal->petowner_id =$owner->id;   
+        $animal->petowner_id =$owner->id;
         $animal->shelter_id =$shelter->id;
- 
+
         $animal->save();
 
         return redirect()->back()->with('status','Animal Added Successfully');
@@ -1119,7 +1120,7 @@ class AnimalShelterManagement extends Controller
                 $extention =$file->getClientOriginalExtension();
                 $filename =time().'.'.$extention;
                 $file->move('uploads/animals/',$filename);
-                $animal ->animal_image = $filename;      
+                $animal ->animal_image = $filename;
             }
             $animal->name = $req->name;
             $animal->age = $req->age;
@@ -1142,7 +1143,7 @@ class AnimalShelterManagement extends Controller
                     $extention =$file->getClientOriginalExtension();
                     $filename =time().'.'.$extention;
                     $file->move('uploads/animals/',$filename);
-                    $master->animal_image = $filename;      
+                    $master->animal_image = $filename;
                 }
                 $master->name = $req->name;
                 $master->age = $req->age;
@@ -1154,12 +1155,12 @@ class AnimalShelterManagement extends Controller
                 $master->info = $req->info;
                 $master->update();
             }
-            
-            return redirect()->back()->with('status','Animal Updated Successfully');      
+
+            return redirect()->back()->with('status','Animal Updated Successfully');
         } catch (\Throwable $th) {
             return redirect()->back()->with('status1','Something went wrong! Try again later');
         }
-        
+
     }
 
     function UpdatePassword(Request $req, $id){
@@ -1167,7 +1168,7 @@ class AnimalShelterManagement extends Controller
         $newpass = $req->new_pass;
         $con_pass = $req->con_pass;
 
-        //check if current password is equal to inputted current password  
+        //check if current password is equal to inputted current password
         if(Hash::check($req->password,$shelter->password)){
             if($newpass == $con_pass && $req->password != $newpass && $req->password != $con_pass){
                 $shelter->password = Hash::make($newpass);
@@ -1227,10 +1228,10 @@ class AnimalShelterManagement extends Controller
         $shelter->update();
         return redirect()->back()->with('status','Opening Hours Updated Successfully');
     }
-    function UpdateProfile(Request $req, $id){ 
+    function UpdateProfile(Request $req, $id){
         $req->validate([
             'profile'=>'required|image|mimes:jpg,png,jpeg,gif,svg',
-        ]);     
+        ]);
             $shelter = AnimalShelter::find($id);
             $default = $shelter->profile;
             if('default.png'!=$default){
@@ -1244,14 +1245,14 @@ class AnimalShelterManagement extends Controller
                     $filename =time().'.'.$extention;
                     $file->move('uploads/animal-shelter/profile/',$filename);
                     $shelter ->profile = $filename;
-                }          
+                }
             }else{
                 if($req->hasfile('profile')){
                     $file = $req->file('profile');
                     $extention =$file->getClientOriginalExtension();
                     $filename =time().'.'.$extention;
                     $file->move('uploads/animal-shelter/profile',$filename);
-                    $shelter ->profile = $filename;    
+                    $shelter ->profile = $filename;
                 }
             }
             $shelter->shelter_name = $req->shelter_name;
@@ -1311,7 +1312,7 @@ class AnimalShelterManagement extends Controller
             );
             return view('AnimalShelter.Profile.EditProfile',$data);
         }
-      
+
     }
 
     function ViewProfile($shelter_id){
@@ -1339,7 +1340,7 @@ class AnimalShelterManagement extends Controller
             return view('AnimalShelter.Profile.profile',$data);
         }
     }
-    
+
     function ViewDeactDash(){
 
         $data = array(
@@ -1370,11 +1371,11 @@ class AnimalShelterManagement extends Controller
     }
 
     function EditPolicy(Request $req, $id){
-       $policy = $req->policy_content;  
+       $policy = $req->policy_content;
        DB::update("update adopt_policy set policy_content = '$policy' where id ='$id'");
        return redirect()->back()->with('status','Adoption Policy Updated Successfully');
     }
-    
+
     function DeletePolicy($id){
         $policy = AdoptionPolicy::find($id);
         $policy->delete();
@@ -1383,7 +1384,7 @@ class AnimalShelterManagement extends Controller
 
     function RequestActivation($shelter_id){
         $shelter = AnimalShelter::find($shelter_id);
-         
+
         $approveAdmin = array();
         $approveAdmin = [
             'shelter_name' => $shelter->shelter_name,
@@ -1391,7 +1392,7 @@ class AnimalShelterManagement extends Controller
         ];
         if($shelter->is_verified_activation == "1"){
             $shelter->is_verified_activation = "2";
-            $shelter->save();    
+            $shelter->save();
             Admin::find(1)->notify( new ApproveReactivationNotif($approveAdmin));
             return redirect()->back()->with('status','You have requested for reactivation of account');
         }
@@ -1399,9 +1400,9 @@ class AnimalShelterManagement extends Controller
             return redirect()->route('deactpage')->with('status1','You have already requested for reactivation');
         }
     }
-    
+
     function petbook_allocate(){
-        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();       
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -1413,7 +1414,7 @@ class AnimalShelterManagement extends Controller
     }
 
     function petbook_viewbook(){
-        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first(); 
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
 
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -1426,7 +1427,7 @@ class AnimalShelterManagement extends Controller
 
     function load_books(){
      $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
-     $petbook = DB::select("select *from animal_master_list where shelter_id ='$shelter->id' OR  owner_id ='$shelter->id'");   
+     $petbook = DB::select("select *from animal_master_list where shelter_id ='$shelter->id' OR  owner_id ='$shelter->id'");
      $output = '<div class="row">';
      foreach($petbook as $books)
      {
@@ -1453,17 +1454,17 @@ class AnimalShelterManagement extends Controller
                 </div>
             </div>
         </div>
-     </div>    
+     </div>
       ';
      }
      if(empty($books)){
         $output.='
-        <div> 
+        <div>
         <h6>No Pet book exist!</h6>
         </div>
        ';
      }
-    
+
      $output .= '</div>';
      echo $output;
     }
@@ -1522,7 +1523,7 @@ class AnimalShelterManagement extends Controller
             );
             return view('AnimalShelter.Pet Book.details',$data);
         }
-      
+
     }
     function petbook_generate(Request $req){
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
@@ -1547,7 +1548,7 @@ class AnimalShelterManagement extends Controller
             $animMasterlist->pet_stage = $animal->pet_stage;
             $animMasterlist->shelter_id = $shelter->id;
             $animMasterlist->save();
-           
+
             $getIdMaster = AnimalMasterList::where('animal_image',$animal->animal_image)->where('shelter_id',$shelter->id)->first();
 
             $petbook = New PetBook;
@@ -1559,23 +1560,23 @@ class AnimalShelterManagement extends Controller
             $checkvac = VaccineHistory::where('animal_id',$req->get('id'))->count();
             if($checkvac > 0){
                 $vaccine->petbook_id = $getId->id;
-                $vaccine->update();     
+                $vaccine->update();
             }
             $checkdeworm = DewormHistory::where('animal_id',$req->get('id'))->count();
             if($checkdeworm > 0){
-                $deworm->petbook_id = $getId->id;   
+                $deworm->petbook_id = $getId->id;
                 $deworm->update();
-            } 
+            }
             $animalcheck = Animals::where('shelter_id',$shelter->id)->orWhere('owner_id',$shelter->id)->where('id',$req->get('id'))->count();
             if($animalcheck > 0) {
                 $animal->petbooked ="PetBooked";
                 $animal->update();
-            }       
+            }
         }
     }
 
     function postview(){
-        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first(); 
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -1592,7 +1593,7 @@ class AnimalShelterManagement extends Controller
     }
 
     function postcreate($id){
-        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first(); 
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -1604,7 +1605,7 @@ class AnimalShelterManagement extends Controller
     }
 
     function postupdate($id){
-        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first(); 
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -1615,7 +1616,7 @@ class AnimalShelterManagement extends Controller
     }
 
     function loadfee ($id){
-        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first(); 
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $checkdog = Category::
                         join('adoption_fee','adoption_fee.categ_id','=','category.id')
                         ->where('adoption_fee.id',$id)
@@ -1667,7 +1668,7 @@ class AnimalShelterManagement extends Controller
     }
 
     function post_pet_save(Request $req, $id){
-        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first(); 
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $checkdog = Category::where('category_name',"Dog")->where('shelter_id',$shelter->id)->count();
         $checkcat = Category::where('category_name',"Cat")->where('shelter_id',$shelter->id)->count();
 
@@ -1677,7 +1678,7 @@ class AnimalShelterManagement extends Controller
             if($dog == 1){
                 $fee = Animals::find($id);
                 $fee->fee =  $req->get('feeprice');
-                $fee->update();      
+                $fee->update();
             }
         }
         if($checkcat > 0){
@@ -1686,18 +1687,18 @@ class AnimalShelterManagement extends Controller
             if($cat == 1){
                 $fee = Animals::find($id);
                 $fee->fee =  $req->get('feeprice');
-                $fee->update();     
+                $fee->update();
             }
         }
-    
+
         $checkpost = Post::all()->where('animal_id',$id)->count();
         if($checkpost == 0){
             $post = new Post;
             $post->animal_id = $id;
-            $post->save(); 
+            $post->save();
         }
         $petupdate = Animals::find($id);
-        $petupdate->post_status = "posted"; 
+        $petupdate->post_status = "posted";
         $petupdate->update();
 
         //decrement post credits
@@ -1708,7 +1709,7 @@ class AnimalShelterManagement extends Controller
      }
 
      function post_pet_update(Request $req, $id){
-        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first(); 
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $checkdog = Category::where('category_name',"Dog")->where('shelter_id',$shelter->id)->count();
         $checkcat = Category::where('category_name',"Cat")->where('shelter_id',$shelter->id)->count();
 
@@ -1718,7 +1719,7 @@ class AnimalShelterManagement extends Controller
             if($dog == 1){
                 $fee = Animals::find($id);
                 $fee->fee =  $req->get('feeprice');
-                $fee->update();       
+                $fee->update();
             }
         }
         if($checkcat > 0){
@@ -1727,7 +1728,7 @@ class AnimalShelterManagement extends Controller
             if($cat == 1){
                 $fee = Animals::find($id);
                 $fee->fee =  $req->get('feeprice');
-                $fee->update();     
+                $fee->update();
             }
         }
      }
@@ -1743,9 +1744,9 @@ class AnimalShelterManagement extends Controller
         DB::table('uploaded_photos')->where('animal_id',$animal->id)->delete();
         foreach($photos as $photo){
         $destination = 'uploads/animal-shelter/uploaded-photos/Post/'.$photo->imagename;
-            if(File::exists($destination)){ 
+            if(File::exists($destination)){
                 File::delete($destination);
-            }   
+            }
         }
         $post->delete();
      }
@@ -1758,8 +1759,8 @@ class AnimalShelterManagement extends Controller
                     $query-> where('shelter_id', $shelter->id)
                             ->orWhere('owner_id',$shelter->id);
                 })
-                ->get();    
-        $output = ' <main style ="margin-top:30px" class="grid-new1">';    
+                ->get();
+        $output = ' <main style ="margin-top:30px" class="grid-new1">';
             foreach($post as $posts)
             {
             $posted = new Carbon($posts->updated_at);
@@ -1773,30 +1774,30 @@ class AnimalShelterManagement extends Controller
                         <div class="dropdown">
                             <a type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-ellipsis-v"></i> </label></span>
-                            </a> 
+                            </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a href="#" style="text-decoration:none"><button style="text-decoration:none" class="dropdown-item" value="'.$posts->id.'" id="edit">Edit</button></a>
                                     ';
                                         $deletepost = Post::where('animal_id',$posts->id)->first(); $output .= '
                                     <a style="text-decoration:none" href="#"><button style="text-decoration:none" class="dropdown-item" value="'.$deletepost->id.'" id="remove">Remove</button></a>
-                                </div> 
-                            <label>&nbsp &nbsp<i style="color:green; font-size:12px" class="fa fa-circle"></i> '.$posts->status.'</label><span><label style="float:right"> posted '.$posted->diffForHumans(). ' &nbsp 
-                        </div>      
+                                </div>
+                            <label>&nbsp &nbsp<i style="color:green; font-size:12px" class="fa fa-circle"></i> '.$posts->status.'</label><span><label style="float:right"> posted '.$posted->diffForHumans(). ' &nbsp
+                        </div>
                         ';
-                        }   
+                        }
                         elseif($posts->status == "Ongoing"){
                             $output .= '
                             <div class="dropdown">
                             <a type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-ellipsis-v"></i> </label></span>
-                            </a> 
+                            </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 ';
                                     $deletepost = Post::where('animal_id',$posts->id)->first(); $output .= '
                                     <a style="text-decoration:none" href="#"><button style="text-decoration:none" class="dropdown-item" value="'.$deletepost->id.'" id="remove">Remove</button></a>
-                                </div> 
-                            <label>&nbsp &nbsp<i style="color:orange; font-size:12px" class="fa fa-circle"></i> '.$posts->status.'</label><span><label style="float:right"> posted '.$posted->diffForHumans(). ' &nbsp 
-                        </div> 
+                                </div>
+                            <label>&nbsp &nbsp<i style="color:orange; font-size:12px" class="fa fa-circle"></i> '.$posts->status.'</label><span><label style="float:right"> posted '.$posted->diffForHumans(). ' &nbsp
+                        </div>
                         ';
                         }
                         else{
@@ -1804,32 +1805,32 @@ class AnimalShelterManagement extends Controller
                             <div class="dropdown">
                             <a type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-ellipsis-v"></i> </label></span>
-                            </a> 
+                            </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 ';
                                     $deletepost = Post::where('animal_id',$posts->id)->first(); $output .= '
                                     <a style="text-decoration:none" href="#"><button style="text-decoration:none" class="dropdown-item" value="'.$deletepost->id.'" id="remove">Remove</button></a>
-                                </div> 
-                            <label>&nbsp &nbsp<i style="color:red; font-size:12px" class="fa fa-circle"></i> '.$posts->status.'</label><span><label style="float:right"> posted '.$posted->diffForHumans(). ' &nbsp 
-                        </div> 
+                                </div>
+                            <label>&nbsp &nbsp<i style="color:red; font-size:12px" class="fa fa-circle"></i> '.$posts->status.'</label><span><label style="float:right"> posted '.$posted->diffForHumans(). ' &nbsp
+                        </div>
                         ';
                         }
-                        $output .= '    
+                        $output .= '
                     </div>
                     <div style="background-color:whitesmoke" class="card-body">
                         <div style="display:flex">
                             <div style="margin:0">
                                 <div style="background-color:">
                                 <img style="padding:10px;" src="'.asset('uploads/animals/' . $posts->animal_image).'" width="250px" height="200px" alt="">
-                                </div>    
-                            </div>  
-                            <div class="col-sm"> 
+                                </div>
+                            </div>
+                            <div class="col-sm">
                                 <div style="display:flex">';
                                     foreach($posts->postphotos as $pics){
                                         $check = Animals::where('id',$pics->animal_id)->where('owner_id','none')->count();
                                         if($check > 0){
                                             $output .= '
-                                            <div class="col-sm"> 
+                                            <div class="col-sm">
                                             <img src="'.asset('uploads/animal-shelter/uploaded-photos/Post/'.$pics->imagename).'" width="100%" height="100%" alt="">
                                             </div>
                                             ';
@@ -1837,14 +1838,14 @@ class AnimalShelterManagement extends Controller
                                         else
                                         {
                                             $output .= '
-                                            <div class="col-sm"> 
+                                            <div class="col-sm">
                                             <img src="'.asset('uploads/pet-owner/uploaded-photos/Post/'.$pics->imagename).'" width="100%" height="100%" alt="">
                                             </div>
-                                            '; 
+                                            ';
                                         }
                                     }
-                                    $output .= '    
-                                </div> 
+                                    $output .= '
+                                </div>
                                 <div>
                                     <h5 style="margin-top:10px;text-align:center; color:black; font-weight:bold">"History of '.$posts->name.'"</h5>
                                     <p style="text-indent:30px;color:black">'.$posts->history.'</p> <hr>
@@ -1854,9 +1855,9 @@ class AnimalShelterManagement extends Controller
                             <div>
                                 <div style="background-color:#fff; display:flex">
                                     <div class="col-sm">
-                                        <label style=" color:black">Name: </label><span style="color:black; font-weight:bold">'.$posts->name.'</span><br>  
+                                        <label style=" color:black">Name: </label><span style="color:black; font-weight:bold">'.$posts->name.'</span><br>
                                         <label style=" color:black">Gender: </label><span style="color:black; font-weight:bold">'.$posts->gender.'</span><br>
-                                        <label style=" color:black">Age: </label><span style="color:black; font-weight:bold">'.$posts->age.'</span><br>  
+                                        <label style=" color:black">Age: </label><span style="color:black; font-weight:bold">'.$posts->age.'</span><br>
                                         <label style=" color:black">Life Stage: </label><span style="color:black; font-weight:bold">'.$posts->pet_stage.'</span> <br>
                                         <label style=" color:black">Breed: </label><span style="color:black; font-weight:bold">'.$posts->breed.'</span> <br>
                                         <label style=" color:black">Size: </label><span style="color:black; font-weight:bold">'.$posts->size.'</span>
@@ -1869,9 +1870,9 @@ class AnimalShelterManagement extends Controller
                                             <p style=" text-align:center; color:black; font-weight:bold; font-size:24px;">'.$posts->fee.'</p>
                                         </div>
                                     </div>
-                                </div>  
-                            </div>  
-                    </div> 
+                                </div>
+                            </div>
+                    </div>
                     <div class="card-header">
 
                     </div>
@@ -1882,14 +1883,14 @@ class AnimalShelterManagement extends Controller
             }
         if(empty($posts)){
             $output.='
-            <div> 
+            <div>
             <h6>No Post exist!</h6>
             </div>
            ';
          }
-        
+
         $output .= '</div>';
-        echo $output;        
+        echo $output;
      }
 
      function choosesubscription($id){
@@ -1933,27 +1934,27 @@ class AnimalShelterManagement extends Controller
             $waitsub->sub_id = $id;
             $waitsub->shelter_id = $shelter->id;
             $waitsub->save();
-    
+
             $valid = array();
             $valid = [
                 'shelter_name' => $shelter->shelter_name.' has sent a proof of payment',
                 'continue' => 'please check it now',
             ];
             Admin::find(1)->notify(new Checkproofsubscriptionpayment($valid));
-    
+
             return redirect()->route('view.wait.subscription',$id)->with('status','Proof of payment has been sent');
         }
         else{
             return redirect()->back()->with('status1','Please upload a photo that will serve as your proof of payment');
         }
-    }   
+    }
     function viewdonation(){
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data = array(
             'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'donors'=>Donation::where('status','pending')->where('animal_shelter',$shelter->id)->get(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-          );   
+          );
           return view('AnimalShelter.Donation.viewdonation',$data);
     }
 
@@ -1972,7 +1973,7 @@ class AnimalShelterManagement extends Controller
 
         return redirect()->back()->with('status','You have accepted his/her donation');
 
-    } 
+    }
 
     function feedbackmessageerror(Request $req, $id){
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
@@ -1988,20 +1989,20 @@ class AnimalShelterManagement extends Controller
         $notif->save();
 
         return redirect()->back()->with('status','Feedback invalid donation sent successfully');
-    } 
+    }
     function cancelsub($id){
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $cancel = SubscriptionTransac::where('status','pending')->where('sub_id',$id)->where('shelter_id',$shelter->id)->first();
 
         $cancel->status = 'cancelled';
         $cancel->save();
-        
+
         $remove = UploadedPhotos::where('type','subscription')->where('sub_id',$id)->where('shelter_id',$shelter->id)->get();
         foreach($remove as $pic){
             $destination = 'uploads/animal-shelter/uploaded-photos/'.$pic->imagename;
-            if(File::exists($destination)){ 
+            if(File::exists($destination)){
               File::delete($destination);
-            }   
+            }
             $pic->delete();
         }
         return redirect()->back()->with('status','You cancelled your sent subscription proof of payment');
@@ -2126,18 +2127,18 @@ class AnimalShelterManagement extends Controller
         $approve->feedback = $req->feedback;
         $approve->status = "approved";
         $approve->process = "ongoing";
-        $approve->update(); 
+        $approve->update();
 
         $animal = Animals::find($approve->animal_id);
         $animal->status ="Ongoing";
-        $animal->update(); 
+        $animal->update();
 
         $approvereq = array();
         $approvereq = [
             'petowner_name' => 'Great News! your request of adoption was approved by '.$approve->shelter->shelter_name,
             'approve' =>' please proceed to Request Approved to generate your adoption slip.'
         ];
-     
+
         PetOwner::find($approve->petowner_id)->notify( new ApproveRequest($approvereq));
         return redirect()->back()->with('status','Adoption request has been approved successfully');
     }
@@ -2146,14 +2147,14 @@ class AnimalShelterManagement extends Controller
         $approve->feedback = $req->feedback;
         $approve->status = "rejected";
         $approve->process = "denied";
-        $approve->update(); 
+        $approve->update();
 
         $approvereq = array();
         $approvereq = [
             'petowner_name' => 'Your request for adoption to  '.$approve->shelter->shelter_name.' has been rejected',
             'reject' =>' you can try requesting to other shelters.'
         ];
-     
+
         PetOwner::find($approve->petowner_id)->notify( new RejectRequestNotif($approvereq));
         return redirect()->back()->with('status','Adoption request has been rejected successfully');
     }
@@ -2202,7 +2203,7 @@ class AnimalShelterManagement extends Controller
     function newpets(){
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data = array(
-            'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(), 
+            'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'animal'=> DB::select("select *from animals  where owner_id ='$shelter->id'"),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'sheltercateg' =>AnimalShelter::all()->where('id',session('LoggedUser')),
@@ -2222,7 +2223,7 @@ class AnimalShelterManagement extends Controller
 
     function tempcheckshelter(){
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
-       
+
         $sheltercheck= AnimalShelter::
                         whereHas('shelterPhoto',function($query)use($shelter){
                           $query->where('shelter_id',$shelter->id);
@@ -2245,7 +2246,7 @@ class AnimalShelterManagement extends Controller
             $shelter=AnimalShelter::where('id',$id)->first();
             $convert = (int)$shelter->grace;
             $shelter->grace = $convert-1;
-            $shelter->update(); 
+            $shelter->update();
 
             $data = array();
             $data = [
@@ -2287,7 +2288,7 @@ class AnimalShelterManagement extends Controller
             $masterlist->ownertype ="Animal Shelter";
             $masterlist->owner_id = $shelter->id;
             $masterlist->update();
-        
+
         }
         $success = array();
         $success = [
@@ -2296,7 +2297,7 @@ class AnimalShelterManagement extends Controller
         ];
         AnimalShelter::find($shelter->id)->notify(new SuccessAdoption($success));
 
-        $success = array(); 
+        $success = array();
         $success = [
             'success' =>$confirm->animal->name.' has been successfully adopted by '.$shelter->shelter_name,
             'info' => ' you can check it in the completed section in request for adoption',
@@ -2304,6 +2305,132 @@ class AnimalShelterManagement extends Controller
         PetOwner::find($confirm->petowner_id)->notify(new SuccessAdoption($success));
 
         return redirect()->back()->with('status','Adoption slip confirmed successfully');
+    }
+
+    function subpay($id){
+        $shelters =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $subs = new SubscriptionTransac;
+        $subs->status = 'pending';
+        $subs->sub_id = $id;
+        $subs->shelter_id = $shelters->id;
+        $subs->save();
+
+        $check = SubscriptionTransac::where('status','pending')->where('sub_id',$id)->where('shelter_id',$shelters->id)->count();
+
+        if($check > 0){
+          $shelter = SubscriptionTransac::where('status','pending')->where('sub_id',$id)->where('shelter_id',$shelters->id)->first();
+
+          $approvedproof = [
+            'shelter_name' => 'You have successfully subscribed '.$shelter->subscription->sub_name.' promo',
+            'promo' => ' valid for '.$shelter->subscription->sub_span.''.$shelter->subscription->sub_span_type.'/s',
+        ];
+        $shelter->status = 'approved';
+        $shelter->update();
+        AnimalShelter::find($shelters->id)->notify(new ApproveProofPayment($approvedproof));
+
+        $subscription = Subscription::find($id);
+            $data = array(
+              'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+              'proof' => UploadedPhotos::where('sub_id',$id)->where('shelter_id',$shelters->id)->get(),
+          );
+          //check if credits is 0
+          $credits = AnimalShelter::find($shelters->id);
+          if($credits->TotalCredits == "0"){
+            $credits->TotalCredits = $subscription->sub_credit;
+            $credits->update();
+             //getting the expiry date && the subscription span
+             $span_type = $subscription->sub_span_type;
+             if($span_type == "day"){
+               $convertspan = (int)$subscription->sub_span;
+               $datestart = Carbon::parse($shelter->updated_at);
+               $expiry = $datestart->addDays($convertspan);
+               //update
+               $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+               $shelter->update();
+             }
+             elseif($span_type == "month"){
+               $convertspan = (int)$subscription->sub_span;
+               $datestart = Carbon::parse($shelter->updated_at);
+               $expiry = $datestart->addMonths($convertspan);
+               //update
+               $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+               $shelter->update();
+             }
+             elseif($span_type == "year"){
+               $convertspan = (int)$subscription->sub_span;
+               $datestart = Carbon::parse($shelter->updated_at);
+               $expiry = $datestart->addYears($convertspan);
+               //update
+               $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+               $shelter->update();
+             }
+          }
+          else{
+            if($subscription->sub_credit == "UNLI"){
+              $credits->TotalCredits = "UNLI";
+              $credits->update();
+              //getting the expiry date && the subscription span
+              $span_type = $subscription->sub_span_type;
+              if($span_type == "day"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($shelter->updated_at);
+                $expiry = $datestart->addDays($convertspan);
+                //update
+                $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+                $shelter->update();
+              }
+              elseif($span_type == "month"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($shelter->updated_at);
+                $expiry = $datestart->addMonths($convertspan);
+                //update
+                $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+                $shelter->update();
+              }
+              elseif($span_type == "year"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($shelter->updated_at);
+                $expiry = $datestart->addYears($convertspan);
+                //update
+                $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+                $shelter->update();
+              }
+            }
+            else{
+              $credit = (int)$subscription->sub_credit;
+              $subtotal = (int)$credits->TotalCredits;
+              $total = $credit + $subtotal;
+              $credits->TotalCredits = $total;
+              $credits->update();
+
+              $span_type = $subscription->sub_span_type;
+              if($span_type == "day"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($shelter->updated_at);
+                $expiry = $datestart->addDays($convertspan);
+                //update
+                $shelter->expiry_date = Carbon::parse($expiry)->format('F d Y h:i:s A');
+                $shelter->update();
+              }
+              elseif($span_type == "month"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($shelter->updated_at);
+                $expiry = $datestart->addMonths($convertspan);
+                //update
+                $shelter->expiry_date = Carbon::parse($expiry)->format('F d Y h:i:s A');
+                $shelter->update();
+              }
+              elseif($span_type == "year"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($shelter->updated_at);
+                $expiry = $datestart->addYears($convertspan);
+                //update
+                $shelter->expiry_date = Carbon::parse($expiry)->format('F d Y h:i:s A');
+                $shelter->update();
+              }
+            }
+          }
+        }
     }
 
 }

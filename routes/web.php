@@ -145,6 +145,7 @@ Route::post('/Profile/deactivation',[AnimalShelterManagement::class,'Deactivatio
 Route::post('/UpdatePassword/{id}',[AnimalShelterManagement::class,'UpdatePassword']);
 Route::post('/AllocationVaccine/{id}/{vac_id}',[AnimalShelterManagement::class,'Allocation_Vaccine']);
 Route::post('/AllocationDeworm/{id}/{dew_id}',[AnimalShelterManagement::class,'Allocation_Deworm']);
+Route::get('AnimalManagement/Subscription/trans/{id}',[AnimalShelterManagement::class,'subpay'])->name('subscription.trans');
 Route::post('/{id}',[AnimalShelterManagement::class,'UpdateAnimal']);
 Route::get('/Register/petOwner',[RegisterController::class,'viewregisterPetOwner']);  
 Route::get('/Register/signup',[RegisterController::class,'register']);
@@ -207,8 +208,6 @@ Route::group(['middleware'=>['Authcheck']],function(){
         Route::get('Receipt/Confirmed/Slip',[AnimalShelterManagement::class,'confirmreceipt'])->name('adoption.confirmed.result');
 
         Route::get('AnimalManagement/New',[AnimalShelterManagement::class,'newpets'])->name('new.pets');
-
-
 
         Route::get('/customselection/get_fee',[DropDownController::class,'get_fee'])->name('get.fee');
         Route::get('/customselection/load_adoption',[DropDownController::class,'load_adoption'])->name('load.adoption');

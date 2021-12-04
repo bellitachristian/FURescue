@@ -120,7 +120,45 @@ Animal Shelter Dashboard
             @endforeach 
             @foreach($notapprove as $nots)
                 @if($nots == $subs->id)
-                    <a href="{{route('view.wait.subscription',$subs->id)}}" class="read">subscribe<i class="fa fa-angle-right"></i></a>
+                <script src="https://www.paypal.com/sdk/js?client-id=AfnKmdBSmUQRaxV-lxa9RuDvl26tdBGu2HugwMERbS0Jp2Ronpx5Q9EW376wDPydVgswBBpAaBEAKlXy&currency=PHP"></script>
+                <!-- Set up a container element for the button -->
+                <div id="paypal-button-container"></div>
+
+                <script>
+                paypal.Buttons({
+
+                    // Sets up the transaction when a payment button is clicked
+                    createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                        amount: {
+                            value: '{{$subs->sub_price}}' // Can reference variables or functions. Example: `value: document.getElementById('...').value`
+                        }
+                        }]
+                    });
+                    },
+
+                    // Finalize the transaction after payer approval
+                    onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(orderData) {
+                        save();
+                        function save()
+                        {
+                            $.ajax({
+                            url:"{{route('subscription.trans',$subs->id)}}",
+                            success:function(data)
+                            {
+                                alert('Subscribed Successfully!');
+                                location.reload(); 
+                            }
+                            })
+                        }
+                    });
+                    }
+                }).render('#paypal-button-container');
+
+                </script>
+                    <!-- <a href="{{route('view.wait.subscription',$subs->id)}}" class="read">subscribe<i class="fa fa-angle-right"></i></a> -->
                 @endif
             @endforeach
             @foreach($notsub as $not)
