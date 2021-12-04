@@ -28,6 +28,6 @@ class ApproveReactivation extends Mailable
      */
     public function build()
     {
-        return $this->from('furescueteam@gmail.com','furescue')->subject('Account Reactivation')->view('Mail.Reactivation-shelter-email',['mail_data'=>  $this->reactivation]);
+        return $this->from('furescue1@gmail.com','furescue')->subject('Account Reactivation')->view('Mail.Reactivation-shelter-email',['mail_data'=>  $this->reactivation]);
     }
 }
