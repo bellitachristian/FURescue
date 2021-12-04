@@ -8,6 +8,7 @@ use App\Models\PetOwner;
 use App\Models\Admin;
 use App\Models\Usertype;
 use App\Models\Category;
+use App\Models\Feedback;
 use App\Notifications\ApproveRejectPetOwnerNotif;
 use App\Notifications\ApproveRejectShelterNotif;
 use Illuminate\Support\Facades\Hash;
@@ -117,6 +118,7 @@ class LoginController extends Controller
                     else if($shelter->is_verified_account == "1" && $shelter->is_verified_shelter == "2"){ //which means rejected
                         if($shelter->is_verified_activation =="0"){
                             $req->session()->put("LoggedUser",$shelter->id);
+                            return redirect()->route('view.wait');
                             //return redirect('/dashboard'); automatically logs out(give note if admin rejects, your account will be automatically removed in the system)
                         }
                     }    
@@ -181,6 +183,7 @@ class LoginController extends Controller
             else if($pet->is_verified_account == "1" && $pet->is_verified_petowner == "2"){ //which means rejected
                 if($pet->is_verified_activation =="0"){
                     $req->session()->put("LoggedUserPet",$pet->id);
+                    return redirect()->route('view.wait.petowner');
                     //return redirect('/dashboard'); automatically logs out(give note if admin rejects, your account will be automatically removed in the system)
                 }
             }    

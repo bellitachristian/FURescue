@@ -36,7 +36,7 @@
                                     <span class="text-danger">@error('contact'){{$message}}@enderror</span>
                                     
                                     <label style="font-size:14px" >Email</label> 
-                                    <input disabled style="margin-bottom:2%" type="email" value="{{$shelter->email}}" class="form-control form-control-sm" required id="name" name="email">
+                                    <input readOnly style="margin-bottom:2%" type="email" value="{{$shelter->email}}" class="form-control form-control-sm" required id="name" name="email">
                                     <span class="text-danger">@error('email'){{$message}}@enderror</span>
 
                                     <label class="text-sm">Start-Day</label>
@@ -62,16 +62,12 @@
                                     <option value="Sunday">Sunday</option>
                                     </select>
 
-                                    <label style="font-size:14px" >Start Time</label> 
-                                    <input style="margin-bottom:2%" type="time" value="{{$shelter->start_time}}" class="form-control form-control-sm" required id="name" name="intime">
-
-                                    <label style="font-size:14px" >End Time</label> 
-                                    <input style="margin-bottom:2%" type="time" value="{{$shelter->end_time}}" class="form-control form-control-sm" required id="name" name="outime">
-
                                     <input type="password" value ="{{$shelter->password}}" hidden class="form-control form-control-sm" id="name" name="password">
-                                    <button style="margin-bottom:2%; float:right" type="button" onclick="location.href='#'" data-toggle="modal" data-target="#EditPass">Change Password</button>
+                                    <button style="margin-bottom:2%;  float:right" type="button" onclick="location.href='#'" data-toggle="modal" data-target="#EditPass">Change Password</button>
+                                    <button style="margin-bottom:2%; float:left" type="button" onclick="location.href='#'" data-toggle="modal" data-target="#sched">Edit Open Hours</button>
 
-                                    <h5 style="color:black; margin-top:5%; margin-bottom:4%">Account Information</h5>
+
+                                    <h5 style="color:black; margin-top:5%; margin-bottom:4%;">Account Information</h5>
                                     
                                     <label style="font-size:14px" >Gcash Number</label> 
                                     <input  style="margin-bottom:2%" type="number" value="{{$shelter->g_cash}}" required  class="form-control form-control-sm" id="name" name="g_cash">
@@ -92,6 +88,41 @@
             </div>  
         </div>
     </div>             
+</div>
+<div class="modal fade"  id="sched"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Change Open Hours</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            <form action="{{route('change.time',$shelter->id)}}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div style="display:flex">
+                        <div class="col-md"> 
+                            <label class="text-sm" style="color:black">Starts At</label>
+                            <input type="text" readOnly value="{{$shelter->start_time}}">
+                            <input type="time" name="start_time" class="form-control form-control-sm" required>
+                        </div>
+                    
+                        <div class="col-md"> 
+                            <label class="text-sm" style="color:black">Ends At</label>
+                            <input type="text" readOnly value="{{$shelter->end_time}}">
+                            <input type="time" name="end_time" class="form-control form-control-sm" required>
+                        </div>
+                    </div>
+                </div>    
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal" aria-label="Close" type="button">Cancel</button>
+                    <button class="btn btn-danger" id="btn" type="submit">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div> 
 </div>
 
 <!-- Edit Password Modal -->
@@ -135,7 +166,7 @@
                     </div>
                 </div>    
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button">Cancel</button>
+                    <button class="btn btn-secondary" data-dismiss="modal" aria-label="Close" type="button">Cancel</button>
                     <button class="btn btn-danger" id="btn" type="submit">Save Changes</button>
                 </div>
             </form>

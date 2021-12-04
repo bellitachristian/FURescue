@@ -11,7 +11,7 @@
 </div>
 <main style="margin-top:30px" class="grid">
     <label class="option_item">
-    <input type="checkbox"  hidden name="cat[]" value="Kitten" class="checkbox">
+    <input type="checkbox" readOnly  hidden name="cat[]" value="Kitten" class="checkbox">
     <div class="option_inner kitten">
         <img src="images/kitten.jpg" height="230" width="220" alt="Kitten">
         <div class="tickmark"></div>
@@ -21,7 +21,7 @@
     </div>
     </label>  
     <label class="option_item">
-    <input type="checkbox"  hidden name="cat[]" value="Junior" class="checkbox">
+    <input type="checkbox" readOnly  hidden name="cat[]" value="Junior" class="checkbox">
     <div class="option_inner junior">
         <img src="images/junior.png" height="230" width="220"  alt="Junior">
         <div class="tickmark"></div> 
@@ -31,7 +31,7 @@
     </div>
     </label>  
     <label class="option_item">
-    <input type="checkbox" hidden name="cat[]" value="Prime" class="checkbox">
+    <input type="checkbox" readOnly hidden name="cat[]" value="Prime" class="checkbox">
     <div class="option_inner prime">
         <img src="images/prime.jpg" height="230" width="220" alt="Prime">
         <div class="tickmark"></div>
@@ -41,7 +41,7 @@
     </div>
     </label>  
     <label class="option_item">
-    <input type="checkbox" hidden name="cat[]" value="Mature" class="checkbox">
+    <input type="checkbox" readOnly hidden name="cat[]" value="Mature" class="checkbox">
     <div class="option_inner mature">
         <img src="images/mature.jpg" height="230" width="220" alt="Mature">
         <div class="tickmark"></div>
@@ -51,7 +51,7 @@
     </div>
     </label>  
     <label class="option_item">
-    <input type="checkbox" hidden name="cat[]" value="Senior" class="checkbox">
+    <input type="checkbox" readOnly hidden name="cat[]" value="Senior" class="checkbox">
     <div class="option_inner seniorcat">
         <img src="images/seniorcat.jpg" height="230" width="220" alt="Senior">
         <div class="tickmark"></div>
@@ -72,7 +72,7 @@
 </div>  
 <main style="margin-top:30px" class="grid">
     <label class="option_item">
-    <input type="checkbox" hidden name="dog[]" value="Puppy" class="checkbox">
+    <input type="checkbox" readOnly hidden name="dog[]" value="Puppy" class="checkbox">
     <div class="option_inner puppy">
         <img src="images/puppy.jpg" height="230" width="220" alt="Puppy">
         <div class="tickmark"></div>
@@ -82,7 +82,7 @@
     </div>
     </label>  
     <label class="option_item">
-    <input type="checkbox" hidden name="dog[]" value="Adolescent" class="checkbox">
+    <input type="checkbox" readOnly hidden name="dog[]" value="Adolescent" class="checkbox">
     <div class="option_inner adolescent">
         <img src="images/adolescent.jpg" height="230" width="220"  alt="Adolescent">
         <div class="tickmark"></div> 
@@ -92,7 +92,7 @@
     </div>
     </label>  
     <label class="option_item">
-    <input type="checkbox" hidden name="dog[]" value="Adult" class="checkbox">
+    <input type="checkbox" readOnly hidden name="dog[]" value="Adult" class="checkbox">
     <div class="option_inner adult">
         <img src="images/adult.jpg" height="230" width="220" alt="Adult">
         <div class="tickmark"></div>
@@ -102,7 +102,7 @@
     </div>
     </label>  
     <label class="option_item">
-    <input type="checkbox" hidden name="dog[]" value="Senior" class="checkbox">
+    <input type="checkbox" readOnly hidden name="dog[]" value="Senior" class="checkbox">
     <div class="option_inner puppy">
         <img src="images/senior.jpg" height="230" width="220"  alt="Senior">
         <div class="tickmark"></div>

@@ -14,11 +14,11 @@ Welcome Animal Shelter!
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     @if($both)
-                        <h5 style="color:black">What life stage of {{$both}} pets do you cater?</h5>
+                        <h5 style="color:black">Life stage of {{$both}} </h5>
                     @elseif($dog)
-                        <h5 style="color:black">What life stage of a {{$dog}} do you cater?</h5>
+                        <h5 style="color:black">Life stage of a {{$dog}} </h5>
                     @elseif($cat)
-                    <h5 style="color:black">What life stage of a {{$cat}} do you cater?</h5>
+                    <h5 style="color:black">Life stage of a {{$cat}} </h5>
                     @endif
                 </div>
             </div>  
@@ -33,3 +33,10 @@ Welcome Animal Shelter!
     @endif
 
 @endsection
+@push('js')
+<script type="text/javascript">
+$(document).ready(function(){
+    $('input[type="checkbox"]').attr('checked', status);
+});
+</script>
+@endpush

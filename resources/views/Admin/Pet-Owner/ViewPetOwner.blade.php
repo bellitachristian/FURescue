@@ -50,7 +50,7 @@ Pet Owner Applications
                     </td>
                     <td>
                         <a href="{{route('approve.petowner', $owner->id)}}"><button style="margin-bottom:3px" class="btn btn-success" type="button">Approve</button></a>
-                        <a href="{{route('reject.petowner', $owner->id)}}"><button style="width:90px"  class="btn btn-danger" type="button">Reject</button></a>
+                        <a href="#"><button data-toggle="modal" data-target="#message"  style="width:90px"  class="btn btn-danger" type="button">Reject</button></a>
                     </td>
                 </tr>
                 @endforeach
@@ -61,6 +61,10 @@ Pet Owner Applications
     </table>
 </div>
 </div>
+@if(empty($owner))
+@else
+@include('Admin.Pet-Owner.Modal.reject')
+@endif
 @endsection
 @push('js')
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>

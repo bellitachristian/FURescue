@@ -17,6 +17,7 @@ use App\Models\AdoptionFee;
 use App\Models\Receipt;
 use App\Models\PetBook;
 use App\Models\Deworm;
+use App\Models\ValidDocuments;
 use App\Models\Vaccine;
 use App\Models\Requestadoption;
 use App\Models\Post;
@@ -38,6 +39,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Notifications\RequestReactivationPetOwner;
 use App\Notifications\RequestAdoptionPet;
 use App\Notifications\Checkproofpetowner;
+use App\Notifications\ApproveRejectShelterNotif;
 use App\Notifications\CancelReq;
 use Illuminate\Support\Facades\Notification;
 use App\Helpers\Helper;
@@ -68,9 +70,19 @@ class PetOwnerManagement extends Controller
     } 
     
     function PetOwner_tempdashboard(){
+        $petowner=PetOwner::where('id','=',session('LoggedUserPet'))->first();
+       
+        $petownercheck= PetOwner::
+                        whereHas('petownerPhoto',function($query)use($petowner){
+                          $query->where('petowner_id',$petowner->id);
+                        })
+                        ->where('is_verified_petowner','2')
+                        ->where('grace','!=','0')
+                        ->count();
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first()
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'check'=>$petownercheck
         );
         return view('PetOwner.TemporaryDash',$data);
     }
@@ -2117,5 +2129,56 @@ class PetOwnerManagement extends Controller
         );
         return view('PetOwner.Request.Process.print',$data);
     }
+    function viewwait(){
+        $petowner=PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'feedback'=>Feedback::where('owner_type',3)->where('owner_id',$petowner->id)->get()
+        );
+       return view('PetOwner.rejected',$data);
+    }
+
+    function tempcheckshelter(){
+        $petowner=PetOwner::where('id','=',session('LoggedUserPet'))->first();
+       
+        $petownercheck= PetOwner::
+                        whereHas('petownerPhoto',function($query)use($petowner){
+                          $query->where('petowner_id',$petowner->id);
+                        })
+                        ->where('is_verified_petowner','2')
+                        ->where('grace','!=','0')
+                        ->count();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'check'=>$petownercheck
+        );
+       return view('PetOwner.tempcheckshelter',$data);
+    }
+
+    function wait($id)
+    {
+        $check = ValidDocuments::where('petowner_id',$id)->count();
+        if($check > 0){
+            $petowner=PetOwner::where('id',$id)->first();
+            $convert = (int)$petowner->grace;
+            $petowner->grace = $convert-1;
+            $petowner->update(); 
+
+            $data = array();
+            $data = [
+                'shelter_name' => $petowner->fname.' '.$petowner->lname,
+                'approval'=>" resubmitted their valid documents and is waiting for your approval"
+            ];
+
+            $category = Category::all();
+            Admin::find(1)->notify( new ApproveRejectShelterNotif($data));
+           return redirect()->route('tempcheckshelter.petowner')->with('status','Submitted successfully');
+        }else{
+            return redirect()->back()->with('status1','Please upload valid documents first');
+        }
+    }
+
 
 }

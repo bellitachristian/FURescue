@@ -99,7 +99,7 @@
                                 <div class="col-sm-6">
                                     <div class="card">
                                             <div class="card-header">
-                                                Valid Documents
+                                                Valid Documents(screenshot or PDF file of e.g.SEC,Business permit)
                                             </div>
                                             <div class="card-body">
                                                  <input type="file" required multiple name="images[]" id="image">    

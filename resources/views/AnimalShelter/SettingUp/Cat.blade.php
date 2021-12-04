@@ -2,7 +2,7 @@
 @csrf
 <main style="margin-top:30px" class="grid">
     <label class="option_item">
-    <input type="checkbox" name="cat[]" value="Kitten" class="checkbox">
+    <input type="checkbox" readOnly name="cat[]" value="Kitten" class="checkbox">
     <div class="option_inner kitten">
         <img src="images/kitten.jpg" height="230" width="220" alt="Kitten">
         <div class="tickmark"></div>
@@ -12,7 +12,7 @@
     </div>
     </label>  
     <label class="option_item">
-    <input type="checkbox"  name="cat[]" value="Junior" class="checkbox">
+    <input type="checkbox" readOnly  name="cat[]" value="Junior" class="checkbox">
     <div class="option_inner junior">
         <img src="images/junior.png" height="230" width="220"  alt="Junior">
         <div class="tickmark"></div> 
@@ -22,7 +22,7 @@
     </div>
     </label>  
     <label class="option_item">
-    <input type="checkbox"  name="cat[]" value="Prime" class="checkbox">
+    <input type="checkbox" readOnly  name="cat[]" value="Prime" class="checkbox">
     <div class="option_inner prime">
         <img src="images/prime.jpg" height="230" width="220" alt="Prime">
         <div class="tickmark"></div>
@@ -32,7 +32,7 @@
     </div>
     </label>  
     <label class="option_item">
-    <input type="checkbox"  name="cat[]" value="Mature" class="checkbox">
+    <input type="checkbox" readOnly  name="cat[]" value="Mature" class="checkbox">
     <div class="option_inner mature">
         <img src="images/mature.jpg" height="230" width="220" alt="Mature">
         <div class="tickmark"></div>
@@ -42,7 +42,7 @@
     </div>
     </label>  
     <label class="option_item">
-    <input type="checkbox"  name="cat[]" value="Senior" class="checkbox">
+    <input type="checkbox" readOnly  name="cat[]" value="Senior" class="checkbox">
     <div class="option_inner seniorcat">
         <img src="images/seniorcat.jpg" height="230" width="220" alt="Senior">
         <div class="tickmark"></div>

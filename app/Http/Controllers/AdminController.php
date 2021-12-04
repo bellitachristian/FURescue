@@ -69,9 +69,22 @@ class AdminController extends Controller
 
     function ViewAnimalShelters(){
         $admin=Admin::where('id','=',session('LoggedUserAdmin'))->first();
+        $sheltercheck = AnimalShelter:: where(function($query){
+          $query-> where('is_verified_shelter', '0')
+                  ->orWhere('is_verified_shelter','2');
+                  })
+                  ->where('grace','!=','0')
+                  ->pluck('id')
+                  ->toArray();
+        $shelter= AnimalShelter::
+                      whereHas('shelterPhoto',function($query)use($sheltercheck){
+                        $query->where('shelter_id',$sheltercheck);
+                      })
+                      ->get();
+                      
         $data = array(
             'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
-            'shelter' => Animalshelter::all()->where('is_verified_shelter','0'),
+            'shelter' => $shelter
           );
         return view('Admin.Animal-Shelter.ViewShelter', $data);
     }
@@ -167,9 +180,21 @@ class AdminController extends Controller
 
     function ViewPetOwners(){
       $admin=Admin::where('id','=',session('LoggedUserAdmin'))->first();
+      $petownercheck = PetOwner:: where(function($query){
+        $query-> where('is_verified_petowner', '0')
+                ->orWhere('is_verified_petowner','2');
+                })
+                ->where('grace','!=','0')
+                ->pluck('id')
+                ->toArray();
+      $petowner= PetOwner::
+                    whereHas('petownerPhoto',function($query)use($petownercheck){
+                      $query->where('petowner_id',$petownercheck);
+                    })
+                    ->get();
       $data = array(
           'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
-          'petowner' => PetOwner::all()->where('is_verified_petowner','0'),
+          'petowner' => $petowner,
         );
       return view('Admin.Pet-Owner.ViewPetOwner', $data);
     }
@@ -269,12 +294,25 @@ class AdminController extends Controller
       return redirect(route('viewshelter'))->with('status', 'Approved Successfully');
     }
 
-    function RejectPetOwnerApp($petowner_id){
+    function RejectPetOwnerApp(Request $req,$petowner_id){
       $admin = Admin::where('id','=',session('LoggedUserAdmin'))->first();
-      $petowner = Animalpetowner::find($petowner_id);
+      $petowner = PetOwner::find($petowner_id);
       
       $petowner->is_verified_petowner = "2";
       $petowner->save();
+
+      $feedback = new Feedback;
+      $feedback->message = $req->feedback;
+      $feedback->sender = 1;
+      $feedback->owner_id = $petowner->id;
+      $feedback->owner_type = 3; 
+      $feedback->save();
+
+      DB::table('valid_docu')->where('petowner_id', $petowner->id)->delete();
+      $destination = 'uploads/valid-documents/'.$petowner->filename;
+          if(File::exists($destination)){ 
+              File::delete($destination);
+          }   
 
       // $rejectedshelter = new RejectedShelters;
       // $rejectedshelter->shelter_name = $shelter->shelter_name;
@@ -284,27 +322,29 @@ class AdminController extends Controller
       // $rejectedshelter->contactno = $shelter->contact; 
       // $rejectedshelter->save();
 
-      $reject = array();
-            $reject = [
-                'petowner_id' =>$petowner->id,
-                'petowner_name' => $petowner->fname,
-            ];
-      Mail::to($shelter->email)->send(new RejectShelter($reject));
+      // $reject = array();
+      //       $reject = [
+      //           'petowner_id' =>$petowner->id,
+      //           'petowner_name' => $petowner->fname,
+      //       ];
 
+      // Mail::to($shelter->email)->send(new RejectShelter($reject));
+
+      // $rejected = array();
+      // $rejected = [
+      //     'check' => 'Please check your email ',
+      //     'reject' =>' The system has detected...'
+      // ];
       $rejected = array();
       $rejected = [
-          'check' => 'Please check your email ',
-          'reject' =>' The system has detected...'
+          'check' => 'It seems you have uploaded a wrong screenshot for the valid documents ',
+          'reject' =>' you still have '.$petowner->grace.' chances left upon uploading the right documents'
       ];
-      AnimalShelter::find($shelter->id)->notify( new ValidDocumentsRejected($rejected));
-      $data = array(
-          'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
-          'shelter' => Animalshelter::all()->where('is_verified_shelter','0'),
-        );
-      return redirect(route('viewshelter'))->with('status', 'Rejected Successfully');
+      PetOwner::find($petowner->id)->notify( new ValidDocumentsRejected($rejected));
+      return redirect(route('viewpetowner'))->with('status', 'Rejected Successfully');
     }
 
-    function RejectShelterApp($shelter_id){
+    function RejectShelterApp(Request $req,$shelter_id){
       
       $admin = Admin::where('id','=',session('LoggedUserAdmin'))->first();
       $shelter = AnimalShelter::find($shelter_id);
@@ -312,31 +352,32 @@ class AdminController extends Controller
       $shelter->is_verified_shelter = "2";
       $shelter->save();
 
-      $rejectedshelter = new RejectedShelters;
-      $rejectedshelter->shelter_name = $shelter->shelter_name;
-      $rejectedshelter->email = $shelter->email;
-      $rejectedshelter->address = $shelter->address;
-      $rejectedshelter->contactperson = $shelter->founder_name;
-      $rejectedshelter->contactno = $shelter->contact; 
-      $rejectedshelter->save();
+      $feedback = new Feedback;
+      $feedback->message = $req->feedback;
+      $feedback->sender = 1;
+      $feedback->owner_id = $shelter->id;
+      $feedback->owner_type = 2; 
+      $feedback->save();
 
-      $reject = array();
-            $reject = [
-                'shelter_id' =>$shelter->id,
-                'shelter_name' => $shelter->shelter_name,
-            ];
-      Mail::to($shelter->email)->send(new RejectShelter($reject));
+      DB::table('valid_docu')->where('shelter_id', $shelter->id)->delete();
+      $destination = 'uploads/valid-documents/'.$shelter->filename;
+          if(File::exists($destination)){ 
+              File::delete($destination);
+          }   
+
+      // $reject = array();
+      //       $reject = [
+      //           'shelter_id' =>$shelter->id,
+      //           'shelter_name' => $shelter->shelter_name,
+      //       ];
+      // Mail::to($shelter->email)->send(new RejectShelter($reject));
 
       $rejected = array();
       $rejected = [
-          'check' => 'Please check your email ',
-          'reject' =>' The system has detected...'
+          'check' => 'It seems you have uploaded a wrong screenshot for the valid documents ',
+          'reject' =>' you still have '.$shelter->grace.' chances left upon uploading the right documents'
       ];
       AnimalShelter::find($shelter->id)->notify( new ValidDocumentsRejected($rejected));
-      $data = array(
-          'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
-          'shelter' => Animalshelter::all()->where('is_verified_shelter','0'),
-        );
       return redirect(route('viewshelter'))->with('status', 'Rejected Successfully');
     }
 

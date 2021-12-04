@@ -74,6 +74,9 @@ Route::post('/Admin/updatesubscription/{id}',[AdminController::class,'updatesubs
 Route::post('/Admin/deletesubscription/{id}',[AdminController::class,'deletesubscription'])->name('delete.subscription');
 Route::post('/Admin/uploadproof/{id}',[UploadController::class,'uploadproof'])->name('upload.proof');
 Route::post('/PetOwner/uploadproof/{id}',[UploadController::class,'uploadproofpetowner'])->name('upload.proof.petowner');
+Route::post('/AnimalShelter/uploadproof',[UploadController::class,'reupload'])->name('valid.reupload');
+Route::post('/PetOwner/uploadproof',[UploadController::class,'reuploadpetowner'])->name('valid.reupload.petowner');
+
 
 Route::post('/AnimalShelter/waitingsubscription/{id}',[AnimalShelterManagement::class,'waitingsub'])->name('waiting.subscription');
 Route::post('/PetOwner/waitingsubscription/{id}',[PetOwnerManagement::class,'waitingsub'])->name('waiting.subscription.petowner');
@@ -81,7 +84,7 @@ Route::post('/PetOwner/waitingsubscription/{id}',[PetOwnerManagement::class,'wai
 Route::post('/Admin/feedback/{sub_id}/{receiver_id}',[AdminController::class,'feedback']);
 Route::post('/Admin/feedbackadoption/{id}',[AdminController::class,'approveadoptionpayment'])->name('adoption.shelter.payment');
 Route::post('/Admin/rejectfeedbackadoption/{id}',[AdminController::class,'rejectadoptionpayment'])->name('adoption.shelter.payment.reject');
-
+Route::post('/Admin/viewshelterReject/{shelter_id}',[AdminController::class,'RejectShelterApp'])->name('reject.shelter');
 
 Route::post('/Admin/feedbackdonationmessage/{id}',[AnimalShelterManagement::class,'feedbackmessage'])->name('view.feedback.message');
 Route::post('/Admin/feedbackdonationmessageerror/{id}',[AnimalShelterManagement::class,'feedbackmessageerror'])->name('view.feedback.message.error');
@@ -89,10 +92,14 @@ Route::post('/AnimalShelter/message/{id}',[AnimalShelterManagement::class,'messa
 Route::post('/AnimalShelter/error/{id}',[AnimalShelterManagement::class,'error'])->name('error');
 Route::post('/AnimalShelter/response/{id}',[AnimalShelterManagement::class,'approvereq'])->name('response');
 Route::post('/AnimalShelter/rejectresponse/{id}',[AnimalShelterManagement::class,'rejectreq'])->name('reject');
+Route::post('/AnimalShelter/changehours/{id}',[AnimalShelterManagement::class,'Updatetime'])->name('change.time');
 
 
 Route::post('/PetOwner/message/{id}',[PetOwnerManagement::class,'message'])->name('message.petowner');
 Route::post('/PetOwner/error/{id}',[PetOwnerManagement::class,'error'])->name('error.petowner');
+Route::post('/AnimalShelter/wait/{id}',[AnimalShelterManagement::class,'wait'])->name('wait.response');
+Route::post('/PetOwner/wait/{id}',[PetOwnerManagement::class,'wait'])->name('wait.response.petowner');
+Route::post('/Admin/viewpetownerReject/{petowner_id}',[AdminController::class,'RejectPetOwnerApp'])->name('reject.petowner');
 
 
 Route::get('/test',[UploadController::class,'view']);
@@ -224,6 +231,9 @@ Route::group(['middleware'=>['Authcheck']],function(){
     Route::get('/AnimalShelter/subscription/{id}',[AnimalShelterManagement::class,'choosesubscription'])->name('choose.subscription');
     Route::get('/AnimalShelter/viewwaitsubscription/{id}',[AnimalShelterManagement::class,'viewwaitsubscription'])->name('view.wait.subscription');
     Route::get('/AnimalShelter/cancelsub/{id}',[AnimalShelterManagement::class,'cancelsub'])->name('cancel.subscription');
+
+    Route::get('/AnimalShelter/viewwait',[AnimalShelterManagement::class,'viewwait'])->name('view.wait');
+    Route::get('/AnimalShelter/tempcheck',[AnimalShelterManagement::class,'tempcheckshelter'])->name('tempcheckshelter');
 });
 
 Route::group(['middleware'=>['AdminCheck']],function(){ 
@@ -296,7 +306,8 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
     Route::get('/Petowner/viewwaitsubscription/{id}',[PetOwnerManagement::class,'viewwaitsubscription'])->name('owner.view.wait.subscription');
     Route::get('/PetOwner/subscription/{id}',[PetOwnerManagement::class,'choosesubscription'])->name('choose.subscription.petowner');
     Route::get('/PetOwner/cancelsub/{id}',[PetOwnerManagement::class,'cancelsub'])->name('cancel.subscription.petowner');
-
+    Route::get('/PetOwner/viewwait',[PetOwnerManagement::class,'viewwait'])->name('view.wait.petowner');
+    Route::get('/PetOwner/tempcheck',[PetOwnerManagement::class,'tempcheckshelter'])->name('tempcheckshelter.petowner');
 });
 
 Route::get('/dashboard/gettype/petowner',[DropDownController::class,'gettype_petowner'])->name('get.type.petowner');
@@ -305,6 +316,12 @@ Route::get('/dashboard/getbreed',[DropDownController::class,'getbreed'])->name('
 Route::get('/dashboard/gettype',[DropDownController::class,'gettype'])->name('get.type');
 Route::get('/allocate/vaccineselection',[DropDownController::class,'vaccinefetch'])->name('vaccine.fetch');
 Route::get('/allocate/dewormselection',[DropDownController::class,'dewormfetch'])->name('deworm.fetch');
+
+Route::get('/Register/fetch/valid/{id}',[UploadController::class,'fetchvalid'])->name('fetch.valid');
+Route::get('/Register/fetch/validpetowner/{id}',[UploadController::class,'fetchvalidpetowner'])->name('fetch.valid.petowner');
+Route::get('/Register/delete/valid',[UploadController::class,'validdelete'])->name('valid.delete');
+Route::get('/Register/deletepetowner/valid',[UploadController::class,'validdeletepetowner'])->name('valid.delete.petowner');
+
 
 Route::group(['middleware'=>['AdopterNotifRequest','AdoptionPaymentReq']],function(){ 
     Route::get('/Reactivation/petowner/{petowner_id}',[AdminController::class,'reactivationpetowner'])->name('approve.reactivation.petowner');
@@ -318,8 +335,6 @@ Route::group(['middleware'=>['AdopterNotifRequest','AdoptionPaymentReq']],functi
     Route::get('/Admin/viewshelter/{shelter_id}',[AdminController::class,'ApproveShelterApp'])->name('approve.shelter');
     Route::get('/Admin/viewpetowner/{petowner_id}',[AdminController::class,'ApprovePetOwnerApp'])->name('approve.petowner');
     Route::get('/Admin/ApproveReactivationAdopter/{id}',[AdminController::class,'approveadopterrequest'])->name('approve.adopter.request');
-    Route::get('/Admin/viewshelterReject/{shelter_id}',[AdminController::class,'RejectShelterApp'])->name('reject.shelter');
-    Route::get('/Admin/viewpetownerReject/{petowner_id}',[AdminController::class,'RejectPetOwnerApp'])->name('reject.petowner');
     Route::get('/Reject/{shelter_id}',[AdminController::class,'reject_remove_shelter'])->name('remove.shelter'); 
     Route::get('/Reject/petowner/{petowner_id}',[AdminController::class,'reject_remove_petowner'])->name('remove.petowner'); 
     Route::get('/Reactivation/{shelter_id}',[AdminController::class,'reactivation'])->name('approve.reactivation');

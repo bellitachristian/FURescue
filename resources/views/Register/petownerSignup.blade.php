@@ -102,7 +102,7 @@
                         <div class="col-sm-6">
                                 <div class="card">
                                         <div class="card-header">
-                                            Valid Documents
+                                            Valid Documents(screenshot of e.g.driver's license,voter's id,etc.)
                                         </div>
                                         <div class="card-body">
                                                 <input type="file" required multiple name="images[]" id="image">    

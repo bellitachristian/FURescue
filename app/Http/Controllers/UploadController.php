@@ -13,6 +13,7 @@ use App\Models\Subscription;
 use App\Models\PetOwner;
 use App\Models\Animals;
 use App\Models\UploadedPhotos;
+use App\Models\ValidDocuments;
 
 class UploadController extends Controller
 {
@@ -77,6 +78,50 @@ class UploadController extends Controller
             $imageupload->imagename = $imageName;
             $imageupload->shelter_id = $shelter->id;
             $imageupload->type = 'profile';
+            $imageupload->save();
+        }            
+
+    }
+    function reupload(Request $req){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+
+        $image = $req->file('file');
+        $photo = array();
+        $photo[] = $image;
+
+        foreach ($photo as $pics) {
+            $image_name = md5(rand(1000,10000));
+            $ext = strtolower($image->getClientOriginalExtension());
+            $imageName = $image_name.'.' .$ext;
+    
+            $image->move('uploads/valid-documents/', $imageName);
+
+            $imageupload = new ValidDocuments;
+            $imageupload->filename = $imageName;
+            $imageupload->extension = $ext;
+            $imageupload->shelter_id = $shelter->id;
+            $imageupload->save();
+        }            
+
+    }
+    function reuploadpetowner(Request $req){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+
+        $image = $req->file('file');
+        $photo = array();
+        $photo[] = $image;
+
+        foreach ($photo as $pics) {
+            $image_name = md5(rand(1000,10000));
+            $ext = strtolower($image->getClientOriginalExtension());
+            $imageName = $image_name.'.' .$ext;
+    
+            $image->move('uploads/valid-documents/', $imageName);
+
+            $imageupload = new ValidDocuments;
+            $imageupload->filename = $imageName;
+            $imageupload->extension = $ext;
+            $imageupload->petowner_id = $petowner->id;
             $imageupload->save();
         }            
 
@@ -323,6 +368,59 @@ class UploadController extends Controller
             $imageupload->type = 'subscription';
             $imageupload->save();
         }            
+    }
+
+    function fetchvalid($id){
+        $multiple = ValidDocuments::all()->where('shelter_id',$id);   
+        $output = '<div class="row">';
+        foreach($multiple as $image)
+        {
+            $output .= '
+            <div class="col-md-3" style="margin-bottom:16px;" align="center">
+                    <div style="display:flex">
+                        <img style="width:200px; height:150px; padding:3px" src="'.asset('uploads/valid-documents/' . $image->filename).'"/>
+                    </div>
+                    <button style="margin-top:1%" type="button" class="btn btn-secondary remove_image" id="'.$image->filename.'">Remove</button>
+                </div>
+            ';
+        }
+        $output .= '</div>';
+        echo $output;       
+    }
+
+    function fetchvalidpetowner($id){
+        $multiple = ValidDocuments::all()->where('petowner_id',$id);   
+        $output = '<div class="row">';
+        foreach($multiple as $image)
+        {
+            $output .= '
+            <div class="col-md-3" style="margin-bottom:16px;" align="center">
+                    <div style="display:flex">
+                        <img style="width:200px; height:150px; padding:3px" src="'.asset('uploads/valid-documents/' . $image->filename).'"/>
+                    </div>
+                    <button style="margin-top:1%" type="button" class="btn btn-secondary remove_image" id="'.$image->filename.'">Remove</button>
+                </div>
+            ';
+        }
+        $output .= '</div>';
+        echo $output;       
+    }
+
+    function validdelete(Request $req)
+    {
+        DB::table('valid_docu')->where('filename', $req->get('name'))->delete();
+        $destination = 'uploads/valid-documents/'.$req->get('name');
+            if(File::exists($destination)){ 
+                File::delete($destination);
+            }   
+    }
+    function validdeletepetowner(Request $req)
+    {
+        DB::table('valid_docu')->where('filename', $req->get('name'))->delete();
+        $destination = 'uploads/valid-documents/'.$req->get('name');
+            if(File::exists($destination)){ 
+                File::delete($destination);
+            }   
     }
 
     function loadproof($id,$sub_id)

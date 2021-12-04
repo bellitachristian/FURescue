@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Donation;
 use App\Models\Vaccine;
 use App\Models\Receipt;
+use App\Models\ValidDocuments;
 use App\Models\Adoption;
 use App\Models\AdoptionPolicy;
 use App\Models\AllocateVaccine;
@@ -42,6 +43,7 @@ use App\Notifications\ConfirmReactivationNotif;
 use App\Notifications\RejectRequestNotif;
 use App\Notifications\ApproveRequest;
 use App\Notifications\SuccessAdoption;
+use App\Notifications\ApproveRejectShelterNotif;
 use App\Notifications\Checkproofsubscriptionpayment;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
@@ -305,9 +307,18 @@ class AnimalShelterManagement extends Controller
         return view('AnimalShelter.ShelterDashboard',$data);
     }
     function Animalshelter_tempdashboard(){
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $sheltercheck= AnimalShelter::
+        whereHas('shelterPhoto',function($query)use($shelter){
+          $query->where('shelter_id',$shelter->id);
+        })
+        ->where('is_verified_shelter','2')
+        ->where('grace','!=','0')
+        ->count();
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first()
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'check'=>$sheltercheck
         );
         return view('AnimalShelter.TemporaryDash',$data);
     }
@@ -1209,11 +1220,17 @@ class AnimalShelterManagement extends Controller
             }
         }
     }
+    function Updatetime(Request $req, $id){
+        $shelter = AnimalShelter::find($id);
+        $shelter->start_time =Carbon::parse($req->start_time)->format('h:i A');
+        $shelter->end_time = Carbon::parse($req->end_time)->format('h:i A');
+        $shelter->update();
+        return redirect()->back()->with('status','Opening Hours Updated Successfully');
+    }
     function UpdateProfile(Request $req, $id){ 
         $req->validate([
             'profile'=>'required|image|mimes:jpg,png,jpeg,gif,svg',
         ]);     
-        try{
             $shelter = AnimalShelter::find($id);
             $default = $shelter->profile;
             if('default.png'!=$default){
@@ -1244,11 +1261,11 @@ class AnimalShelterManagement extends Controller
             $shelter->contact =$req->contact;
             $shelter->g_cash =$req->g_cash;
             $shelter->pay_pal =$req->pay_pal;
+            $shelter->start_day =$req->start_day;
+            $shelter->end_day =$req->end_day;
             $shelter->update();
             return redirect()->back()->with('status','Profile Updated Successfully');
-        }catch(\Throwable $th){
-            return redirect()->back()->with('status1','Something went wrong! Try again later');
-        }    
+
     }
 
     function DeleteAnimal($id){
@@ -2193,6 +2210,57 @@ class AnimalShelterManagement extends Controller
           return view('AnimalShelter.AnimalManagement.new',$data);
     }
 
+    function viewwait(){
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'feedback'=>Feedback::where('owner_type',2)->where('owner_id',$shelter->id)->get()
+        );
+       return view('AnimalShelter.rejected',$data);
+    }
+
+    function tempcheckshelter(){
+        $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
+       
+        $sheltercheck= AnimalShelter::
+                        whereHas('shelterPhoto',function($query)use($shelter){
+                          $query->where('shelter_id',$shelter->id);
+                        })
+                        ->where('is_verified_shelter','2')
+                        ->where('grace','!=','0')
+                        ->count();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'check'=>$sheltercheck
+        );
+       return view('AnimalShelter.tempcheckshelter',$data);
+    }
+
+    function wait($id)
+    {
+        $check = ValidDocuments::where('shelter_id',$id)->count();
+        if($check > 0){
+            $shelter=AnimalShelter::where('id',$id)->first();
+            $convert = (int)$shelter->grace;
+            $shelter->grace = $convert-1;
+            $shelter->update(); 
+
+            $data = array();
+            $data = [
+                'shelter_name' => $shelter->shelter_name,
+                'approval'=>" resubmitted their valid documents and is waiting for your approval"
+            ];
+
+            $category = Category::all();
+            Admin::find(1)->notify( new ApproveRejectShelterNotif($data));
+           return redirect()->route('tempcheckshelter')->with('status','Submitted successfully');
+        }else{
+            return redirect()->back()->with('status1','Please upload valid documents first');
+        }
+    }
+
     function confirmadoption($id){
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $confirm = AdoptionSlip::find($id);
@@ -2237,5 +2305,6 @@ class AnimalShelterManagement extends Controller
 
         return redirect()->back()->with('status','Adoption slip confirmed successfully');
     }
+
 }
 

@@ -41,7 +41,6 @@ Adoption Slip
 							<div class="col">
 								<span style="margin-bottom: 10px; color:black">Requested by</span>
                                 <img src="{{asset('uploads/pet-owner/profile/'.$slip->petowner->profile)}}" style="width: 150px; height: 150px;"><br>
-              
 							</div>
                             <div class="col">
                                 
@@ -105,12 +104,9 @@ Adoption Slip
                             <hr>
                             <p ><strong >Shelter Requested</strong></p>
 							<div class="row item">
-                                
-                                
                                 <div class="col">
                                     <span>Name</span>
                                     <p><strong>{{$slip->shelter->shelter_name}}</strong></p>
-                                    
 								<span>Address</span>
                                 <p><strong>{{$slip->shelter->address}}</strong></p>
                                 <span>Contact Person</span>
@@ -120,7 +116,13 @@ Adoption Slip
                                     <span>Contact No.</span>
                                     <p><strong>{{$slip->shelter->contact}}</strong></p>
                                     <span>Email</span>
-                                <p><strong>{{$slip->shelter->email}}</strong></p>
+                                    <p><strong>{{$slip->shelter->email}}</strong></p>                           
+                                </div>
+                                <div class="col">
+                                    <span>Open In</span>
+                                    <p><strong>{{$slip->shelter->start_day}}-{{$slip->shelter->end_day}}</strong></p>
+                                    <span>Open At</span>
+                                    <p><strong>{{$slip->shelter->start_time}}-{{$slip->shelter->end_time}}</strong></p>
                                 </div>
                             </div>
 						</div>
