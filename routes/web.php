@@ -146,6 +146,7 @@ Route::post('/UpdatePassword/{id}',[AnimalShelterManagement::class,'UpdatePasswo
 Route::post('/AllocationVaccine/{id}/{vac_id}',[AnimalShelterManagement::class,'Allocation_Vaccine']);
 Route::post('/AllocationDeworm/{id}/{dew_id}',[AnimalShelterManagement::class,'Allocation_Deworm']);
 Route::get('AnimalManagement/Subscription/trans/{id}',[AnimalShelterManagement::class,'subpay'])->name('subscription.trans');
+Route::get('PetOwner/Subscription/trans/{id}',[AnimalShelterManagement::class,'subpay'])->name('subscription.trans.petowner');
 Route::post('/{id}',[AnimalShelterManagement::class,'UpdateAnimal']);
 Route::get('/Register/petOwner',[RegisterController::class,'viewregisterPetOwner']);  
 Route::get('/Register/signup',[RegisterController::class,'register']);
@@ -208,6 +209,9 @@ Route::group(['middleware'=>['Authcheck']],function(){
         Route::get('Receipt/Confirmed/Slip',[AnimalShelterManagement::class,'confirmreceipt'])->name('adoption.confirmed.result');
 
         Route::get('AnimalManagement/New',[AnimalShelterManagement::class,'newpets'])->name('new.pets');
+
+        Route::get('AnimalManagement/Subscribe/{id}',[AnimalShelterManagement::class,'subdetails'])->name('sub.details');
+
 
         Route::get('/customselection/get_fee',[DropDownController::class,'get_fee'])->name('get.fee');
         Route::get('/customselection/load_adoption',[DropDownController::class,'load_adoption'])->name('load.adoption');
@@ -276,6 +280,9 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
         Route::get('/customselection/get_fee/petowner',[DropDownController::class,'get_fee_petowner'])->name('get.fee.petowner');
         
         Route::get('/PetOwner/Adoption',[PetOwnerManagement::class,'adoptionrequests'])->name('adoption.request.petowner');
+
+        Route::get('PetOwner/Subscribe/{id}',[PetOwnerManagement::class,'subdetails'])->name('sub.details.petowner');
+
 
         Route::get('/PetOwner/enlarge/{id}',[PetOwnerManagement::class,'enlarge'])->name('enlarge.petowner');
         Route::get('/PetOwner/request',[PetOwnerManagement::class,'request_adoption'])->name('view.request.adoption');

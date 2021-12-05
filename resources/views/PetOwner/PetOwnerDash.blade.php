@@ -116,7 +116,7 @@ Pet Owner Dashboard
             @endforeach
             @foreach($notapprove as $nots)
                 @if($nots == $subs->id)
-                    <a href="{{route('owner.view.wait.subscription',$subs->id)}}" class="read">subscribe<i class="fa fa-angle-right"></i></a>
+                <a href="{{route('sub.details.petowner',$subs->id)}}" class="read">subscribe<i class="fa fa-angle-right"></i></a>
                 @endif
             @endforeach
             @foreach($notsub as $not)

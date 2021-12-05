@@ -1957,7 +1957,7 @@ class PetOwnerManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'shelters'=>AnimalShelter::whereNotIn('id',$check)->get(),
+            'petonw$petowners'=>AnimalShelter::whereNotIn('id',$check)->get(),
             'countsentreq'=> Requestadoption::where('petowner_id',$petowner->id)->where('status','pending')->count(),
             'countrejectreq'=> Requestadoption::where('petowner_id',$petowner->id)->where('status','rejected')->count(),
             'countapprovereq'=> Requestadoption::where('petowner_id',$petowner->id)->where('status','approved')->count(),
@@ -2013,7 +2013,7 @@ class PetOwnerManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'shelters'=>Requestadoption::where('status','pending')->get(),
+            'petonw$petowners'=>Requestadoption::where('status','pending')->get(),
         );
         return view('PetOwner.Request.Process.sent',$data);
     }
@@ -2042,7 +2042,7 @@ class PetOwnerManagement extends Controller
         $data =array( 
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'shelters'=>Requestadoption::where('status','rejected')->get(),
+            'petonw$petowners'=>Requestadoption::where('status','rejected')->get(),
         );
         return view('PetOwner.Request.Process.reject',$data);
     }
@@ -2053,7 +2053,7 @@ class PetOwnerManagement extends Controller
             $data =array(
                 'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
                 'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-                'shelters'=>Requestadoption::where('petowner_id',$petowner->id)->get(),
+                'petonw$petowners'=>Requestadoption::where('petowner_id',$petowner->id)->get(),
             );
             return view('PetOwner.Request.Process.approve',$data);
         }
@@ -2062,7 +2062,7 @@ class PetOwnerManagement extends Controller
             $data =array(
                 'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
                 'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-                'shelters'=>Requestadoption::whereNotIn('id',$check)->get(),
+                'petonw$petowners'=>Requestadoption::whereNotIn('id',$check)->get(),
             );
             return view('PetOwner.Request.Process.approve',$data);
         } 
@@ -2179,6 +2179,139 @@ class PetOwnerManagement extends Controller
             return redirect()->back()->with('status1','Please upload valid documents first');
         }
     }
+    function subdetails($id){
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'shelter'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'subs'=>Subscription::find($id),
+        );
+        return view('PetOwner.Subscription.Paypal.subscribe',$data);
+    }
+    function subpay($id){
+        $petowners =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $subs = new SubscriptionTransac;
+        $subs->status = 'pending';
+        $subs->sub_id = $id;
+        $subs->petowner_id = $petowners->id;
+        $subs->save();
 
+        $check = SubscriptionTransac::where('status','pending')->where('sub_id',$id)->where('petowner_id',$petowners->id)->count();
+
+        if($check > 0){
+          $petowner = SubscriptionTransac::where('status','pending')->where('sub_id',$id)->where('petowner_id',$petowners->id)->first();
+
+          $approvedproof = [
+            'shelter_name' => 'You have successfully subscribed '.$petowner->subscription->sub_name.' promo',
+            'promo' => ' valid for '.$petowner->subscription->sub_span.''.$petowner->subscription->sub_span_type.'/s',
+        ];
+        $petowner->status = 'approved';
+        $petowner->update();
+        PetOwner::find($petowners->id)->notify(new ApproveProofPayment($approvedproof));
+
+        $subscription = Subscription::find($id);
+            $data = array(
+              'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+              'proof' => UploadedPhotos::where('sub_id',$id)->where('petowner_id',$petowners->id)->get(),
+          );
+          //check if credits is 0
+          $credits = PetOwner::find($petowners->id);
+          if($credits->TotalCredits == "0"){
+            $credits->TotalCredits = $subscription->sub_credit;
+            $credits->update();
+             //getting the expiry date && the subscription span
+             $span_type = $subscription->sub_span_type;
+             if($span_type == "day"){
+               $convertspan = (int)$subscription->sub_span;
+               $datestart = Carbon::parse($petowner->updated_at);
+               $expiry = $datestart->addDays($convertspan);
+               //update
+               $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+               $petowner->update();
+             }
+             elseif($span_type == "month"){
+               $convertspan = (int)$subscription->sub_span;
+               $datestart = Carbon::parse($petowner->updated_at);
+               $expiry = $datestart->addMonths($convertspan);
+               //update
+               $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+               $petowner->update();
+             }
+             elseif($span_type == "year"){
+               $convertspan = (int)$subscription->sub_span;
+               $datestart = Carbon::parse($petowner->updated_at);
+               $expiry = $datestart->addYears($convertspan);
+               //update
+               $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+               $petowner->update();
+             }
+          }
+          else{
+            if($subscription->sub_credit == "UNLI"){
+              $credits->TotalCredits = "UNLI";
+              $credits->update();
+              //getting the expiry date && the subscription span
+              $span_type = $subscription->sub_span_type;
+              if($span_type == "day"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($petowner->updated_at);
+                $expiry = $datestart->addDays($convertspan);
+                //update
+                $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+                $petowner->update();
+              }
+              elseif($span_type == "month"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($petowner->updated_at);
+                $expiry = $datestart->addMonths($convertspan);
+                //update
+                $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+                $petowner->update();
+              }
+              elseif($span_type == "year"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($petowner->updated_at);
+                $expiry = $datestart->addYears($convertspan);
+                //update
+                $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+                $petowner->update();
+              }
+            }
+            else{
+              $credit = (int)$subscription->sub_credit;
+              $subtotal = (int)$credits->TotalCredits;
+              $total = $credit + $subtotal;
+              $credits->TotalCredits = $total;
+              $credits->update();
+
+              $span_type = $subscription->sub_span_type;
+              if($span_type == "day"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($petowner->updated_at);
+                $expiry = $datestart->addDays($convertspan);
+                //update
+                $petowner->expiry_date = Carbon::parse($expiry)->format('F d Y h:i:s A');
+                $petowner->update();
+              }
+              elseif($span_type == "month"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($petowner->updated_at);
+                $expiry = $datestart->addMonths($convertspan);
+                //update
+                $petowner->expiry_date = Carbon::parse($expiry)->format('F d Y h:i:s A');
+                $petowner->update();
+              }
+              elseif($span_type == "year"){
+                $convertspan = (int)$subscription->sub_span;
+                $datestart = Carbon::parse($petowner->updated_at);
+                $expiry = $datestart->addYears($convertspan);
+                //update
+                $petowner->expiry_date = Carbon::parse($expiry)->format('F d Y h:i:s A');
+                $petowner->update();
+              }
+            }
+          }
+        }
+    }
 
 }
+

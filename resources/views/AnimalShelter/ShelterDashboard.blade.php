@@ -120,44 +120,11 @@ Animal Shelter Dashboard
             @endforeach 
             @foreach($notapprove as $nots)
                 @if($nots == $subs->id)
-                <script src="https://www.paypal.com/sdk/js?client-id=AfnKmdBSmUQRaxV-lxa9RuDvl26tdBGu2HugwMERbS0Jp2Ronpx5Q9EW376wDPydVgswBBpAaBEAKlXy&currency=PHP"></script>
-                <!-- Set up a container element for the button -->
-                <div id="paypal-button-container"></div>
+                <!-- <div id="paypal-button-container">
+                
+                </div>      -->
+                <a href="{{route('sub.details',$subs->id)}}" class="read">subscribe<i class="fa fa-angle-right"></i></a>
 
-                <script>
-                paypal.Buttons({
-
-                    // Sets up the transaction when a payment button is clicked
-                    createOrder: function(data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                        amount: {
-                            value: '{{$subs->sub_price}}' // Can reference variables or functions. Example: `value: document.getElementById('...').value`
-                        }
-                        }]
-                    });
-                    },
-
-                    // Finalize the transaction after payer approval
-                    onApprove: function(data, actions) {
-                    return actions.order.capture().then(function(orderData) {
-                        save();
-                        function save()
-                        {
-                            $.ajax({
-                            url:"{{route('subscription.trans',$subs->id)}}",
-                            success:function(data)
-                            {
-                                alert('Subscribed Successfully!');
-                                location.reload(); 
-                            }
-                            })
-                        }
-                    });
-                    }
-                }).render('#paypal-button-container');
-
-                </script>
                     <!-- <a href="{{route('view.wait.subscription',$subs->id)}}" class="read">subscribe<i class="fa fa-angle-right"></i></a> -->
                 @endif
             @endforeach
@@ -172,93 +139,5 @@ Animal Shelter Dashboard
     </div>
     @endforeach
 </div>
-
 @endsection
-@push('js')
-<script type=text/javascript>
-  $('#category').change(function(){
-  var categID = $(this).val();  
-  console.log(categID)
-  if(categID){
-    $.ajax({
-      type:"GET",
-      url:"{{route('get.breed')}}?categ_id="+categID,
-      success:function(res){        
-      if(res){
-        $("#breed").empty();
-        $("#breed").append('<option>Select Breed</option>');
-        $.each(res,function(key,value){
-          $("#breed").append('<option value="'+value+'">'+value+'</option>');
-        });
-      
-      }else{
-        $("#breed").empty();
-      }
-      }
-    });
-  }else{
-    $("#breed").empty();
-  }   
-  });
-   document.getElementById("age").disabled = true;
-    $("#years").change(function(){
-        if($("#years").val() == "1"){
-        document.getElementById("age").disabled = false;
-        $("#age").change(function(){
-        var Year  = $("#years").val();
-        var Age = $("#age").val();
-        var categID = $("#category").val(); 
-         
-        if(categID){
-            $.ajax({
-                type:"GET",
-                url:"{{route('get.type')}}?categ_id="+categID,
-                data:{age:Age,radiobtn:Year},
-                success:function(res){      
-                    console.log(res)  
-                    if(res){
-                        $("#stage").empty();
-                        $.each(res,function(key,value){
-                            $("#stage").append('<option value="'+value+'">'+value+'</option>');
-                        });
-            
-                    }else{
-                        $("#stage").empty();
-                        }
-                    }
-                });
-            }
-        });
-    }
-  });
-  $("#months").change(function(){
-    if($("#months").val() == "2"){
-        document.getElementById("age").disabled = false;
-        $("#age").change(function(){
-        var categID = $("#category").val();
-        var Month  = $("#months").val();
-        var Age = $("#age").val();  
-        if(categID){
-            $.ajax({
-                type:"GET",
-                url:"{{route('get.type')}}?categ_id="+categID,
-                data:{age:Age,radiobtn:Month},
-                success:function(res){        
-                    if(res){
-                        $("#stage").empty();
-                        $.each(res,function(key,value){
-                            $("#stage").append('<option value="'+value+'">'+value+'</option>');
-                        });
-            
-                    }else{
-                        $("#stage").empty();
-                        }
-                    }
-                });
-            }
-        });
-    }
-  });
-</script>
- 
-@endpush
+

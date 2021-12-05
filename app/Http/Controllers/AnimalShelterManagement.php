@@ -1902,6 +1902,15 @@ class AnimalShelterManagement extends Controller
         return view('AnimalShelter.Subscription.viewtransaction',$data);
     }
 
+    function subdetails($id){
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'subs'=>Subscription::find($id),
+        );
+        return view('AnimalShelter.Subscription.Paypal.subscribe',$data);
+    }
+
     function viewwaitsubscription($id){
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $check = SubscriptionTransac::where('status','pending')->where('sub_id',$id)->where('shelter_id',$shelter->id)->count();
@@ -2053,7 +2062,6 @@ class AnimalShelterManagement extends Controller
             $adoption->update();
 
             $checking = AdoptionPayment::where('animal_id',$check->id)->where('owner_type',2)->where('owner_id',$shelter->shelter_name)->first();
-
             $receipt = new Receipt;
             $receipt->animal_id = $check->id;
             $receipt->adopter_id = $message->adopter_id;
