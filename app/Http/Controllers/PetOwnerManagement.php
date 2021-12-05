@@ -2182,7 +2182,7 @@ class PetOwnerManagement extends Controller
     function subdetails($id){
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'shelter'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'subs'=>Subscription::find($id),
         );
         return view('PetOwner.Subscription.Paypal.subscribe',$data);
