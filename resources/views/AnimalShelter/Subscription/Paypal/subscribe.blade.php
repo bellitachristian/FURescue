@@ -71,7 +71,6 @@ paypal.Buttons({
             success:function(data)
             {
                 alert('Subscribed Successfully!');
-                location.reload(); 
             }
             })
         }
