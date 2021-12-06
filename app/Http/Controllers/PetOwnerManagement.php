@@ -1868,10 +1868,11 @@ class PetOwnerManagement extends Controller
     }
 
     function adoptionrequests(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
         $data =array( 
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'adopter'=>Adoption::all()->where('status','pending')->where('owner_type',3),
+            'adopter'=>Adoption::all()->where('status','pending')->where('owner_type',3)->where('owner_id',$petowner->id),
         );
         return view('PetOwner.Adoption.viewrequest',$data);
     }
