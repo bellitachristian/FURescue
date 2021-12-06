@@ -38,17 +38,7 @@ Transfer Adoption Fee
                             <td>
                                 <a href=""><button class="btn btn-success">Transfer</button></a>
                             </td>
-                            @elseif($money->usertype->id == 3)
-                            <td>{{$money->usertype->usertype}}</td>
-                            @foreach($money->usertype->petowner as $petowners)
-                            <td>{{$petowners->fname}} {{$petowners->lname}}</td>
-                            <td>{{$petowners->email}}</td>
-                            <td>{{$petowners->contact}}</td>
-                            @endforeach
-                            <td>{{$money->payment->fee}}</td>
-                            <td>
-                                <a href=""><button class="btn btn-success">Transfer</button></a>
-                            </td>
+
                             @endif
                         </tr> 
                     @endforeach
