@@ -27,24 +27,24 @@ Transfer Adoption Fee
                     @foreach($transfer as $money)
                         <tr>
                             <td>{{$money->id}}</td>
-                            @if($money->usertype == 2)
+                            @if($money->usertype->id == 2)
                             <td>{{$money->usertype->usertype}}</td>
                             <td>{{$money->usertype->shelter->shelter_name}}</td>
                             <td>{{$money->usertype->shelter->email}}</td>
                             <td>{{$money->usertype->shelter->contact}}</td>
                             <td>{{$money->payment->fee}}</td>
                             <td>
-                                <a href=""><button class="btn btn-success">Transfer</button></a>
+                                <a href="{{}}"><button class="btn btn-success">Transfer</button></a>
                             </td>
                             @endif
-                            @if($money->usertype == 3)
+                            @if($money->usertype->id == 3)
                             <td>{{$money->usertype->usertype}}</td>
                             <td>{{$money->usertype->petowner->fname}} {{$money->usertype->petowner->lname}}</td>
                             <td>{{$money->usertype->petowner->email}}</td>
                             <td>{{$money->usertype->petowner->contact}}</td>
                             <td>{{$money->payment->fee}}</td>
                             <td>
-                                <a href=""><button class="btn btn-success">Transfer</button></a>
+                                <a href="{{}}"><button class="btn btn-success">Transfer</button></a>
                             </td>
                             @endif
                         </tr> 

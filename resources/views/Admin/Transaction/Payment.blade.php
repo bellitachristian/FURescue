@@ -30,7 +30,7 @@ Adoption Payment
                         <tr>
                             <td>{{$payment->id}}</td>
                             <td>
-                            <img src="{{asset('phpcode/payment/'.$payment->proof)}}" width="70px" height="70px" alt="photo">
+                            <img src="{{asset('uploads/animals/'.$payment->animals->animal_image)}}" width="70px" height="70px" alt="">
                             </td>
                             <td>{{$payment->animals->name}}</td>
                             <td>{{$payment->adopter->fname}} {{$payment->adopter->lname}}</td>
