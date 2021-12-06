@@ -2349,7 +2349,8 @@ class PetOwnerManagement extends Controller
             'success' =>$receipt->animal->name.' has been successfully adopted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
             'info' => ' you can check it in the reports section',
         ];
-        PetOwner::find($receipt->owner_id)->notify(new SuccessAdoption($success));
+        
+        PetOwner::where('fname lname',$owner_id)->first()->notify(new SuccessAdoption($success));
 
         return redirect()->back()->with('status','Receipt Confirmed Successfully');
     }
