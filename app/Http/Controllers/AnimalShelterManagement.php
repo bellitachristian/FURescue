@@ -2226,7 +2226,7 @@ class AnimalShelterManagement extends Controller
         $receipt =  Receipt::find($id);
         $receipt->status = 'confirmed';
         $receipt->update();
-        return redirect()->back()->with('status1','Receipt Confirmed Successfully');
+        return redirect()->back()->with('status','Receipt Confirmed Successfully');
     }
     function viewwait(){
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
