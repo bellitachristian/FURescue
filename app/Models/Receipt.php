@@ -19,6 +19,12 @@ class Receipt extends Model
     public function usertype(){
         return $this->belongsTo(Usertype::class,'usertype_id');
     }
+    public function shelter(){
+        return $this->belongsTo(Usertype::class,'owner_id');
+    }
+    public function petowner(){
+        return $this->belongsTo(Usertype::class,'owner_id');
+    }
     public function adoption(){
         return $this->belongsTo(Adoption::class,'adoption_id');
     }
