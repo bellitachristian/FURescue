@@ -29,18 +29,22 @@ Transfer Adoption Fee
                             <td>{{$money->id}}</td>
                             @if($money->usertype->id == 2)
                             <td>{{$money->usertype->usertype}}</td>
-                            <td>{{$money->shelter->shelter_name}}</td>
-                            <td>{{$money->shelter->email}}</td>
-                            <td>{{$money->shelter->contact}}</td>
+                                @foreach($money->shelter as $owner)
+                                    <td>{{$owner->shelter_name}}</td>
+                                    <td>{{$owner->email}}</td>
+                                    <td>{{$owner->contact}}</td>   
+                                @endforeach
                             <td>{{$money->payment->fee}}</td>
                             <td>
                                 <a href=""><button class="btn btn-success">Transfer</button></a>
                             </td>
                             @elseif($money->usertype->id == 3)
                             <td>{{$money->usertype->usertype}}</td>
-                                    <td>{{$money->petowner->fname}} {{$money->petowner->lname}}</td>
-                                    <td>{{$money->petowner->email}}</td>
-                                    <td>{{$money->petowner->contact}}</td>   
+                                @foreach($money->petowner as $owner)
+                                    <td>{{$owner->fname}} {{$owner->lname}}</td>
+                                    <td>{{$owner->email}}</td>
+                                    <td>{{$owner->contact}}</td>   
+                                @endforeach
                             <td>{{$money->payment->fee}}</td>
                             <td>
                                 <a href=""><button class="btn btn-success">Transfer</button></a>
@@ -48,7 +52,7 @@ Transfer Adoption Fee
                             @endif
                         </tr> 
                     @endforeach
-                    @if(empty($sub))   
+                    @if(empty($money))   
                         <h6 class="alert alert-danger">No money to be transferred</h6>
                     @endif
                     </tbody>
