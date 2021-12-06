@@ -1,6 +1,6 @@
 @extends("Admin.main")
 @section("header")
-Subscription Transaction
+Transfer Adoption Fee
 @endsection
 @push("css")
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css">   
