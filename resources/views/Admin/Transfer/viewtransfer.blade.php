@@ -34,7 +34,7 @@ Transfer Adoption Fee
                             <td>{{$money->usertype->shelter->contact}}</td>
                             <td>{{$money->payment->fee}}</td>
                             <td>
-                                <a href="{{}}"><button class="btn btn-success">Transfer</button></a>
+                                <a href=""><button class="btn btn-success">Transfer</button></a>
                             </td>
                             @endif
                             @if($money->usertype->id == 3)
@@ -44,7 +44,7 @@ Transfer Adoption Fee
                             <td>{{$money->usertype->petowner->contact}}</td>
                             <td>{{$money->payment->fee}}</td>
                             <td>
-                                <a href="{{}}"><button class="btn btn-success">Transfer</button></a>
+                                <a href=""><button class="btn btn-success">Transfer</button></a>
                             </td>
                             @endif
                         </tr> 
