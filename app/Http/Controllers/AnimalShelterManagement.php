@@ -2226,6 +2226,16 @@ class AnimalShelterManagement extends Controller
         $receipt =  Receipt::find($id);
         $receipt->status = 'confirmed';
         $receipt->update();
+        
+        $animal = Animals::find($receipt->animal_id);
+        $animal->status = 'Adopted';
+        $animal->update();
+        $success = array();
+        $success = [
+            'success' =>$receipt->animal->name.' has been successfully adopted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
+            'info' => ' you can check it in the reports section',
+        ];
+        AnimalShelter::find($receipt->owner_id)->notify(new SuccessAdoption($success));
         return redirect()->back()->with('status','Receipt Confirmed Successfully');
     }
     function viewwait(){

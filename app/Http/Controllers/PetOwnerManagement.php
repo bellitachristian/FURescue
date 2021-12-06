@@ -42,6 +42,7 @@ use App\Notifications\Checkproofpetowner;
 use App\Notifications\ApproveProofPaymentPetowner;
 use App\Notifications\ApproveRejectShelterNotif;
 use App\Notifications\CancelReq;
+use App\Notifications\SuccessAdoption;
 use Illuminate\Support\Facades\Notification;
 use App\Helpers\Helper;
 use Carbon\Carbon;
@@ -2339,6 +2340,17 @@ class PetOwnerManagement extends Controller
         $receipt = Receipt::find($id);
         $receipt->status = 'confirmed';
         $receipt->update();
+
+        $animal = Animals::where('id',$receipt->animal_id)->first();
+        $animal->status = 'Adopted';
+        $animal->update();
+        $success = array();
+        $success = [
+            'success' =>$receipt->animal->name.' has been successfully adopted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
+            'info' => ' you can check it in the reports section',
+        ];
+        PetOwner::find($receipt->owner_id)->notify(new SuccessAdoption($success));
+
         return redirect()->back()->with('status','Receipt Confirmed Successfully');
     }
 }
