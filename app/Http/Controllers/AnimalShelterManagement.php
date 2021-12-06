@@ -2203,7 +2203,7 @@ class AnimalShelterManagement extends Controller
         return view('AnimalShelter.AdoptionSlip.confirm',$data);
     }
 
-    function confirmreceipt(){
+    function confirmreceiptshelter(){
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
