@@ -2336,7 +2336,7 @@ class PetOwnerManagement extends Controller
         return view('PetOwner.Receipt.confirmed',$data);
     }
     function confirmingreceipt($id){
-        $receipt = find($id);
+        $receipt = Receipt::find($id);
         $receipt->status = 'confirmed';
         $receipt->update();
         return redirect()->back()->with('status1','Receipt Confirmed Successfully');

@@ -2223,7 +2223,7 @@ class AnimalShelterManagement extends Controller
           return view('AnimalShelter.AnimalManagement.new',$data);
     }
     function confirmingreceipt($id){
-        $receipt = find($id);
+        $receipt =  Receipt::find($id);
         $receipt->status = 'confirmed';
         $receipt->update();
         return redirect()->back()->with('status1','Receipt Confirmed Successfully');
