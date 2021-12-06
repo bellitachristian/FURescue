@@ -28,6 +28,6 @@ class SignupPetOwner extends Mailable
      */
     public function build()
     {
-        return $this->from('furescueteam@gmail.com','furescue')->subject('Welcome Pet Owner!')->view('Mail.Verify-account-petowner',['mail_data'=> $this->sign_mail_data]);
+        return $this->from('furescue1@gmail.com','furescue')->subject('Welcome Pet Owner!')->view('Mail.Verify-account-petowner',['mail_data'=> $this->sign_mail_data]);
     }
 }
