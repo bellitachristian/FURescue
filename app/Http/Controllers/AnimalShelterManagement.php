@@ -49,6 +49,7 @@ use App\Notifications\ApproveProofPayment;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\Helper;
 
 class AnimalShelterManagement extends Controller
 {
@@ -2226,7 +2227,7 @@ class AnimalShelterManagement extends Controller
         $receipt =  Receipt::find($id);
         $receipt->status = 'confirmed';
         $receipt->update();
-        
+
         $animal = Animals::find($receipt->animal_id);
         $animal->status = 'Adopted';
         $animal->update();
