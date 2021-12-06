@@ -36,7 +36,7 @@ Transfer Adoption Fee
                             <td>
                                 <a href=""><button class="btn btn-success">Transfer</button></a>
                             </td>
-                            @elseif(($money->usertype == 3)
+                            @elseif($money->usertype == 3)
                             <td>{{$money->usertype->usertype}}</td>
                                     <td>{{$money->petowner->fname}} {{$money->petowner->lname}}</td>
                                     <td>{{$money->petowner->email}}</td>
