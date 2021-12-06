@@ -8,7 +8,7 @@
     <div class="col-sm-7">
         <div class="card shadow mb-4">
             <div class="card-header">
-                <a href="/dashboard"><button type="button" class="btn btn-danger">Back</button></a>
+                <a href="/pet-owner/dashboard"><button type="button" class="btn btn-danger">Back</button></a>
             </div>
             <div class="card-body">
                 <div style="display:flex">
