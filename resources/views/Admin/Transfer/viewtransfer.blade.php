@@ -43,7 +43,7 @@ Transfer Adoption Fee
                             <td>{{$money->usertype->petowner->email}}</td>
                             <td>{{$money->usertype->petowner->contact}}</td>
                             <td>{{$money->payment->fee}}</td>
-                            <td>''
+                            <td>
                                 <a href=""><button class="btn btn-success">Transfer</button></a>
                             </td>
                             @endif
