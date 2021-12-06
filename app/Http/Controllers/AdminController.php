@@ -975,4 +975,12 @@ class AdminController extends Controller
       );
       return view('Admin.Transfer.viewtransfer',$data);
     }
+
+    function transfermoney($id){
+      $data = array(
+        'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+        'transfer'=>Receipt::find($id)
+      );
+      return view('Admin.Transfer.paypal',$data);
+    }
 } 

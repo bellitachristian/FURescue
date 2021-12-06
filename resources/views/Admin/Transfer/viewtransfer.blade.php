@@ -35,7 +35,7 @@ Transfer Adoption Fee
                           
                             <td>{{$money->payment->fee}}</td>
                             <td>
-                                <a href=""><button class="btn btn-success">Transfer</button></a>
+                                <a href="{{route('transfer.money',$money->id)}}"><button class="btn btn-success">Transfer</button></a>
                             </td>
                             @elseif($money->usertype->id == 3)
                             <td>{{$money->usertype->usertype}}</td>
@@ -46,7 +46,7 @@ Transfer Adoption Fee
             
                             <td>{{$money->payment->fee}}</td>
                             <td>
-                                <a href=""><button class="btn btn-success">Transfer</button></a>
+                                <a href="{{route('transfer.money',$money->id)}}"><button class="btn btn-success">Transfer</button></a>
                             </td>
                             @endif
                         </tr> 
