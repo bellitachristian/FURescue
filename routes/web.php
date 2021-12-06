@@ -364,6 +364,7 @@ Route::group(['middleware'=>['AdopterNotifRequest','AdoptionPaymentReq']],functi
     Route::get('/Admin/AdoptionPayment',[AdminController::class,'adoptionpayment'])->name('adoption.payment');
     Route::get('/Admin/enlargepayment/{id}',[AdminController::class,'enlargeadoption'])->name('enlarge.payment');
 
+    Route::get('/Admin/transfer',[AdminController::class,'viewtransfer'])->name('view.transfer');
 
 });
 

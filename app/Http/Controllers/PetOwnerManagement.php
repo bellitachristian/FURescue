@@ -1912,7 +1912,7 @@ class PetOwnerManagement extends Controller
             $adoption->update();
 
             $checking = AdoptionPayment::where('animal_id',$check->id)->where('owner_type',3)->where('owner_id',$petowner->fname.' '.$petowner->lname)->first();
-
+            $recNo = Helper::IDGenerator(new Receipt, 'receipt_no', 5, 'RPT');
             $receipt = new Receipt;
             $receipt->animal_id = $check->id;
             $receipt->adopter_id = $message->adopter_id;
@@ -1921,6 +1921,7 @@ class PetOwnerManagement extends Controller
             $receipt->adoption_id = $id;
             $receipt->payment_id = $checking->id;
             $receipt->status = "pending";
+            $receipt->receipt_no = $recNo;
             $receipt->save();
         }
 

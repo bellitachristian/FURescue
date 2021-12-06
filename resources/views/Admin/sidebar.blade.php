@@ -71,6 +71,7 @@
             <h6 class="collapse-header">Facilities</h6>
             <a class="collapse-item" href="{{route('view.proof.payment')}}">Subscription</a>
             <a class="collapse-item" href="{{route('adoption.payment')}}">Adoption Payment</a>
+            <a class="collapse-item" href="{{route('view.transfer')}}">Transfer Money</a>
         </div>
     </div>
 </li>

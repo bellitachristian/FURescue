@@ -959,4 +959,8 @@ class AdminController extends Controller
       $notif->save();
       return redirect()->back()->with('status','Disapproval feedback sent successfully');
     } 
+
+    function viewtransfer(){
+      
+    }
 } 

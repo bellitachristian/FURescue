@@ -2062,6 +2062,8 @@ class AnimalShelterManagement extends Controller
             $adoption->update();
 
             $checking = AdoptionPayment::where('animal_id',$check->id)->where('owner_type',2)->where('owner_id',$shelter->shelter_name)->first();
+            $recNo = Helper::IDGenerator(new Receipt, 'receipt_no', 5, 'RPT');
+
             $receipt = new Receipt;
             $receipt->animal_id = $check->id;
             $receipt->adopter_id = $message->adopter_id;
@@ -2070,6 +2072,8 @@ class AnimalShelterManagement extends Controller
             $receipt->adoption_id = $id;
             $receipt->payment_id = $checking->id;
             $receipt->status = "pending";
+            $receipt->receipt_no = $recNo;
+
             $receipt->save();
         }
 
