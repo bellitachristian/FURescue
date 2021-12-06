@@ -1958,7 +1958,7 @@ class PetOwnerManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'petonw$petowners'=>AnimalShelter::whereNotIn('id',$check)->get(),
+            'shelters'=>AnimalShelter::whereNotIn('id',$check)->get(),
             'countsentreq'=> Requestadoption::where('petowner_id',$petowner->id)->where('status','pending')->count(),
             'countrejectreq'=> Requestadoption::where('petowner_id',$petowner->id)->where('status','rejected')->count(),
             'countapprovereq'=> Requestadoption::where('petowner_id',$petowner->id)->where('status','approved')->count(),
