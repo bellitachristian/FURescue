@@ -42,4 +42,8 @@ class PetOwner extends Model
     {
         return $this->hasMany(Requestadoption::class,'petowner_id');
     }
+    public function receipt()
+    {
+        return $this->hasMany(Receipt::class,'petowner_id');
+    }
 }

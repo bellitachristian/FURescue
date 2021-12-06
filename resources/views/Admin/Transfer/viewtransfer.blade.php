@@ -28,11 +28,16 @@ Transfer Adoption Fee
                         <tr>
                             <td>{{$money->id}}</td>
                             @if($money->usertype->id == 2)
-                            <td>{{$money->usertype->usertype}}</td>       
-                            <td>{{$money->owner_id}}</td>
-                            <td>{{$money->shelter->shelter_name}}</td>
-                            <td>{{$money->shelter->email}}</td>
-         
+                            <td>{{$money->usertype->usertype}}</td>
+                            @foreach($money->usertype->shelter as $shelters)
+                                @foreach($shelters->receipt as $receipts)
+                                    @foreach($receipts->shelter as $animshelter)
+                                    <td>{{$animshelter->shelter_name}}</td>
+                                    <td>{{$animshelter->email}}</td>
+                                    <td>{{$animshelter->contact}}</td>
+                                    @endforeach
+                                @endforeach
+                            @endforeach       
                             <td>{{$money->payment->fee}}</td>
                             <td>
                                 <a href=""><button class="btn btn-success">Transfer</button></a>
@@ -40,9 +45,13 @@ Transfer Adoption Fee
                             @elseif($money->usertype->id == 3)
                             <td>{{$money->usertype->usertype}}</td>
                             @foreach($money->usertype->petowner as $petowners)
-                            <td>{{$petowners->fname}} {{$petowners->lname}}</td>
-                            <td>{{$petowners->email}}</td>
-                            <td>{{$petowners->contact}}</td>
+                                @foreach($petowners->receipt as $receipts)
+                                    @foreach($receipts->petowner as $owners)
+                                    <td>{{$owners->fname}} {{$owners->lname}}</td>
+                                    <td>{{$owners->email}}</td>
+                                    <td>{{$owners->contact}}</td>
+                                    @endforeach
+                                @endforeach
                             @endforeach
                             <td>{{$money->payment->fee}}</td>
                             <td>
