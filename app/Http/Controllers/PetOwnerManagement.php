@@ -39,6 +39,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Notifications\RequestReactivationPetOwner;
 use App\Notifications\RequestAdoptionPet;
 use App\Notifications\Checkproofpetowner;
+use App\Notifications\ApproveProofPayment;
 use App\Notifications\ApproveRejectShelterNotif;
 use App\Notifications\CancelReq;
 use Illuminate\Support\Facades\Notification;
