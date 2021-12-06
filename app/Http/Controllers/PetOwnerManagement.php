@@ -2350,7 +2350,7 @@ class PetOwnerManagement extends Controller
             'info' => ' you can check it in the reports section',
         ];
         
-        PetOwner::where('fname lname',$owner_id)->first()->notify(new SuccessAdoption($success));
+        PetOwner::where('fname lname',$receipt->owner_id)->first()->notify(new SuccessAdoption($success));
 
         return redirect()->back()->with('status','Receipt Confirmed Successfully');
     }
