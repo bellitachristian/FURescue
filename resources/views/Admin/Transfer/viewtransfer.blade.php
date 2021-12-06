@@ -31,11 +31,9 @@ Transfer Adoption Fee
                             <td>{{$money->usertype->usertype}}</td>
                             @foreach($money->usertype->shelter as $shelters)
                                 @foreach($shelters->receipt as $receipts)
-                                    @foreach($receipts->shelter as $animshelter)
-                                    <td>{{$animshelter->shelter_name}}</td>
-                                    <td>{{$animshelter->email}}</td>
-                                    <td>{{$animshelter->contact}}</td>
-                                    @endforeach
+                                    <td>{{$receipts->shelter->shelter_name}}</td>
+                                    <td>{{$receipts->shelter->email}}</td>
+                                    <td>{{$receipts->shelter->contact}}</td>
                                 @endforeach
                             @endforeach       
                             <td>{{$money->payment->fee}}</td>
@@ -45,12 +43,10 @@ Transfer Adoption Fee
                             @elseif($money->usertype->id == 3)
                             <td>{{$money->usertype->usertype}}</td>
                             @foreach($money->usertype->petowner as $petowners)
-                                @foreach($petowners->receipt as $receipts)
-                                    @foreach($receipts->petowner as $owners)
-                                    <td>{{$owners->fname}} {{$owners->lname}}</td>
-                                    <td>{{$owners->email}}</td>
-                                    <td>{{$owners->contact}}</td>
-                                    @endforeach
+                                @foreach($petowners->receipt as $receipts) 
+                                    <td>{{$receipts->petowner->fname}} {{$receipts->petowner->lname}}</td>
+                                    <td>{{$receipts->petowner->email}}</td>
+                                    <td>{{$receipts->petowner->contact}}</td>   
                                 @endforeach
                             @endforeach
                             <td>{{$money->payment->fee}}</td>
