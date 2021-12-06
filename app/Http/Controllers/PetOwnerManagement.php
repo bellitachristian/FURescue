@@ -1934,8 +1934,8 @@ class PetOwnerManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'receipts'=>Receipt::where('status','pending')->where('owner_id',$petowner->id)->where('process','none')->where('usertype_id',3)->get(),
-            'count'=>Receipt::where('process','confirmed')->where('owner_id',$petowner->id)->where('usertype_id',3)->count(),
+            'receipts'=>Receipt::where('status','pending')->where('owner_id',$petowner->fname.' '.$petowner->lname)->where('process','none')->where('usertype_id',3)->get(),
+            'count'=>Receipt::where('process','confirmed')->where('owner_id',$petowner->fname.' '.$petowner->lname)->where('usertype_id',3)->count(),
         );
         return view('PetOwner.Receipt.receipt',$data);
     }

@@ -47,7 +47,7 @@ Transfer Adoption Fee
                                     <td>{{$receipts->petowner->fname}} {{$receipts->petowner->lname}}</td>
                                     <td>{{$receipts->petowner->email}}</td>
                                     <td>{{$receipts->petowner->contact}}</td>   
-                                @endforeach
+                                @endforeach 
                             @endforeach
                             <td>{{$money->payment->fee}}</td>
                             <td>
