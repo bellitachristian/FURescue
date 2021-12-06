@@ -928,7 +928,14 @@ class AdminController extends Controller
       $receipt->adopter_id = $check->adopter_id;
       $receipt->animal_id = $check->animal_id;
       $receipt->usertype_id = $check->owner_type;
-      $receipt->owner_id = $check->owner_id;
+      if($check->owner_type == 2){
+        $getid = Animals::where('id',$check->animal_id)->first();
+        $receipt->owner_id = $getid->shelter->id;
+      }
+      elseif($check->owner_type == 3){
+        $getid = Animals::where('id',$check->animal_id)->first();
+        $receipt->owner_id = $getid->petowner->id;
+      }
       $receipt->adoption_id = $check->adoption_id;
       $receipt->payment_id =$check->id;
       $receipt->receipt_no = $slip;

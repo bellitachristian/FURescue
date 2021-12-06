@@ -39,5 +39,12 @@ class Animals extends Model
     public function category(){
         return $this->belongsTo(Category::class,'id');
     }
+    public function petowner(){
+        return $this->belongsTo(PetOwner::class,'petowner_id');
+    }
+    public function shelter(){
+        return $this->belongsTo(AnimalShelter::class,'shelter_id');
+    }
+
 }
     

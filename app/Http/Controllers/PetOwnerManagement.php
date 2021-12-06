@@ -1917,7 +1917,7 @@ class PetOwnerManagement extends Controller
             $receipt = new Receipt;
             $receipt->animal_id = $check->id;
             $receipt->adopter_id = $message->adopter_id;            
-            $receipt->owner_id = $message->petowner->fname.' '.$message->petowner->lname;
+            $receipt->owner_id = $message->owner_id;
             $receipt->usertype_id = 3;
             $receipt->adoption_id = $id;
             $receipt->payment_id = $checking->id;
@@ -2350,7 +2350,7 @@ class PetOwnerManagement extends Controller
             'info' => ' you can check it in the reports section',
         ];
         
-        PetOwner::where('fname lname',$receipt->owner_id)->first()->notify(new SuccessAdoption($success));
+        PetOwner::where('id',$receipt->owner_id)->first()->notify(new SuccessAdoption($success));
 
         return redirect()->back()->with('status','Receipt Confirmed Successfully');
     }

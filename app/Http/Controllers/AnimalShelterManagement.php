@@ -2068,7 +2068,7 @@ class AnimalShelterManagement extends Controller
             $receipt = new Receipt;
             $receipt->animal_id = $check->id;
             $receipt->adopter_id = $message->adopter_id;
-            $receipt->owner_id = $message->shelter->shelter_name;
+            $receipt->owner_id = $message->owner_id;
             $receipt->usertype_id = 2;
             $receipt->adoption_id = $id;
             $receipt->payment_id = $checking->id;
