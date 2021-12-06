@@ -968,12 +968,10 @@ class AdminController extends Controller
     } 
 
     function viewtransfer(){
+      $checkfree = Animals::where('status','Adopted')->where('fee','FREE')->pluck('id')->toArray();
       $data = array(
         'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
-        'transfer'=>Receipt::where('status','received')->where('process','confirmed')->get(),
-        'shelter'=>Receipt::where('status','received')->where('usertype_id',2)->where('process','confirmed')->get(),
-        'petowner'=>Receipt::where('status','received')->where('usertype_id',3)->where('process','confirmed')->get()
-
+        'transfer'=>Receipt::whereNotIn('animal_id',$checkfree)->where('process','confirmed')->where('status','received')->get(),
       );
       return view('Admin.Transfer.viewtransfer',$data);
     }
