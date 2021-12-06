@@ -10,7 +10,7 @@ Confirmed Receipts
     <div class="col-sm">
         <div class="card shadow mb-4">
             <div class="card-header">
-                <a href="{{route('receipt')}}"><button class="btn btn-secondary">Back</button></a>
+                <a href="{{route('receipt.shelter')}}"><button class="btn btn-secondary">Back</button></a>
             </div>
             <div class="card-body">
             <table id="datatable" class="table table-light table-hover">
