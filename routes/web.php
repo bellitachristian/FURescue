@@ -202,7 +202,7 @@ Route::group(['middleware'=>['Authcheck']],function(){
         Route::get('/AnimalShelter/photos/{id}',[UploadController::class,'petownerphoto'])->name('petowner.photo');
         Route::get('/AnimalShelter/petowneranimals/{id}',[UploadController::class,'animalphoto'])->name('animal.photo');
         Route::get('/View/PetOwner/request/{animal_id}/{petowner_id}',[AnimalShelterManagement::class,'viewpetownerdetails']);
-        Route::get('/View/Receipt',[AnimalShelterManagement::class,'receipt'])->name('receipt.shelter');
+        Route::get('/View/Receipt/AnimalShelter',[AnimalShelterManagement::class,'receipt'])->name('receipt.shelter');
         Route::get('/View/Slip',[AnimalShelterManagement::class,'generated'])->name('generate.view');
         Route::get('/Confirm/Slip/{id}',[AnimalShelterManagement::class,'confirmadoption'])->name('adoption.confirm');
         Route::get('/Confirmed/Slip',[AnimalShelterManagement::class,'confirmed'])->name('adoption.confirmed.view');
