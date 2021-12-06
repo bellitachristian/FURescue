@@ -209,7 +209,7 @@ Route::group(['middleware'=>['Authcheck']],function(){
         Route::get('AnimalShelter/Receipt/Confirmed/Slip',[AnimalShelterManagement::class,'confirmreceipt'])->name('adoption.confirmed.result');
 
         Route::get('AnimalManagement/New',[AnimalShelterManagement::class,'newpets'])->name('new.pets');
-        Route::get('Receipt/Confirmed/Slip/{id}',[AnimalShelterManagement::class,'confirmingreceipt'])->name('confirm.receipt.shelter');
+        Route::get('AnimalShelter/Receipt/Confirmed/Slip/{id}',[AnimalShelterManagement::class,'confirmingreceipt'])->name('confirm.receipt.shelter');
 
 
         Route::get('/customselection/get_fee',[DropDownController::class,'get_fee'])->name('get.fee');
