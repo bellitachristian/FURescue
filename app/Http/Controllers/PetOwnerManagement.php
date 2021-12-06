@@ -2014,7 +2014,7 @@ class PetOwnerManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'petonw$petowners'=>Requestadoption::where('status','pending')->get(),
+            'shelters'=>Requestadoption::where('status','pending')->get(),
         );
         return view('PetOwner.Request.Process.sent',$data);
     }
@@ -2043,7 +2043,7 @@ class PetOwnerManagement extends Controller
         $data =array( 
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'petonw$petowners'=>Requestadoption::where('status','rejected')->get(),
+            'shelters'=>Requestadoption::where('status','rejected')->get(),
         );
         return view('PetOwner.Request.Process.reject',$data);
     }
@@ -2054,7 +2054,7 @@ class PetOwnerManagement extends Controller
             $data =array(
                 'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
                 'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-                'petonw$petowners'=>Requestadoption::where('petowner_id',$petowner->id)->get(),
+                'shelters'=>Requestadoption::where('petowner_id',$petowner->id)->get(),
             );
             return view('PetOwner.Request.Process.approve',$data);
         }
@@ -2063,7 +2063,7 @@ class PetOwnerManagement extends Controller
             $data =array(
                 'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
                 'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-                'petonw$petowners'=>Requestadoption::whereNotIn('id',$check)->get(),
+                'shelters'=>Requestadoption::whereNotIn('id',$check)->get(),
             );
             return view('PetOwner.Request.Process.approve',$data);
         } 
