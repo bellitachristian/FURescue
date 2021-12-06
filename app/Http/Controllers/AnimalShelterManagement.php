@@ -2222,7 +2222,12 @@ class AnimalShelterManagement extends Controller
           );
           return view('AnimalShelter.AnimalManagement.new',$data);
     }
-
+    function confirmingreceipt($id){
+        $receipt = find($id);
+        $receipt->status = 'confirmed';
+        $receipt->update();
+        return redirect()->back()->with('status1','Receipt Confirmed Successfully');
+    }
     function viewwait(){
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data =array(

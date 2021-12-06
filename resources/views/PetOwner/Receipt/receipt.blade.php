@@ -60,7 +60,7 @@ Receipts
                             </td>
                             <td>{{$receipt->animal->name}}</td>
                             <td style="text-align:center">
-                                <a href=""><button type="button" class="btn btn-success">Confirm Receipt</button></a>
+                                <a href="{{route('confirm.receipt',$receipt->id)}}"><button type="button" class="btn btn-success">Confirm Receipt</button></a>
                             </td>
                         </tr> 
                     @endforeach
