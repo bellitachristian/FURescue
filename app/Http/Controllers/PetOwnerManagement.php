@@ -1916,8 +1916,8 @@ class PetOwnerManagement extends Controller
             $recNo = Helper::IDGenerator(new Receipt, 'receipt_no', 5, 'RPT');
             $receipt = new Receipt;
             $receipt->animal_id = $check->id;
-            $receipt->adopter_id = $message->adopter_id;
-            $receipt->owner_id = $message->owner_id;
+            $receipt->adopter_id = $message->adopter_id;            
+            $receipt->owner_id = $message->petowner->fname.' '.$message->petowner->lname;
             $receipt->usertype_id = 3;
             $receipt->adoption_id = $id;
             $receipt->payment_id = $checking->id;
