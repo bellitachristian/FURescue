@@ -27,28 +27,20 @@ Transfer Adoption Fee
                     @foreach($transfer as $money)
                         <tr>
                             <td>{{$money->id}}</td>
-                            @if($money->usertype->id == 2)
+                            @if($shelter)
                             <td>{{$money->usertype->usertype}}</td>
-                            @foreach($money->usertype->shelter as $shelters)
-                                @foreach($shelters->receipt as $receipts)
-                                    <td>{{$receipts->shelter->shelter_name}}</td>
-                                    <td>{{$receipts->shelter->email}}</td>
-                                    <td>{{$receipts->shelter->contact}}</td>
-                                @endforeach
-                            @endforeach       
+                            <td>{{$money->shelter->shelter_name}}</td>
+                            <td>{{$money->shelter->email}}</td>
+                            <td>{{$money->shelter->contact}}</td>
                             <td>{{$money->payment->fee}}</td>
                             <td>
                                 <a href=""><button class="btn btn-success">Transfer</button></a>
                             </td>
-                            @elseif($money->usertype->id == 3)
+                            @elseif($petowner)
                             <td>{{$money->usertype->usertype}}</td>
-                            @foreach($money->usertype->petowner as $petowners)
-                                @foreach($petowners->receipt as $receipts) 
-                                    <td>{{$receipts->petowner->fname}} {{$receipts->petowner->lname}}</td>
-                                    <td>{{$receipts->petowner->email}}</td>
-                                    <td>{{$receipts->petowner->contact}}</td>   
-                                @endforeach 
-                            @endforeach
+                                    <td>{{$money->petowner->fname}} {{$money->petowner->lname}}</td>
+                                    <td>{{$money->petowner->email}}</td>
+                                    <td>{{$money->petowner->contact}}</td>   
                             <td>{{$money->payment->fee}}</td>
                             <td>
                                 <a href=""><button class="btn btn-success">Transfer</button></a>
