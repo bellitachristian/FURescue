@@ -146,7 +146,7 @@ Route::post('/UpdatePassword/{id}',[AnimalShelterManagement::class,'UpdatePasswo
 Route::post('/AllocationVaccine/{id}/{vac_id}',[AnimalShelterManagement::class,'Allocation_Vaccine']);
 Route::post('/AllocationDeworm/{id}/{dew_id}',[AnimalShelterManagement::class,'Allocation_Deworm']);
 Route::get('AnimalManagement/Subscription/trans/{id}',[AnimalShelterManagement::class,'subpay'])->name('subscription.trans');
-Route::get('PetOwner/Subscription/trans/{id}',[AnimalShelterManagement::class,'subpay'])->name('subscription.trans.petowner');
+Route::get('PetOwner/Subscription/trans/{id}',[PetOwnerManagement::class,'subpay'])->name('subscription.trans.petowner');
 Route::post('/{id}',[AnimalShelterManagement::class,'UpdateAnimal']);
 Route::get('/Register/petOwner',[RegisterController::class,'viewregisterPetOwner']);  
 Route::get('/Register/signup',[RegisterController::class,'register']);
