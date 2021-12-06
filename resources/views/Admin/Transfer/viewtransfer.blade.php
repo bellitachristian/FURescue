@@ -39,7 +39,7 @@ Transfer Adoption Fee
                             </td>
                             @elseif($money->usertype->id == 3)
                             <td>{{$money->usertype->usertype}}</td>
-                            <td>{{$money->petowner->fname}} {{$money->petowner->lname}}</td>
+                            <td>{{$money->usertype->petowner->fname}} {{$money->usertype->petowner->lname}}</td>
                             <td>{{$money->petowner->email}}</td>
                             <td>{{$money->petowners>contact}}</td>
                             <td>{{$money->payment->fee}}</td>
