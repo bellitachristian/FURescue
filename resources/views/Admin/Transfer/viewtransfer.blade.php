@@ -29,7 +29,7 @@ Transfer Adoption Fee
                             <td>{{$money->id}}</td>
                             @if($money->usertype->id == 2)
                             <td>{{$money->usertype->usertype}}</td>
-                                @foreach($money->shelter as $owner)
+                                @foreach($money->usertype->shelter as $owner)
                                     <td>{{$owner->shelter_name}}</td>
                                     <td>{{$owner->email}}</td>
                                     <td>{{$owner->contact}}</td>   
@@ -40,7 +40,7 @@ Transfer Adoption Fee
                             </td>
                             @elseif($money->usertype->id == 3)
                             <td>{{$money->usertype->usertype}}</td>
-                                @foreach($money->petowner as $owner)
+                                @foreach($money->usertype->petowner as $owner)
                                     <td>{{$owner->fname}} {{$owner->lname}}</td>
                                     <td>{{$owner->email}}</td>
                                     <td>{{$owner->contact}}</td>   
