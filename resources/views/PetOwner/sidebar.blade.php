@@ -57,6 +57,7 @@
             <h6 class="collapse-header">Custom Adoption:</h6>
             <a class="collapse-item" href="{{route('view.policy')}}">Adoption Policy</a>
             <a class="collapse-item" href="{{route('adoption.request.petowner')}}">Approve/Reject</a>
+            <a class="collapse-item" href="{{route('receipt.petowner')}}">Adoption Receipt</a>
             <a class="collapse-item" href="{{route('view.request.adoption')}}">Request for Adoption</a>
         </div>
     </div>

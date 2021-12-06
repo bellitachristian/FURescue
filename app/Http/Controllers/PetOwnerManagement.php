@@ -1928,6 +1928,17 @@ class PetOwnerManagement extends Controller
         return redirect()->back()->with('status','Feedback has been sent successfully');
     }
 
+    function receipt(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'receipts'=>Receipt::where('status','pending')->where('owner_id',$petowner->id)->where('usertype_id',3)->get(),
+            'count'=>Receipt::where('status','confirmed')->where('owner_id',$petowner->id)->where('usertype_id',3)->count(),
+        );
+        return view('PetOwner.Receipt.receipt',$data);
+    }
+
     function error(Request $req, $id){
         $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
         $message = Adoption::find($id);
@@ -2314,5 +2325,14 @@ class PetOwnerManagement extends Controller
            }
           }
         }
+    }
+    function confirmreceipt(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'receipts'=>Receipt::where('owner_id',$petowner->id)->where('usertype_id','3')->where('status','confirmed')->get(),
+        );
+        return view('PetOwner.Receipt.confirmed',$data);
     }
 }

@@ -280,6 +280,8 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
         Route::get('/customselection/get_fee/petowner',[DropDownController::class,'get_fee_petowner'])->name('get.fee.petowner');
         
         Route::get('/PetOwner/Adoption',[PetOwnerManagement::class,'adoptionrequests'])->name('adoption.request.petowner');
+        Route::get('/View/Receipt',[PetOwnerManagement::class,'receipt'])->name('receipt.petowner');
+        Route::get('Receipt/Confirmed/Slip',[PetOwnerManagement::class,'confirmreceipt'])->name('adoption.confirmed.result.petowner');
 
 
 
