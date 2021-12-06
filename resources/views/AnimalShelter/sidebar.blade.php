@@ -57,7 +57,7 @@
             <h6 class="collapse-header">Custom Adoption:</h6>
             <a class="collapse-item" href="/AdoptionPolicy">Adoption Policy</a>
             <a class="collapse-item" href="{{route('adoption.request.shelter')}}">Approve/Reject</a>
-            <a class="collapse-item" href="{{route('receipt')}}">Adoption Receipt</a>
+            <a class="collapse-item" href="{{route('receipt.shelter')}}">Adoption Receipt</a>
             <a class="collapse-item" href="{{route('petowner.request')}}">Request/s from Pet Owner</a>
             <a class="collapse-item" href="{{route('generate.view')}}">Adoption Slip</a>
         </div>
