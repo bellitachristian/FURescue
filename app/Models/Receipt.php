@@ -20,9 +20,9 @@ class Receipt extends Model
         return $this->belongsTo(Usertype::class,'usertype_id');
     }
     public function adoption(){
-        return $this->belongsTo(Usertype::class,'adoption_id');
+        return $this->belongsTo(Adoption::class,'adoption_id');
     }
     public function payment(){
-        return $this->belongsTo(Usertype::class,'payment_id');
+        return $this->belongsTo(AdoptionPayment::class,'payment_id');
     }   
 }
