@@ -210,7 +210,6 @@ Route::group(['middleware'=>['Authcheck']],function(){
 
         Route::get('AnimalManagement/New',[AnimalShelterManagement::class,'newpets'])->name('new.pets');
 
-        Route::get('AnimalManagement/Subscribe/{id}',[AnimalShelterManagement::class,'subdetails'])->name('sub.details');
 
 
         Route::get('/customselection/get_fee',[DropDownController::class,'get_fee'])->name('get.fee');
@@ -234,6 +233,7 @@ Route::group(['middleware'=>['Authcheck']],function(){
     Route::get('/AnimalShelter/subscription/{id}',[AnimalShelterManagement::class,'choosesubscription'])->name('choose.subscription');
     Route::get('/AnimalShelter/viewwaitsubscription/{id}',[AnimalShelterManagement::class,'viewwaitsubscription'])->name('view.wait.subscription');
     Route::get('/AnimalShelter/cancelsub/{id}',[AnimalShelterManagement::class,'cancelsub'])->name('cancel.subscription');
+    Route::get('AnimalManagement/Subscribe/{id}',[AnimalShelterManagement::class,'subdetails'])->name('sub.details');
 
     Route::get('/AnimalShelter/viewwait',[AnimalShelterManagement::class,'viewwait'])->name('view.wait');
     Route::get('/AnimalShelter/tempcheck',[AnimalShelterManagement::class,'tempcheckshelter'])->name('tempcheckshelter');
@@ -281,7 +281,6 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
         
         Route::get('/PetOwner/Adoption',[PetOwnerManagement::class,'adoptionrequests'])->name('adoption.request.petowner');
 
-        Route::get('PetOwner/Subscribe/{id}',[PetOwnerManagement::class,'subdetails'])->name('sub.details.petowner');
 
 
         Route::get('/PetOwner/enlarge/{id}',[PetOwnerManagement::class,'enlarge'])->name('enlarge.petowner');
@@ -305,7 +304,8 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
     Route::get('/auto/logout/petowner/{petowner_id}',[LoginController::class,'autologoutpetowner']);
     Route::get('/tempdashboard/petowner',[PetOwnerManagement::class,'PetOwner_tempdashboard']);
     Route::get('/pet-owner/dashboard',[PetOwnerManagement::class,'dashboard']);
-   
+    Route::get('PetOwner/Subscribe/{id}',[PetOwnerManagement::class,'subdetails'])->name('sub.details.petowner');
+
     Route::get('/Dashboard/deact/petowner',[PetOwnerManagement::class,'ViewDeactDash'])->name('deactpage.petowner');
     Route::get('/Dashboard/request/petowner/{petowner_id}',[PetOwnerManagement::class,'RequestActivation'])->name('request.reactivation.petowner');
 
