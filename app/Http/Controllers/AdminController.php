@@ -961,6 +961,10 @@ class AdminController extends Controller
     } 
 
     function viewtransfer(){
-      
+      $data = array(
+        'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+        'transfer'=>Receipt::where('status','received')->where('process','confirmed')->get()
+      );
+      return view('Admin.Transfer.viewtransfer',$data);
     }
 } 
