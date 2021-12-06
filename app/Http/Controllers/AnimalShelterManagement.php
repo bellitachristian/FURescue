@@ -2177,8 +2177,8 @@ class AnimalShelterManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'receipts'=>Receipt::where('status','pending')->where('owner_id',$shelter->shelter_name)->where('process','none')->where('usertype_id',2)->get(),
-            'count'=>Receipt::where('process','confirmed')->where('owner_id',$shelter->shelter_name)->where('usertype_id',2)->count(),
+            'receipts'=>Receipt::where('status','pending')->where('owner_id',$shelter->id)->where('process','none')->where('usertype_id',2)->get(),
+            'count'=>Receipt::where('process','confirmed')->where('owner_id',$shelter->id)->where('usertype_id',2)->count(),
         );
         return view('AnimalShelter.Receipt.receipt',$data);
     }
