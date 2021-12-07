@@ -372,7 +372,7 @@ class PetOwnerManagement extends Controller
         $check = Animals::where('status','Available')->where('petowner_id',$petowner->id)->where('owner_id','none')
             ->pluck('animal_image')
             ->toArray();
-         $petbook = AnimalMasterList::whereIn('animal_image',$check)
+        $petbook = AnimalMasterList::whereIn('animal_image',$check)
                     ->get();        
         $output = '<div class="row">';
         foreach($petbook as $books)

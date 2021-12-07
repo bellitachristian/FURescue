@@ -1542,9 +1542,14 @@ class AnimalShelterManagement extends Controller
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $vaccine = VaccineHistory::where('animal_id',$req->get('id'))->first();
         $deworm = DewormHistory::where('animal_id',$req->get('id'))->first();
-        $animal = Animals::where('shelter_id',$shelter->id)->orWhere('owner_id',$shelter->id)->where('id',$req->get('id'))->first();
+        $animal = Animals::find($req->get('id'))
+            ->where('status','Available')
+            ->where(function($query)use($shelter){
+                $query->where('shelter_id','=',$shelter->id)
+                ->orWhere('owner_id',$shelter->id);
+            });
         $category = Category::where('id',$animal->category)->first();
-        $animalmasterlist = AnimalMasterList::where('animal_image',$animal->animal_image)->where('shelter_id',$shelter->id)->count();
+        $animalmasterlist = AnimalMasterList::where('animal_image',$animal->animal_image)->count();
 
         if($animalmasterlist == 0){
             $animMasterlist = new AnimalMasterList;
