@@ -1007,7 +1007,7 @@ class AdminController extends Controller
             $subtotal = (int)$shelter->revenue;
             $fee = (int)$receipt->animal->fee;
             $total = $subtotal + $fee;
-            $shelter->revenue = $total;
+            $shelter->revenue = $total.'.00';
             $shelter->update();
             $transferred = [
               'payment' => 'You have received PHP'.$receipt->animal->fee,
@@ -1045,7 +1045,7 @@ class AdminController extends Controller
             $subtotal = (int)$petowner->revenue;
             $fee = (int)$receipt->animal->fee;
             $total = $subtotal + $fee;
-            $petowner->revenue = $total;
+            $petowner->revenue = $total.'.00';
             $petowner->update();
             $transferred = [
               'payment' => 'You have received PHP'.$receipt->animal->fee,
