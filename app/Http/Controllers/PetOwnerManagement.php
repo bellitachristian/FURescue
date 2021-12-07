@@ -104,7 +104,7 @@ class PetOwnerManagement extends Controller
         $petowner=PetOwner::where('id','=',session('LoggedUserPet'))->first();       
         $data = array(
           'LoggedUserInfo' => PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-          'animal'=> DB::select("select *from animals where petowner_id='$petowner->id' and owner_id='none'"),
+          'animal'=> DB::select("select *from animals where petowner_id='$petowner->id' and owner_id='none' and status='Available'"),
           'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first()
         );  
         return view('PetOwner.Vaccine & Deworm.Allocate',$data);
@@ -369,7 +369,7 @@ class PetOwnerManagement extends Controller
 
     function load_books(){
         $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
-        $petbook = AnimalMasterList::where('petowner_id',$petowner->id)->where('ownertype','none')->get();
+        $petbook = AnimalMasterList::where('petowner_id',$petowner->id)->where('ownertype','none')->where('status','Available')->get();
         $output = '<div class="row">';
         foreach($petbook as $books)
         {

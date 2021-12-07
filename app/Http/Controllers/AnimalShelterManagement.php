@@ -1428,7 +1428,12 @@ class AnimalShelterManagement extends Controller
 
     function load_books(){
      $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
-     $petbook = DB::select("select *from animal_master_list where shelter_id ='$shelter->id' OR  owner_id ='$shelter->id'");
+     $petbook = AnimalMasterList::where('status','Available')
+        ->where(function($query)use($shelter){
+         $query->where('shelter_id','=',$shelter->id)
+         ->orWhere('owner_id',$shelter->id);
+     })
+     ->get();
      $output = '<div class="row">';
      foreach($petbook as $books)
      {
