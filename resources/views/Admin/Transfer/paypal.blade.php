@@ -97,10 +97,10 @@ Transfer Adoption Fee
                             <p><strong>{{$transfer->animal->gender}}</strong></p> 
                             <label for="">Age:</label>
                             <p><strong>{{$transfer->animal->age}}</strong></p> 
-                            <label for="">Pet stage:</label>
-                            <p><strong>{{$transfer->animal->pet_stage}}</strong></p> 
                         </div>
                         <div class="col-sm">
+                            <label for="">Pet stage:</label>
+                            <p><strong>{{$transfer->animal->pet_stage}}</strong></p> 
                             <label for="">Breed:</label>
                             <p><strong>{{$transfer->animal->breed}}</strong></p> 
                             <label for="">Adoption Fee:</label>
