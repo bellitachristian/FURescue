@@ -62,14 +62,18 @@ Adopter's Application Form
                              </div>
                             <hr>
                             <h6 style="color:black">Questionnaires</h6>
-                            <div class="row item">
-                                <h7>Valid ID</h7><br>
-                                <div class="col-sm-5">
-                                <img src="{{asset('phpcode/validid/'.$adoption->validId)}}" width="100%" height="100%" />
-                                </div>
-                                <h7>Signature</h7><br>
+                            <div style="display:flex">
                                 <div class="col-sm">
-                                <img src="{{asset('phpcode/validid/'.$adoption->signature)}}" width="150px" height="150px" />
+                                    <h7>Valid ID</h7>
+                                    <div class="col-sm-5">
+                                        <img src="{{asset('phpcode/validid/'.$adoption->validId)}}" width="100%" height="100%" />
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <h7>Signature</h7>
+                                    <div class="col-sm">
+                                        <img src="{{asset('phpcode/validid/'.$adoption->signature)}}" width="150px" height="150px" />
+                                    </div>
                                 </div>
                             </div>
                              <div class="payment-details">
