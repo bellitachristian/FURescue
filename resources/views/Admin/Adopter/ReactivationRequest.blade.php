@@ -20,6 +20,7 @@ Adopter Reactivation Requests
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Adopte Profile</th>
                     <th>Adopter Name</th>
                     <th>Email</th>
                     <th>Address</th>
@@ -32,6 +33,9 @@ Adopter Reactivation Requests
             @foreach($adopters as $adopter)
                 <tr>
                     <td>{{ $adopter->id}}</td>
+                    <td>
+                        <img src="{{asset('/phpcode/adopter/'.$adopter->adopter->photo')}}" width="70px" height="70px" alt="">
+                    </td>
                     <td>{{ $adopter->fname}}</td>
                     <td>{{ $adopter->email}}</td>
                     <td>{{ $adopter->address}}</td>

@@ -17,8 +17,100 @@ Transfer Adoption Fee
                     <div>
                     <img src="{{asset('uploads/animal-shelter/profile/'.$transfer->shelter->profile)}}" width="100px" height="80px" alt="">
                     </div>
-                    <label for="">Fostered by:</label>
+                    <label for="">Sheltername:</label>
                     <p><strong>{{$transfer->shelter->shelter_name}}</strong></p> 
+                    <label for="">Email:</label>
+                    <p><strong>{{$transfer->shelter->email}}</strong></p> 
+                    <label for="">Contact:</label>
+                    <p><strong>{{$transfer->shelter->contact}}</strong></p> <hr>
+                    <h5>Pet Adopted Details</h5>
+                    <div>
+                        <img src="{{asset('uploads/animals/'.$transfer->animal->animal_image)}}" width="100px" height="80px" alt="">
+                    </div>
+                    <label for="">Pet Name:</label>
+                    <p><strong>{{$transfer->animal->name}}</strong></p> 
+                    <label for="">Gender:</label>
+                    <p><strong>{{$transfer->animal->gender}}</strong></p> 
+                    <label for="">Age:</label>
+                    <p><strong>{{$transfer->animal->age}}</strong></p> 
+                    <label for="">Pet stage:</label>
+                    <p><strong>{{$transfer->animal->pet_stage}}</strong></p> 
+                    <label for="">Breed:</label>
+                    <p><strong>{{$transfer->animal->breed}}</strong></p> 
+                    <label for="">Adoption Fee:</label>
+                    <p><strong>{{$transfer->animal->fee}}</strong></p> 
+                    <hr>
+                    <h5>Adopter Details</h5>
+                    <div>
+                        <img src="{{asset('/phpcode/adopter/'.$transfer->adopter->photo)}}" width="100px" height="80px" alt="">
+                    </div>
+                    <label for="">Name:</label>
+                    <p><strong>{{$transfer->adopter->name}}</strong></p> 
+                    <label for="">Gender:</label>
+                    <p><strong>{{$transfer->adopter->gender}}</strong></p> 
+                    <label for="">Email:</label>
+                    <p><strong>{{$transfer->adopter->email}}</strong></p> 
+                    <label for="">Address:</label>
+                    <p><strong>{{$transfer->adopter->address}}</strong></p> 
+                    <label for="">Contact:</label>
+                    <p><strong>{{$transfer->adopter->phonenum}}</strong></p> 
+                    <hr>
+                    <label for="">Adoption Fee:</label>
+                    <p><strong>{{$transfer->animal->fee}}</strong></p> 
+                    <label for="">Expected  to receive:</label>
+                    <p><strong>{{$transfer->animal->fee}}</strong></p> 
+                    <div id="paypal-button-container">
+
+                    </div>
+                    @else    
+                    <div>
+                    <img src="{{asset('uploads/pet-owner/profile/'.$transfer->petowner->profile)}}" width="100px" height="80px" alt="">
+                    </div>
+                    <label for="">PetOwner name:</label>
+                    <p><strong>{{$transfer->petowner->fname}} {{$transfer->petowner->lname}}</strong></p> 
+                    <label for="">Email:</label>
+                    <p><strong>{{$transfer->petowner->email}}</strong></p> 
+                    <label for="">Contact:</label>
+                    <p><strong>{{$transfer->petowner->contact}}</strong></p> <hr>
+                    <h5>Pet Adopted Details</h5>
+                    <div>
+                        <img src="{{asset('uploads/animals/'.$transfer->animal->animal_image)}}" width="100px" height="80px" alt="">
+                    </div>
+                    <label for="">Pet Name:</label>
+                    <p><strong>{{$transfer->animal->name}}</strong></p> 
+                    <label for="">Gender:</label>
+                    <p><strong>{{$transfer->animal->gender}}</strong></p> 
+                    <label for="">Age:</label>
+                    <p><strong>{{$transfer->animal->age}}</strong></p> 
+                    <label for="">Pet stage:</label>
+                    <p><strong>{{$transfer->animal->pet_stage}}</strong></p> 
+                    <label for="">Breed:</label>
+                    <p><strong>{{$transfer->animal->breed}}</strong></p> 
+                    <label for="">Adoption Fee:</label>
+                    <p><strong>{{$transfer->animal->fee}}</strong></p> 
+                    <hr>
+                    <h5>Adopter Details</h5>
+                    <div>
+                        <img src="{{asset('/phpcode/adopter/'.$transfer->adopter->photo)}}" width="100px" height="80px" alt="">
+                    </div>
+                    <label for="">Name:</label>
+                    <p><strong>{{$transfer->adopter->name}}</strong></p> 
+                    <label for="">Gender:</label>
+                    <p><strong>{{$transfer->adopter->gender}}</strong></p> 
+                    <label for="">Email:</label>
+                    <p><strong>{{$transfer->adopter->email}}</strong></p> 
+                    <label for="">Address:</label>
+                    <p><strong>{{$transfer->adopter->address}}</strong></p> 
+                    <label for="">Contact:</label>
+                    <p><strong>{{$transfer->adopter->phonenum}}</strong></p> 
+                    <hr>
+                    <label for="">Adoption Fee:</label>
+                    <p><strong>{{$transfer->animal->fee}}</strong></p> 
+                    <label for="">Expected  to receive:</label>
+                    <p><strong>{{$transfer->animal->fee}}</strong></p> 
+                    <div id="paypal-button-container">
+
+                    </div>
                     @endif
                 </div>
             </div>
@@ -34,7 +126,7 @@ paypal.Buttons({
     return actions.order.create({
         purchase_units: [{
         amount: {
-            value: '{{$subs->sub_price}}' // Can reference variables or functions. Example: `value: document.getElementById('...').value`
+            value: '{{$transfer->animal->fee}}' // Can reference variables or functions. Example: `value: document.getElementById('...').value`
         }
         }]
     });
@@ -47,10 +139,10 @@ paypal.Buttons({
         function save()
         {
             $.ajax({
-            url:"{{route('subscription.trans',$subs->id)}}",
+            url:"{{route('transferring.money',$transfer->id)}}",
             success:function(data)
             {
-                alert('Subscribed Successfully!');
+                alert('Transferred Successfully!');
             }
             })
         }
