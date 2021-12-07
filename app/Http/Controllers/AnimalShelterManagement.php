@@ -304,7 +304,7 @@ class AnimalShelterManagement extends Controller
                                 })
                                 ->count(),
             'countrequest'=>Adoption::where('owner_id',$shelter->id)->where('owner_type',2)->where('status','pending')->count(),
-            'totalrevenue'
+            'totalrevenue'=>$shelter->revenue
         );
         return view('AnimalShelter.ShelterDashboard',$data);
     }

@@ -65,8 +65,8 @@ class PetOwnerManagement extends Controller
             'notapprove'=> Subscription::whereNotIn('id', $subscription)->pluck('id')->toArray(),
             'countcredits'=>$petowner->TotalCredits,
             'countpets'=>Animals::where('petowner_id',$petowner->id)->where('status','Available')->where('post_status','posted')->count(),
-            'countrequest',
-            'totalrevenue'
+            'countrequest'=>Adoption::where('owner_id',$petowner->id)->where('owner_type',3)->where('status','pending')->count(),
+            'totalrevenue'=>$petowner->revenue
         );
         return view('PetOwner.PetOwnerDash',$data);
     } 

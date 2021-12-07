@@ -34,7 +34,7 @@ Pet Owner Dashboard
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                     <h5 style="font-weight:bold">Adoptable Pets</h5></div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{$countpets}}</div>
                 </div>
                 <div class="col-auto">
                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -51,11 +51,10 @@ Pet Owner Dashboard
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                    <h5 style="font-weight:bold">Requests</h5>
+                    <h5 style="font-weight:bold">Adoption Requests</h5>
                     </div>
-                    <div class="row no-gutters align-items-center">
-                        
-                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{$countrequest}}</div>
+
                 </div>
                 <div class="col-auto">
                     <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -72,8 +71,8 @@ Pet Owner Dashboard
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                        Pending Requests</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                    <h5 style="font-weight:bold">Total Revenue</h5></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">PHP{{$totalrevenue}}</div>
                 </div>
                 <div class="col-auto">
                     <i class="fas fa-comments fa-2x text-gray-300"></i>
