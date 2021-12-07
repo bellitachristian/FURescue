@@ -104,7 +104,7 @@
 <li class="nav-item">
     <a class="nav-link" href="#">
         <i class="fas fa-fw fa-table"></i>
-        <span>Revenue</span></a>
+        <span>Reports</span></a>
 </li>
 
 <!-- Divider -->

@@ -2362,4 +2362,54 @@ class PetOwnerManagement extends Controller
 
         return redirect()->back()->with('status','Receipt Confirmed Successfully');
     }
+    function subscribed_promo(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $promo = SubscriptionTransac::where('petowner_id',$petowner->id)->where('status','approved')->where('stat','none')->get();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'promos'=>$promo
+        );
+        return view('PetOwner.Reports.credits',$data);
+    }
+    function adoptable(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'animals'=> Animals::where('status','Available')
+            ->where('post_status','posted')
+            ->where('petowner_id',$petowner->id)
+            ->where('owner_id','none')
+            ->get()
+        );
+        return view('PetOwner.Reports.adoptable',$data);
+    }
+    function adoption_requests(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'adoption'=> Adoption::where('owner_id',$petowner->id)->where('owner_type',3)->where('status','pending')
+        );
+        return view('PetOwner.Reports.request',$data);
+    }
+    function revenue(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'revenue'=> Receipt::where('owner_id',$petowner->id)->where('usertype_id',3)->where('process','completed')->get()
+        );
+        return view('PetOwner.Reports.revenue',$data);
+    }
+
+    function reports(){
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+        );
+        return view('PetOwner.Reports.reports',$data);
+    }
+
 }

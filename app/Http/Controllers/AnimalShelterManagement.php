@@ -2478,6 +2478,50 @@ class AnimalShelterManagement extends Controller
           }
         }
     }
+    function subscribed_promo(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $promo = SubscriptionTransac::where('shelter_id',$shelter->id)->where('status','approved')->where('stat','none')->get();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'promos'=>$promo
+        );
+        return view('AnimalShelter.Reports.credits',$data);
+    }
+    function adoptable(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'animals'=> Animals::where('status','Available')
+            ->where('post_status','posted')
+            -> where(function($query) use($shelter){
+                $query-> where('shelter_id', $shelter->id)
+                        ->orWhere('owner_id',$shelter->id);
+            })
+            ->get()
+        );
+        return view('AnimalShelter.Reports.adoptable',$data);
+    }
+    function adoption_requests(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'adoption'=> Adoption::where('owner_id',$shelter->id)->where('owner_type',2)->where('status','pending')
+        );
+        return view('AnimalShelter.Reports.request',$data);
+    }
+    function revenue(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'revenue'=> Receipt::where('owner_id',$shelter->id)->where('usertype_id',2)->where('process','completed')->get()
+        );
+        return view('AnimalShelter.Reports.revenue',$data);
+    }
+
 
 }
 

@@ -237,6 +237,12 @@ Route::group(['middleware'=>['Authcheck']],function(){
 
     Route::get('/AnimalShelter/viewwait',[AnimalShelterManagement::class,'viewwait'])->name('view.wait');
     Route::get('/AnimalShelter/tempcheck',[AnimalShelterManagement::class,'tempcheckshelter'])->name('tempcheckshelter');
+    Route::get('/AnimalShelter/promo',[AnimalShelterManagement::class,'subscribed_promo'])->name('subscribed.promo');
+    Route::get('/AnimalShelter/adoptable',[AnimalShelterManagement::class,'adoptable'])->name('adoptable');
+    Route::get('/AnimalShelter/adoptionrequests',[AnimalShelterManagement::class,'adoption_requests'])->name('adoption.requests.shelter');
+    Route::get('/AnimalShelter/revenue',[AnimalShelterManagement::class,'revenue'])->name('revenue.shelter');
+
+
 });
 
 Route::group(['middleware'=>['AdminCheck']],function(){ 
@@ -317,6 +323,11 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
     Route::get('/PetOwner/cancelsub/{id}',[PetOwnerManagement::class,'cancelsub'])->name('cancel.subscription.petowner');
     Route::get('/PetOwner/viewwait',[PetOwnerManagement::class,'viewwait'])->name('view.wait.petowner');
     Route::get('/PetOwner/tempcheck',[PetOwnerManagement::class,'tempcheckshelter'])->name('tempcheckshelter.petowner');
+    Route::get('/PetOwner/promo',[PetOwnerManagement::class,'subscribed_promo'])->name('subscribed.promo.petowner');
+    Route::get('/PetOwner/adoptable',[PetOwnerManagement::class,'adoptable'])->name('adoptable.petowner');
+    Route::get('/PetOwner/adoptionrequests',[PetOwnerManagement::class,'adoption_requests'])->name('adoption.requests.petowner');
+    Route::get('/PetOwner/revenue',[PetOwnerManagement::class,'revenue'])->name('revenue.petowner');
+    Route::get('/PetOwner/reports',[PetOwnerManagement::class,'reports'])->name('reports');
 });
 
 Route::get('/dashboard/gettype/petowner',[DropDownController::class,'gettype_petowner'])->name('get.type.petowner');

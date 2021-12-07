@@ -91,10 +91,10 @@
         <i class="fas fa-fw fa-newspaper"></i>
         <span>Post Pet</span></a>
 </li>
-
+    
 <!-- Nav Item - Tables -->
 <li class="nav-item">
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="{{route('reports')}}">
         <i class="fas fa-fw fa-table"></i>
         <span>Reports</span></a>
 </li>

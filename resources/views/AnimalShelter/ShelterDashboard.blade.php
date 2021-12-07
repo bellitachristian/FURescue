@@ -15,7 +15,7 @@ Animal Shelter Dashboard
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        <h5 style="font-weight:bold">Post Credits</h5></div>
+                        <a href="{{route('subscribed.promo')}}"><h5 style="font-weight:bold">Post Credits</h5></a></div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{$countcredits}}</div>
                 </div>
                 <div class="col-auto">
@@ -33,7 +33,7 @@ Animal Shelter Dashboard
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                    <h5 style="font-weight:bold">Adoptable Pets</h5></div>
+                    <a href="{{route('adoptable')}}" style="color:#5cb85c"><h5 style="font-weight:bold">Adoptable Pets</h5></a></div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{$countpets}}</div>
                 </div>
                 <div class="col-auto">
@@ -50,7 +50,8 @@ Animal Shelter Dashboard
         <div class="card-body">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1"><h5 style="font-weight:bold">Adoption Requests</h5>
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        <a href="{{route('adoption.requests.shelter')}}"style="color:#5bc0de"><h5 style="font-weight:bold">Adoption Requests</h5></a>
                     </div>
                     <div class="row no-gutters align-items-center">
                         <div class="col-auto">
@@ -75,7 +76,7 @@ Animal Shelter Dashboard
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                    <h5 style="font-weight:bold">Total Revenue</h5></div>
+                    <a href="{{route('revenue.shelter')}}"style="color:#f0ad4e"><h5 style="font-weight:bold">Total Revenue</h5></a></div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">PHP {{$totalrevenue}}</div>
                 </div>
                 <div class="col-auto">
