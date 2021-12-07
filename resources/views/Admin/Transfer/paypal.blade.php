@@ -67,13 +67,20 @@ Transfer Adoption Fee
                             </div>
                         </div>
                         <div class="col-sm">
-                            <label for="">PetOwner name:</label>
+                            <label for="">Pet Owner Name:</label>
                             <p><strong>{{$transfer->petowner->fname}} {{$transfer->petowner->lname}}</strong></p> 
                             <label for="">Email:</label>
                             <p><strong>{{$transfer->petowner->email}}</strong></p> 
-                            <label for="">Contact:</label>
-                            <p><strong>{{$transfer->petowner->contact}}</strong></p> <hr>
+                            <label for="">Gender:</label>
+                            <p><strong>{{$transfer->petowner->gender}}</strong></p> 
                         </div>
+                        <div class="col-sm">
+                            <label for="">Address:</label>
+                            <p><strong>{{$transfer->petowner->address}}</strong></p> 
+                            <label for="">Contact:</label>
+                            <p><strong>{{$transfer->petowner->contact}}</strong></p> 
+                        </div>
+                        <hr>
                     </div>   
                     <h5>Pet Adopted Details</h5>
                     <div>
