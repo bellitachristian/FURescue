@@ -994,6 +994,11 @@ class AdminController extends Controller
             'tryagain' => ' from the adoption fee remitted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
           ];
           AnimalShelter::find($shelter->id)->notify(new RejectedProof($transferred));
+          $transferred = [
+            'payment' => 'You have successfully transferred PHP'.$receipt->animal->fee,
+            'tryagain' => ' in '.$receipt->shelter->shelter_name.' account.',
+          ];
+          Admin::find(1)->notify(new RejectedProof($transferred));
           $receipt->process = 'completed';
           $receipt->update();
         }
@@ -1007,6 +1012,11 @@ class AdminController extends Controller
               'tryagain' => ' from the adoption fee remitted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
             ];
             AnimalShelter::find($shelter->id)->notify(new RejectedProof($transferred));
+            $transferred = [
+              'payment' => 'You have successfully transferred PHP'.$receipt->animal->fee,
+              'tryagain' => ' in '.$receipt->shelter->shelter_name.' account.',
+            ];
+            Admin::find(1)->notify(new RejectedProof($transferred));
             $receipt->process = 'completed';
             $receipt->update();
         }
@@ -1020,6 +1030,11 @@ class AdminController extends Controller
             'tryagain' => ' from the adoption fee remitted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
           ];
           PetOwner::find($petowner->id)->notify(new RejectedProof($transferred));
+          $transferred = [
+            'payment' => 'You have successfully transferred PHP'.$receipt->animal->fee,
+            'tryagain' => ' in '.$receipt->petowner->fname.' '.$receipt->petowner->lname.' account.',
+          ];
+          Admin::find(1)->notify(new RejectedProof($transferred));
           $receipt->process = 'completed';
           $receipt->update();
         }
@@ -1033,6 +1048,11 @@ class AdminController extends Controller
               'tryagain' => ' from the adoption fee remitted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
             ];
             PetOwner::find($petowner->id)->notify(new RejectedProof($transferred));
+            $transferred = [
+              'payment' => 'You have successfully transferred PHP'.$receipt->animal->fee,
+              'tryagain' => ' in '.$receipt->petowner->fname.' '.$receipt->petowner->lname.' account.',
+            ];
+            Admin::find(1)->notify(new RejectedProof($transferred));
             $receipt->process = 'completed';
             $receipt->update();
         }
