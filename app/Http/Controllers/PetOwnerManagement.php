@@ -369,7 +369,11 @@ class PetOwnerManagement extends Controller
 
     function load_books(){
         $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
-        $petbook = AnimalMasterList::where('petowner_id',$petowner->id)->where('ownertype','none')->where('status','Available')->get();
+        $check = Animals::where('status','Available')->where('petowner_id',$petowner->id)->where('owner_id','none')
+            ->pluck('animal_image')
+            ->toArray();
+         $petbook = AnimalMasterList::whereIn('animal_image',$check)
+                    ->get();        
         $output = '<div class="row">';
         foreach($petbook as $books)
         {
