@@ -20,14 +20,14 @@ Adopter's Application Form
 			<div class="col-md-12">
 				<div class="slip-wrapper">
 					<div class="intro">
-                        <h5>Adoption Questionnaire</h5>
+                        <h5>Application Form</h5>
 					</div>
 
 					<div class="payment-info">
 						<div class="row">
 							<div class="col-sm-6">
 								<span>Date:</span>
-								<strong>November 30, 2021</strong>
+								<strong>{{$today}}</strong>
 							</div>
 						</div>
 					</div>
@@ -42,19 +42,19 @@ Adopter's Application Form
                                 <div class="col-md-5">
                                     
                                     <span>Name</span>
-                                    <p><strong>Christian Sugo</strong></p>
+                                    <p><strong>{{$adoption->adopter->fname}} {{$adoption->adopter->lname}}</strong></p>
                                     <span>Gender</span>
-                                    <p><strong>Male</strong></p>
+                                    <p><strong>{{$adoption->adopter->gender}}</strong></p>
                                     <span>Contact No.</span>
-                                    <p><strong>0912384774834</strong></p>
+                                    <p><strong>{{$adoption->adopter->phonenum}}</strong></p>
                                 </div>
                                 <div class="col-md-6">
                                     <span>Birthdate</span>
-                                    <p><strong>05/13/1999</strong></p>
+                                    <p><strong>{{$adoption->adopter->birthdate}}</strong></p>
                                     <span>Address</span>
-                                    <p><strong>91-G, Langub Road, Guadalupe Cebu City</strong></p>
+                                    <p><strong>{{$adoption->adopter->address}}</strong></p>
                                     <span>Email Address</span>
-                                    <p><strong>christiansugo@gmail.com</strong></p>
+                                    <p><strong>{{$adoption->adopter->email}}</strong></p>
                                 </div>
                              </div>
                              <div class="payment-details">

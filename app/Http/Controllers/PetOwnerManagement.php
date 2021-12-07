@@ -1958,10 +1958,12 @@ class PetOwnerManagement extends Controller
 
     function enlarge($id){
         $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $ldate = date('F d, Y');
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'images'=>Adoption::find($id),
+            'adoption'=>Adoption::find($id),
+            'today'=>$ldate
         );
         return view('PetOwner.Adoption.viewid',$data);
     }
