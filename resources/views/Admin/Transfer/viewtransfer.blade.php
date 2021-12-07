@@ -30,7 +30,9 @@ Transfer Adoption Fee
                             <td>{{$money->id}}</td>
                             @if($money->usertype->id == 2)
                             <td>{{$money->usertype->usertype}}</td>
-                                    <td>{{$money->shelter->profile}}</td>
+                                    <td>
+                                        <img src="{{asset('uploads/animal-shelter/profile/'.$transfer->shelter->profile)}}" width="100px" height="80px" alt="">
+                                    </td>
                                     <td>{{$money->shelter->shelter_name}}</td>
                                     <td>{{$money->shelter->email}}</td>
                                     <td>{{$money->shelter->contact}}</td>   
@@ -41,7 +43,9 @@ Transfer Adoption Fee
                             </td>
                             @elseif($money->usertype->id == 3)
                             <td>{{$money->usertype->usertype}}</td>
-                                    <td>{{$money->petowner->profile}}</td>
+                                    <td>
+                                        <img src="{{asset('uploads/pet-owner/profile/'.$transfer->petowner->profile)}}" width="100%" height="80%" alt="">
+                                    </td>
                                     <td>{{$money->petowner->fname}} {{$money->petowner->lname}}</td>
                                     <td>{{$money->petowner->email}}</td>
                                     <td>{{$money->petowner->contact}}</td>   
