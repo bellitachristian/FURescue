@@ -4,7 +4,7 @@ Transfer Adoption Fee
 @endsection
 @section("content")
 <div class="row justify-content-center">
-    <div class="col-sm-6">
+    <div class="col-sm-7">
         <div class="card shadow mb-4">
             <div class="card-header">
                 <a href="{{route('view.transfer')}}"><button class="btn btn-danger">Back</button></a>
@@ -84,23 +84,34 @@ Transfer Adoption Fee
                     </div>   
                     <hr>
                     <h5>Pet Adopted Details</h5>
-                    <div>
-                        <img src="{{asset('uploads/animals/'.$transfer->animal->animal_image)}}" width="100px" height="80px" alt="">
-                    </div>
-                    <label for="">Pet Name:</label>
-                    <p><strong>{{$transfer->animal->name}}</strong></p> 
-                    <label for="">Gender:</label>
-                    <p><strong>{{$transfer->animal->gender}}</strong></p> 
-                    <label for="">Age:</label>
-                    <p><strong>{{$transfer->animal->age}}</strong></p> 
-                    <label for="">Pet stage:</label>
-                    <p><strong>{{$transfer->animal->pet_stage}}</strong></p> 
-                    <label for="">Breed:</label>
-                    <p><strong>{{$transfer->animal->breed}}</strong></p> 
-                    <label for="">Adoption Fee:</label>
-                    <p><strong>{{$transfer->animal->fee}}</strong></p> 
+                    <div style="display:flex">
+                        <div class="col-sm-3">
+                            <div>
+                                <img src="{{asset('uploads/animals/'.$transfer->animal->animal_image)}}" width="100%" height="80%" alt="">
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <label for="">Pet Name:</label>
+                            <p><strong>{{$transfer->animal->name}}</strong></p> 
+                            <label for="">Gender:</label>
+                            <p><strong>{{$transfer->animal->gender}}</strong></p> 
+                            <label for="">Age:</label>
+                            <p><strong>{{$transfer->animal->age}}</strong></p> 
+                            <label for="">Pet stage:</label>
+                            <p><strong>{{$transfer->animal->pet_stage}}</strong></p> 
+                        </div>
+                        <div class="col-sm">
+                            <label for="">Breed:</label>
+                            <p><strong>{{$transfer->animal->breed}}</strong></p> 
+                            <label for="">Adoption Fee:</label>
+                            <p><strong>{{$transfer->animal->fee}}</strong></p> 
+                        </div>
+                    </div>  
                     <hr>
                     <h5>Adopter Details</h5>
+                    <div style="display:flex">
+
+                    </div>
                     <div>
                         <img src="{{asset('/phpcode/adopter/'.$transfer->adopter->photo)}}" width="100px" height="80px" alt="">
                     </div>
@@ -119,7 +130,7 @@ Transfer Adoption Fee
                     <p><strong>{{$transfer->animal->fee}}</strong></p> 
                     <label for="">Expected  to receive:</label>
                     <p><strong>{{$transfer->animal->fee}}</strong></p> 
-                    <div id="paypal-button-container">
+                    <div style="text-align:center" id="paypal-button-container">
 
                     </div>
                     @endif
