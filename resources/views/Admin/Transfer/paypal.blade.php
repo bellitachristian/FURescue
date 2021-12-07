@@ -60,10 +60,11 @@ Transfer Adoption Fee
 
                     </div>
                     @else 
+                    <h5>Transfer Money to:</h5>
                     <div style="display:flex">
                         <div class="col-sm-3">
                             <div>
-                                <img src="{{asset('uploads/pet-owner/profile/'.$transfer->petowner->profile)}}" width="70%" height="65%" alt="">
+                                <img src="{{asset('uploads/pet-owner/profile/'.$transfer->petowner->profile)}}" width="100%" height="80%" alt="">
                             </div>
                         </div>
                         <div class="col-sm">
