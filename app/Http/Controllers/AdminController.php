@@ -983,4 +983,59 @@ class AdminController extends Controller
       );
       return view('Admin.Transfer.paypal',$data);
     }
+    function transferring($id){
+      $receipt = Receipt::find($id);
+      if($receipt->usertype_id == 2){
+        $shelter = AnimalShelter::where('id',$receipt->owner_id)->first();
+        if($shelter->revenue == "0"){
+          $shelter->revenue = $receipt->animal->fee;
+          $transferred = [
+            'payment' => 'You have received PHP'.$receipt->animal->fee,
+            'tryagain' => ' from the adoption fee remitted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
+          ];
+          AnimalShelter::find($shelter->id)->notify(new RejectedProof($transferred));
+          $receipt->process = 'completed';
+          $receipt->update();
+        }
+        else{
+            $subtotal = (int)$shelter->revenue;
+            $fee = (int)$revenue->animal->fee;
+            $total = $subtotal + $fee;
+            $shelter->revenue = $total;
+            $transferred = [
+              'payment' => 'You have received PHP'.$receipt->animal->fee,
+              'tryagain' => ' from the adoption fee remitted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
+            ];
+            AnimalShelter::find($shelter->id)->notify(new RejectedProof($transferred));
+            $receipt->process = 'completed';
+            $receipt->update();
+        }
+      }
+      else{
+        $petowner = PetOwner::where('id',$receipt->owner_id)->first();
+        if($petowner->revenue == "0"){
+          $petowner->revenue = $receipt->animal->fee;
+          $transferred = [
+            'payment' => 'You have received PHP'.$receipt->animal->fee,
+            'tryagain' => ' from the adoption fee remitted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
+          ];
+          PetOwner::find($petowner->id)->notify(new RejectedProof($transferred));
+          $receipt->process = 'completed';
+          $receipt->update();
+        }
+        else{
+            $subtotal = (int)$petowner->revenue;
+            $fee = (int)$revenue->animal->fee;
+            $total = $subtotal + $fee;
+            $petowner->revenue = $total;
+            $transferred = [
+              'payment' => 'You have received PHP'.$receipt->animal->fee,
+              'tryagain' => ' from the adoption fee remitted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
+            ];
+            PetOwner::find($petowner->id)->notify(new RejectedProof($transferred));
+            $receipt->process = 'completed';
+            $receipt->update();
+        }
+      }
+    }
 } 
