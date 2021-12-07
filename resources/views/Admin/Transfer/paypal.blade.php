@@ -62,7 +62,7 @@ Transfer Adoption Fee
                     @else 
                     <div style="display:flex">
                         <div class="col-sm-4">
-                            <img src="{{asset('uploads/pet-owner/profile/'.$transfer->petowner->profile)}}" width="100px" height="80px" alt="">
+                            <img src="{{asset('uploads/pet-owner/profile/'.$transfer->petowner->profile)}}" width="100%" height="100%" alt="">
                         </div>
                         <div class="col-sm">
                             <label for="">PetOwner name:</label>
