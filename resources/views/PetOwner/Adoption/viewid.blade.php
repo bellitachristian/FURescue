@@ -62,12 +62,12 @@ Adopter's Application Form
                              </div>
                              <div class="items">
                                 <div class="row item">
-                                    <div class="col-sm">
                                     <span>Valid ID</span>
+                                    <div class="col-sm">
                                     <img src="{{asset('phpcode/validid/'.$adoption->validId)}}" width="230px" height="200px" />
                                     </div>
-                                    <div class="col-sm">
                                     <span>Signature</span>
+                                    <div class="col-sm">
                                     <img src="{{asset('phpcode/validid/'.$adoption->signature)}}" width="150px" height="150px" />
                                     </div>
                                 </div>
