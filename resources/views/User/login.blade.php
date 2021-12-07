@@ -69,6 +69,9 @@
                                             <h4>adopter/pet owner</h4>
                                         </a> -->
                                 </div>
+                                <div class="modal-footer">
+
+                                </div>
                         </div>
                     </div>
                 </div>
