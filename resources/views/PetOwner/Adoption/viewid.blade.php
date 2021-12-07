@@ -63,9 +63,9 @@ Adopter's Application Form
                             <hr>
                             <h6 style="color:black">Questionnaires</h6>
                             <div style="display:flex">
-                                <div class="col-sm">
+                                <div class="col-sm-5">
                                     <h7>Valid ID</h7>
-                                    <div class="col-sm-5">
+                                    <div class="col-sm">
                                         <img src="{{asset('phpcode/validid/'.$adoption->validId)}}" width="100%" height="100%" />
                                     </div>
                                 </div>
