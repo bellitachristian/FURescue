@@ -136,15 +136,16 @@
         </div>
     </div>
 </div>
-<div id="myModal" class="modal">
+<div id="myModal" class="modal fade">
     <div class="modal-dialog modal-confirm">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="icon-box">
                     <i class="material-icons">&#xE876;</i>
                 </div>
-                <span class="close">&times;</span>
-                <h4 class="modal-title">Success!</h4>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
             </div>
             <div class="modal-body">
                 <p class="text-center">You've been successfully subscribed! You can now properly use the system.</p>
