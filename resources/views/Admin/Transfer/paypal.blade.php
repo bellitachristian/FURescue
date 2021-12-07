@@ -3,8 +3,8 @@
 Transfer Adoption Fee
 @endsection
 @section("content")
-<div class="row">
-    <div class="col-sm">
+<div class="row justify-content-center">
+    <div class="col-sm-8">
         <div class="card shadow mb-4">
             <div class="card-header">
                 <a href="{{route('view.transfer')}}"><button class="btn btn-danger">Back</button></a>
@@ -80,8 +80,8 @@ Transfer Adoption Fee
                             <label for="">Contact:</label>
                             <p><strong>{{$transfer->petowner->contact}}</strong></p> 
                         </div>
-                        <hr>
                     </div>   
+                    <hr>
                     <h5>Pet Adopted Details</h5>
                     <div>
                         <img src="{{asset('uploads/animals/'.$transfer->animal->animal_image)}}" width="100px" height="80px" alt="">
