@@ -11,15 +11,29 @@ Transfer Adoption Fee
             </div>
                 <div class="card-body">
                     @if($transfer->usertype->id == 2)
-                    <div>
-                    <img src="{{asset('uploads/animal-shelter/profile/'.$transfer->shelter->profile)}}" width="100px" height="80px" alt="">
+                    <h5>Transfer Money to:</h5>
+                    <div style="display:flex">
+                        <div class="col-sm-3">
+                            <div>
+                                <img src="{{asset('uploads/animal-shelter/profile/'.$transfer->shelter->profile)}}" width="100%" height="80%" alt="">
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <label for="">Sheltername:</label>
+                            <p><strong>{{$transfer->shelter->shelter_name}}</strong></p> 
+                            <label for="">Email:</label>
+                            <p><strong>{{$transfer->shelter->email}}</strong></p> 
+                            <label for="">Address:</label>
+                            <p><strong>{{$transfer->shelter->address}}</strong></p> <hr>
+                        </div>
+                        <div class="col-sm">
+                            <label for="">Contact Person:</label>
+                            <p><strong>{{$transfer->shelter->founder_name}}</strong></p> 
+                            <label for="">Contact Number:</label>
+                            <p><strong>{{$transfer->shelter->contact}}</strong></p> 
+                        </div>
                     </div>
-                    <label for="">Sheltername:</label>
-                    <p><strong>{{$transfer->shelter->shelter_name}}</strong></p> 
-                    <label for="">Email:</label>
-                    <p><strong>{{$transfer->shelter->email}}</strong></p> 
-                    <label for="">Contact:</label>
-                    <p><strong>{{$transfer->shelter->contact}}</strong></p> <hr>
+                    <hr>
                     <h5>Pet Adopted Details</h5>
                     <div>
                         <img src="{{asset('uploads/animals/'.$transfer->animal->animal_image)}}" width="100px" height="80px" alt="">
