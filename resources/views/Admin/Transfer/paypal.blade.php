@@ -4,7 +4,7 @@ Transfer Adoption Fee
 @endsection
 @section("content")
 <div class="row justify-content-center">
-    <div class="col-sm-8">
+    <div class="col-sm-7">
         <div class="card shadow mb-4">
             <div class="card-header">
                 <a href="{{route('view.transfer')}}"><button class="btn btn-danger">Back</button></a>
