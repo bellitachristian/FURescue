@@ -8,11 +8,6 @@ Adopter's Application Form
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 @endpush
 @section("content")
-
-            <!-- <div class="card-body">
-            <img src="{{asset('phpcode/validid/'.$adoption->validId)}}" width="100%" height="600px" />
-            </div> -->
-
 <div class="slip-content" >
     <a href="{{route('adoption.request.petowner')}}"><button type="button" class="btn btn-danger">Back</button></a>
     <div class="container bootstrap snippets bootdey">
@@ -145,7 +140,7 @@ Adopter's Application Form
             
         </div>
         <div class="footer">
-            Copyright © 2014. company name
+            Copyright © 2021. furescue
         </div>
     </div>
 @endsection
