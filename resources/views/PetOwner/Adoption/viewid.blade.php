@@ -10,7 +10,7 @@ Adopter's Application Form
 @section("content")
 
             <!-- <div class="card-body">
-            <img src="{{asset('phpcode/validid/'.$images->validId)}}" width="100%" height="600px" />
+            <img src="{{asset('phpcode/validid/'.$adoption->validId)}}" width="100%" height="600px" />
             </div> -->
 
 <div class="slip-content" >
