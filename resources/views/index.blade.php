@@ -37,11 +37,11 @@
                                             <img src="/images/icon-petowners.png" alt="petowner">   
                                             <h4>pet owner only</h4>
                                         </a>
-                                        <hr>
+                                        <!-- <hr>
                                         <a class="adopter" href="/register" data-bs-toggle="modal" data-bs-target="#register" data-bs-dismiss="modal">
                                             <img src="/images/adopter.png" alt="adopter">   
                                             <h4>adopter/pet owner</h4>
-                                        </a>
+                                        </a> -->
                                 </div>
                         </div>
                     </div>
