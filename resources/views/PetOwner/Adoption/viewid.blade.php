@@ -62,7 +62,7 @@ Adopter's Application Form
                              </div>
                             <div class="headers clearfix">
                                 <div class="row">
-                                    <div class="col-md-4">Adopter Details</div>
+                                    <div class="col-md-4">Adopter Credentials</div>
                                 </div>
 						    </div>
                             <div style="display:flex">
