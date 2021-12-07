@@ -47,7 +47,7 @@
     </div>
     <!-- Choose as -->
     <div class="modal fade" id="choose" data-bs-keyboard="false" tabindex="-1" aria-labelledby="chooseLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog ">
                         <div class="modal-content">
                             <div class="modal-header choose">
                                 <h5 class="modal-title" id="chooseLabel">Choose As</h5>
