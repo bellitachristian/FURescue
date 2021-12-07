@@ -110,25 +110,28 @@ Transfer Adoption Fee
                     <hr>
                     <h5>Adopter Details</h5>
                     <div style="display:flex">
-
+                        <div class="col-sm-3">
+                            <div>
+                                <img src="{{asset('/phpcode/adopter/'.$transfer->adopter->photo)}}" width="100px" height="80px" alt="">
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <label for="">Name:</label>
+                            <p><strong>{{$transfer->adopter->name}}</strong></p> 
+                            <label for="">Gender:</label>
+                            <p><strong>{{$transfer->adopter->gender}}</strong></p> 
+                            <label for="">Email:</label>
+                            <p><strong>{{$transfer->adopter->email}}</strong></p> 
+                        </div>
+                        <div class="col-sm">
+                            <label for="">Address:</label>
+                            <p><strong>{{$transfer->adopter->address}}</strong></p> 
+                            <label for="">Contact:</label>
+                            <p><strong>{{$transfer->adopter->phonenum}}</strong></p> 
+                        </div>
                     </div>
-                    <div>
-                        <img src="{{asset('/phpcode/adopter/'.$transfer->adopter->photo)}}" width="100px" height="80px" alt="">
-                    </div>
-                    <label for="">Name:</label>
-                    <p><strong>{{$transfer->adopter->name}}</strong></p> 
-                    <label for="">Gender:</label>
-                    <p><strong>{{$transfer->adopter->gender}}</strong></p> 
-                    <label for="">Email:</label>
-                    <p><strong>{{$transfer->adopter->email}}</strong></p> 
-                    <label for="">Address:</label>
-                    <p><strong>{{$transfer->adopter->address}}</strong></p> 
-                    <label for="">Contact:</label>
-                    <p><strong>{{$transfer->adopter->phonenum}}</strong></p> 
                     <hr>
-                    <label for="">Adoption Fee:</label>
-                    <p><strong>{{$transfer->animal->fee}}</strong></p> 
-                    <label for="">Expected  to receive:</label>
+                    <label for="">Amount to be Transferred:</label>
                     <p><strong>{{$transfer->animal->fee}}</strong></p> 
                     <div style="text-align:center" id="paypal-button-container">
 
