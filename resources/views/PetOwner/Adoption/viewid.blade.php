@@ -65,6 +65,7 @@ Adopter's Application Form
                                     <div class="col-md-4">Adopter Credentials</div>
                                 </div>
 						    </div>
+                            <br>
                             <div style="display:flex">
                                 <div class="col-sm-5">
                                     <h7>Valid ID</h7>
