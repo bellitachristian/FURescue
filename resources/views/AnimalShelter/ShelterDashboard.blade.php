@@ -76,7 +76,7 @@ Animal Shelter Dashboard
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                     <h5 style="font-weight:bold">Total Revenue</h5></div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">PHP{{$totalrevenue}}</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">PHP {{$totalrevenue}}</div>
                 </div>
                 <div class="col-auto">
                     <i class="fas fa-money-bill-wave-alt fa-2x text-gray-300"></i>
