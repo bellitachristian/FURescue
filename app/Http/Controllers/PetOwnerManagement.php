@@ -1940,7 +1940,12 @@ class PetOwnerManagement extends Controller
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'receipts'=>Receipt::where('status','pending')->where('owner_id',$petowner->id)->where('process','none')->where('usertype_id',3)->get(),
-            'count'=>Receipt::where('process','confirmed')->orWhere('process','completed')->where('owner_id',$petowner->id)->where('usertype_id',3)->count(),
+            'count'=>Receipt::where('owner_id',$petowner->id)->where('usertype_id',3)
+             -> where(function($query){
+                $query->where('process','confirmed')
+                    ->orWhere('process','completed');
+            })
+           ->count(),
         );
         return view('PetOwner.Receipt.receipt',$data);
     }
@@ -2340,7 +2345,12 @@ class PetOwnerManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'receipts'=>Receipt::where('owner_id',$petowner->id)->where('usertype_id','3')->where('process','confirmed')->orWhere('process','completed')->get(),
+            'receipts'=>Receipt::where('owner_id',$petowner->id)->where('usertype_id',3)
+            -> where(function($query){
+               $query->where('process','confirmed')
+                   ->orWhere('process','completed');
+           })
+           ->get()
         );
         return view('PetOwner.Receipt.confirmed',$data);
     }

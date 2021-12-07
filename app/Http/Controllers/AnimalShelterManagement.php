@@ -2200,7 +2200,12 @@ class AnimalShelterManagement extends Controller
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'receipts'=>Receipt::where('status','pending')->where('owner_id',$shelter->id)->where('process','none')->where('usertype_id',2)->get(),
-            'count'=>Receipt::where('process','confirmed')->orWhere('process','completed')->where('owner_id',$shelter->id)->where('usertype_id',2)->count(),
+            'count'=>Receipt::where('owner_id',$shelter->id)->where('usertype_id',2)
+            -> where(function($query){
+               $query->where('process','confirmed')
+                   ->orWhere('process','completed');
+           })
+          ->count(),
         );
         return view('AnimalShelter.Receipt.receipt',$data);
     }
@@ -2230,7 +2235,12 @@ class AnimalShelterManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'receipts'=>Receipt::where('owner_id',$shelter->id)->where('usertype_id','2')->where('process','confirmed')->orWhere('process','completed')->get(),
+            'receipts'=>Receipt::where('owner_id',$shelter->id)->where('usertype_id',2)
+            -> where(function($query){
+               $query->where('process','confirmed')
+                   ->orWhere('process','completed');
+           })
+          ->get(),
         );
         return view('AnimalShelter.Receipt.confirmed',$data);
     }
