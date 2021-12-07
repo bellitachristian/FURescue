@@ -2521,7 +2521,12 @@ class AnimalShelterManagement extends Controller
         );
         return view('AnimalShelter.Reports.revenue',$data);
     }
-
-
+    function viewreactpage(){
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+        );
+        return view('AnimalShelter.Deactivation.deactpage',$data);
+    }
 }
 

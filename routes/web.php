@@ -196,6 +196,7 @@ Route::group(['middleware'=>['Authcheck']],function(){
         Route::get('/Profile/Edit/{shelter_id}',[AnimalShelterManagement::class,'ViewEditProfile']);
         Route::get('/Dashboard/deact',[AnimalShelterManagement::class,'ViewDeactDash'])->name('deactpage');
         Route::get('/Dashboard/request/{shelter_id}',[AnimalShelterManagement::class,'RequestActivation'])->name('request.reactivation');
+        Route::get('/Dashboard/request/shelter',[AnimalShelterManagement::class,'viewreactpage'])->name('view.reactivation');
         Route::get('/AnimalShelter/viewdonation',[AnimalShelterManagement::class,'viewdonation'])->name('view.donation');
         Route::get('/AnimalShelter/Adoption',[AnimalShelterManagement::class,'adoptionrequests'])->name('adoption.request.shelter');
         Route::get('/AnimalShelter/Requests',[AnimalShelterManagement::class,'petownerrequest'])->name('petowner.request');

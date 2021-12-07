@@ -88,7 +88,7 @@ class LoginController extends Controller
                                     'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
                                     'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first()
                                 );
-                               return view('AnimalShelter.Deactivation.deactpage',$data);  //adtu sa view for reactivation of account
+                               return redirect()->route('view.reactivation');  //adtu sa view for reactivation of account
                             }
                         }
                         else{
