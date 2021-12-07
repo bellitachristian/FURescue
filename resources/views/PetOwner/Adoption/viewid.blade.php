@@ -22,7 +22,7 @@ Adopter's Application Form
 					<div class="intro">
                         <h5 style="float:left">Application Form</h5>
                         <div style="float:right">
-                            <img src="{{asset('phpcode/validid/'.$adoption->picture)}}" width="150px" height="150px" />
+                            <img src="{{asset('phpcode/validid/'.$adoption->picture)}}" width="170px" height="170px" />
                         </div>
 					</div>
 
@@ -86,52 +86,52 @@ Adopter's Application Form
                                      <h6 style="color:black">Questionnaires</h6>
                                         <span>Question 1 out of 12</span>
                                         <p>Are you a student or an employee?</p>
-                                        Answer: <strong></strong>
+                                        Answer: <strong>{{$questions->question1}}</strong>
 
                                         <span><br>Question 2 out of 12</span>
                                         <p>For whom are you adopting a pet?</p>
-                                        Answer: <strong></strong><br>
+                                        Answer: <strong>{{$questions->question2}}</strong><br>
 
                                         <span><br>Question 3 out of 12</span>
                                         <p>Are there children (below18) in the house?</p>
-                                        Answer: <strong></strong><br>
+                                        Answer: <strong>{{$questions->question3}}</strong><br>
 
                                         <span><br>Question 4 out of 12</span>
                                         <p>Do you have other pets? If yes,tell us about them: </p>
-                                        Answer: <strong></strong><br>
+                                        Answer: <strong>{{$questions->question4}}</strong><br>
 
                                         <span><br>Question 5 out of 12</span>
                                         <p>Who else do you live with?</p>
-                                        Answer: <strong></strong><br>
+                                        Answer: <strong>{{$questions->question5}}</strong><br>
 
                                         <span><br>Question 6 out of 12</span>
                                         <p>Are any members of your house hold allergic to animals?</p>
-                                        Answer: <strong></strong><br>
+                                        Answer: <strong>{{$questions->question6}}</strong><br>
 							    </div>
                             <div class="col-sm-6">
                                 <span>Question 7 out of 12</span>
                                 <p>Who will be responsible for feeding, grooming, and generally caring for your pet?</p>
-                                Answer: <strong></strong>
+                                Answer: <strong>{{$questions->question7}}</strong>
 
                                 <span><br>Question 8 out of 12</span>
                                 <p>Who will be financially responsible for your pet’s needs(i.e.food,vetbills,etc.)?</p>
-                                Answer: <strong></strong><br>
+                                Answer: <strong>{{$questions->question8}}</strong><br>
 
                                 <span><br>Question 9 out of 12</span>
                                 <p>Who will look after your pet if you go on vacation or in case of emergency?</p>
-                                Answer: <strong></strong><br>
+                                Answer: <strong>{{$questions->question9}}</strong><br>
 
                                 <span><br>Question 10 out of 12</span>
                                 <p>How many hours in an average work day will your pet be left alone?</p>
-                                Answer: <strong> </strong><br>
+                                Answer: <strong>{{$questions->question10}} </strong><br>
 
                                 <span><br>Question 11 out of 12</span>
                                 <p>Does everyone in the family support your decision to adopt a pet?Please explain:</p>
-                                Answer: <strong> </strong><br>
+                                Answer: <strong>{{$questions->question11}} </strong><br>
 
                                 <span><br>Question 12 out of 12</span>
                                 <p>What type of building do you live in?</p>
-                                Answer: <strong></strong>
+                                Answer: <strong>{{$questions->question12}}</strong>
                                 
                             </div>
 

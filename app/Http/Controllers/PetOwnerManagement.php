@@ -17,6 +17,7 @@ use App\Models\AdoptionFee;
 use App\Models\Receipt;
 use App\Models\PetBook;
 use App\Models\Deworm;
+use App\Models\Question;
 use App\Models\ValidDocuments;
 use App\Models\Vaccine;
 use App\Models\Requestadoption;
@@ -1963,7 +1964,8 @@ class PetOwnerManagement extends Controller
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'adoption'=>Adoption::find($id),
-            'today'=>$ldate
+            'today'=>$ldate,
+            'questions'=>Question::where('adoption_id',$id)->first()
         );
         return view('PetOwner.Adoption.viewid',$data);
     }
