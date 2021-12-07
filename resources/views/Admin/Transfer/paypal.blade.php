@@ -112,7 +112,7 @@ Transfer Adoption Fee
                     <div style="display:flex">
                         <div class="col-sm-3">
                             <div>
-                                <img src="{{asset('/phpcode/adopter/'.$transfer->adopter->photo)}}" width="100px" height="80px" alt="">
+                                <img src="{{asset('/phpcode/adopter/'.$transfer->adopter->photo)}}" width="100%" height="80%" alt="">
                             </div>
                         </div>
                         <div class="col-sm">
@@ -131,8 +131,10 @@ Transfer Adoption Fee
                         </div>
                     </div>
                     <hr>
-                    <label for="">Amount to be Transferred:</label>
-                    <p><strong>{{$transfer->animal->fee}}</strong></p> 
+                    <div style="float:right">
+                        <label for="">Amount to be Transferred:</label>
+                        <p style="font: size 24px; color:black"><strong>PHP{{$transfer->animal->fee}}</strong></p> 
+                    </div>
                     <div style="text-align:center" id="paypal-button-container">
 
                     </div>
