@@ -989,6 +989,7 @@ class AdminController extends Controller
         $shelter = AnimalShelter::where('id',$receipt->owner_id)->first();
         if($shelter->revenue == "0"){
           $shelter->revenue = $receipt->animal->fee;
+          $shelter->update();
           $transferred = [
             'payment' => 'You have received PHP'.$receipt->animal->fee,
             'tryagain' => ' from the adoption fee remitted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
@@ -1007,6 +1008,7 @@ class AdminController extends Controller
             $fee = (int)$revenue->animal->fee;
             $total = $subtotal + $fee;
             $shelter->revenue = $total;
+            $shelter->update();
             $transferred = [
               'payment' => 'You have received PHP'.$receipt->animal->fee,
               'tryagain' => ' from the adoption fee remitted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
@@ -1025,6 +1027,7 @@ class AdminController extends Controller
         $petowner = PetOwner::where('id',$receipt->owner_id)->first();
         if($petowner->revenue == "0"){
           $petowner->revenue = $receipt->animal->fee;
+          $petowner->update();
           $transferred = [
             'payment' => 'You have received PHP'.$receipt->animal->fee,
             'tryagain' => ' from the adoption fee remitted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
@@ -1043,6 +1046,7 @@ class AdminController extends Controller
             $fee = (int)$revenue->animal->fee;
             $total = $subtotal + $fee;
             $petowner->revenue = $total;
+            $petowner->update();
             $transferred = [
               'payment' => 'You have received PHP'.$receipt->animal->fee,
               'tryagain' => ' from the adoption fee remitted by '.$receipt->adopter->fname.' '.$receipt->adopter->lname,
