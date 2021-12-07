@@ -20,8 +20,6 @@ Adopter's Application Form
 			<div class="col-md-12">
 				<div class="slip-wrapper">
 					<div class="intro">
-
-                        <hr>
                         <h5>Adoption Questionnaire</h5>
 					</div>
 
