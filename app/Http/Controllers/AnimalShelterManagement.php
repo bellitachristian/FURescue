@@ -2118,10 +2118,13 @@ class AnimalShelterManagement extends Controller
 
     function enlarge($id){
         $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $ldate = date('F d, Y');
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'images'=>Adoption::find($id),
+            'adoption'=>Adoption::find($id),
+            'today'=>$ldate,
+            'questions'=>Question::where('adoption_id',$id)->first()
         );
         return view('AnimalShelter.Adoption.viewid',$data);
     }
