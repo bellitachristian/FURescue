@@ -98,7 +98,7 @@
         text-decoration: none;
         cursor: pointer;
         }
-        </style> />
+        </style>
 @endpush
 @section("content")
 <div class="row justify-content-center">
