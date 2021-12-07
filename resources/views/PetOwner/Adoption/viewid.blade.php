@@ -60,11 +60,17 @@ Adopter's Application Form
                                     <p><strong>{{$adoption->adopter->email}}</strong></p>
                                 </div>
                              </div>
-                             <div class="row">
-                                 <span>Valid ID</span>
-                                 <img src="{{asset('phpcode/validid/'.$adoption->validId)}}" width="200px" height="170px" />
-                                 <span>Signature</span>
-                                 <img src="{{asset('phpcode/validid/'.$adoption->signature)}}" width="150px" height="150px" />
+                             <div class="items">
+                                <div class="row item">
+                                    <div class="col-sm">
+                                    <span>Valid ID</span>
+                                    <img src="{{asset('phpcode/validid/'.$adoption->validId)}}" width="230px" height="200px" />
+                                    </div>
+                                    <div class="col-sm">
+                                    <span>Signature</span>
+                                    <img src="{{asset('phpcode/validid/'.$adoption->signature)}}" width="150px" height="150px" />
+                                    </div>
+                                </div>
                              </div>
                              <div class="payment-details">
                                  <div class="row">
