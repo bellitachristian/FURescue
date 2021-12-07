@@ -60,8 +60,12 @@ Adopter's Application Form
                                     <p><strong>{{$adoption->adopter->email}}</strong></p>
                                 </div>
                              </div>
+                            <div class="headers clearfix">
+                                <div class="row">
+                                    <div class="col-md-4">Adopter Details</div>
+                                </div>
+						    </div>
                             <hr>
-                            <h6 style="color:black">Adopter Credentials</h6>
                             <div style="display:flex">
                                 <div class="col-sm-5">
                                     <h7>Valid ID</h7>
