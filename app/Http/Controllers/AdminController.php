@@ -1005,7 +1005,7 @@ class AdminController extends Controller
         }
         else{
             $subtotal = (int)$shelter->revenue;
-            $fee = (int)$revenue->animal->fee;
+            $fee = (int)$receipt->animal->fee;
             $total = $subtotal + $fee;
             $shelter->revenue = $total;
             $shelter->update();
@@ -1043,7 +1043,7 @@ class AdminController extends Controller
         }
         else{
             $subtotal = (int)$petowner->revenue;
-            $fee = (int)$revenue->animal->fee;
+            $fee = (int)$receipt->animal->fee;
             $total = $subtotal + $fee;
             $petowner->revenue = $total;
             $petowner->update();
