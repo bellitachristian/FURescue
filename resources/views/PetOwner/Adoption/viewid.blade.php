@@ -7,7 +7,12 @@ Adopter's Application Form
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 @endpush
-@section("content")           
+@section("content")
+
+            <!-- <div class="card-body">
+            <img src="{{asset('phpcode/validid/'.$images->validId)}}" width="100%" height="600px" />
+            </div> -->
+
 <div class="slip-content" >
     <a href="{{route('adoption.request.petowner')}}"><button type="button" class="btn btn-danger">Back</button></a>
     <div class="container bootstrap snippets bootdey">
