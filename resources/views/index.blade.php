@@ -44,7 +44,9 @@
                                         </a> -->
                                 </div>
                             <div class="modal-footer">
+                                <div style="padding:5%">
 
+                                </div>
                             </div>
                         </div>
                     </div>
