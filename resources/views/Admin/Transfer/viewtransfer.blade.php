@@ -16,6 +16,7 @@ Transfer Adoption Fee
                         <tr>
                             <th>ID</th>
                             <th>UserType</th>
+                            <th>Profile</th>
                             <th>Transfer to</th>
                             <th>Email</th>
                             <th>Contact Number</th>
@@ -29,6 +30,7 @@ Transfer Adoption Fee
                             <td>{{$money->id}}</td>
                             @if($money->usertype->id == 2)
                             <td>{{$money->usertype->usertype}}</td>
+                                    <td>{{$money->shelter->profile}}</td>
                                     <td>{{$money->shelter->shelter_name}}</td>
                                     <td>{{$money->shelter->email}}</td>
                                     <td>{{$money->shelter->contact}}</td>   
@@ -39,7 +41,7 @@ Transfer Adoption Fee
                             </td>
                             @elseif($money->usertype->id == 3)
                             <td>{{$money->usertype->usertype}}</td>
-
+                                    <td>{{$money->petowner->profile}}</td>
                                     <td>{{$money->petowner->fname}} {{$money->petowner->lname}}</td>
                                     <td>{{$money->petowner->email}}</td>
                                     <td>{{$money->petowner->contact}}</td>   
