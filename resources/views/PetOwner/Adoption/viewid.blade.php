@@ -20,7 +20,10 @@ Adopter's Application Form
 			<div class="col-md-12">
 				<div class="slip-wrapper">
 					<div class="intro">
-                        <h5>Application Form</h5>
+                        <h5 style="float:left">Application Form</h5>
+                        <div style="float:right">
+                            <img src="{{asset('phpcode/validid/'.$adoption->picture)}}" width="150px" height="150px" />
+                        </div>
 					</div>
 
 					<div class="payment-info">
@@ -57,9 +60,16 @@ Adopter's Application Form
                                     <p><strong>{{$adoption->adopter->email}}</strong></p>
                                 </div>
                              </div>
+                             <div class="row">
+                                 <span>Valid ID</span>
+                                 <img src="{{asset('phpcode/validid/'.$adoption->validId)}}" width="200px" height="170px" />
+                                 <span>Signature</span>
+                                 <img src="{{asset('phpcode/validid/'.$adoption->signature)}}" width="150px" height="150px" />
+                             </div>
                              <div class="payment-details">
                                  <div class="row">
                                      <div class="col-sm-6">
+                                     <h6 style="color:black">Questionnaires</h6>
                                         <span>Question 1 out of 12</span>
                                         <p>Are you a student or an employee?</p>
                                         Answer: <strong></strong>
