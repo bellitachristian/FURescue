@@ -59,16 +59,20 @@ Transfer Adoption Fee
                     <div id="paypal-button-container">
 
                     </div>
-                    @else    
-                    <div>
-                    <img src="{{asset('uploads/pet-owner/profile/'.$transfer->petowner->profile)}}" width="100px" height="80px" alt="">
-                    </div>
-                    <label for="">PetOwner name:</label>
-                    <p><strong>{{$transfer->petowner->fname}} {{$transfer->petowner->lname}}</strong></p> 
-                    <label for="">Email:</label>
-                    <p><strong>{{$transfer->petowner->email}}</strong></p> 
-                    <label for="">Contact:</label>
-                    <p><strong>{{$transfer->petowner->contact}}</strong></p> <hr>
+                    @else 
+                    <div style="display:flex">
+                        <div class="col-sm-4">
+                            <img src="{{asset('uploads/pet-owner/profile/'.$transfer->petowner->profile)}}" width="100px" height="80px" alt="">
+                        </div>
+                        <div class="col-sm">
+                            <label for="">PetOwner name:</label>
+                            <p><strong>{{$transfer->petowner->fname}} {{$transfer->petowner->lname}}</strong></p> 
+                            <label for="">Email:</label>
+                            <p><strong>{{$transfer->petowner->email}}</strong></p> 
+                            <label for="">Contact:</label>
+                            <p><strong>{{$transfer->petowner->contact}}</strong></p> <hr>
+                        </div>
+                    </div>   
                     <h5>Pet Adopted Details</h5>
                     <div>
                         <img src="{{asset('uploads/animals/'.$transfer->animal->animal_image)}}" width="100px" height="80px" alt="">
