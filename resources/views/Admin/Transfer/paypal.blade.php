@@ -2,9 +2,6 @@
 @section("header")
 Transfer Adoption Fee
 @endsection
-@push("css")
-
-@endpush
 @section("content")
 <div class="row">
     <div class="col-sm">
@@ -117,6 +114,7 @@ Transfer Adoption Fee
     </div>
 </div>
 @endsection
+@push('js')
 <script src="https://www.paypal.com/sdk/js?client-id=AfnKmdBSmUQRaxV-lxa9RuDvl26tdBGu2HugwMERbS0Jp2Ronpx5Q9EW376wDPydVgswBBpAaBEAKlXy&currency=PHP"></script>
 <script>
 paypal.Buttons({
