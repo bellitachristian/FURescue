@@ -37,61 +37,31 @@ Reports
 @endpush
 @section("content")
 <div class="container">
-        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 text-center justify-content-center px-xl-6 aos-init aos-animate" data-aos="fade-up">
-            <div class="col my-3">
-                <div class="card border-hover-primary hover-scale">
-                    <div class="card-body">
-                        <div class="text-primary mb-3">
-                            <img src="{{asset('images/adoption.png')}}" style="height: 70px; width: 70px;">
-                        </div>
-                        <h6 class="font-weight-bold mb-3">Adoption History</h6>
-                        
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 text-center justify-content-center px-xl-6 aos-init aos-animate" data-aos="fade-up">
+        <div class="col my-3">
+            <div class="card border-hover-primary hover-scale">
+                <div class="card-body">
+                    <div class="text-primary mb-3">
+                        <img src="{{asset('images/adoptionhistory.png')}}" style="height: 70px; width: 70px;">
                     </div>
-                    <div class="card-footer bg-transparent "><a href="#" class="btn btn-primary">View History</a></div>
+                    <h6 class="font-weight-bold mb-3">Adoption History</h6>
+                    
                 </div>
-            </div>
-            <div class="col my-3">
-                <div class="card border-hover-primary hover-scale">
-                    <div class="card-body">
-                        <div class="text-primary mb-3">
-                            <img src="img/donation-history.PNG" style="height: 70px; width: 70px;">
-                        </div>
-                        <h6 class="font-weight-bold mb-3">Donation History</h6>
-                        
-                    </div>
-                    <div class="card-footer bg-transparent "><a href="#" class="btn btn-primary">View History</a></div>
-                </div>
-            </div>
-            <div class="col my-3">
-                <div class="card border-hover-primary hover-scale">
-                    <div class="card-body">
-                        <div class="text-primary mb-3">
-                            <img src="img/paymenthistory.PNG" style="height: 70px; width: 70px;">
-                        </div>
-                        <h6 class="font-weight-bold mb-3">Payment History</h6>
-                        
-                    </div>
-                    <div class="card-footer bg-transparent "><a href="#" class="btn btn-primary">View History</a></div>
-                </div>
-            </div>
-            <div class="col my-3">
-                <div class="card border-hover-primary hover-scale">
-                    <div class="card-body">
-                        <div class="text-primary mb-3">
-                            <img src="img/paymenthistory.PNG" style="height: 70px; width: 70px;">
-                        </div>
-                        <h6 class="font-weight-bold mb-3">Payment History</h6>
-                        
-                    </div>
-                    <div class="card-footer bg-transparent "><a href="#" class="btn btn-primary">View History</a></div>
-                </div>
-            </div>
-            <div class="col my-3">
-
-            </div>
-            <div class="col my-3">
-                
+                <div class="card-footer bg-transparent "><a href="{{route('adoptionhistory.petowner')}}" class="btn btn-primary">View History</a></div>
             </div>
         </div>
+        <div class="col my-3">
+            <div class="card border-hover-primary hover-scale">
+                <div class="card-body">
+                    <div class="text-primary mb-3">
+                        <img src="{{asset('images/paymenthistory.PNG')}}" style="height: 70px; width: 70px;">
+                    </div>
+                    <h6 class="font-weight-bold mb-3">Payment History</h6>
+                    
+                </div>
+                <div class="card-footer bg-transparent "><a href="#" class="btn btn-primary">View History</a></div>
+            </div>
+        </div>      
     </div>
+</div>
 @endsection

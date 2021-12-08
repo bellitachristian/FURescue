@@ -31,4 +31,5 @@ class Receipt extends Model
     public function payment(){
         return $this->belongsTo(AdoptionPayment::class,'payment_id');
     }   
+   
 }

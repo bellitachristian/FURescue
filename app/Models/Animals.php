@@ -6,6 +6,7 @@ use App\Models\AllocateDeworming;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\AnimalShelter;
+use Carbon\Carbon;
 
 class Animals extends Model
 {
@@ -45,6 +46,8 @@ class Animals extends Model
     public function shelter(){
         return $this->belongsTo(AnimalShelter::class,'shelter_id');
     }
-
+    protected $casts = [
+        'updated_at' => 'datetime:F d, Y',
+    ];
 }
     

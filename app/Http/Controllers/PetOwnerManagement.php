@@ -2422,4 +2422,15 @@ class PetOwnerManagement extends Controller
         return view('PetOwner.Reports.reports',$data);
     }
 
+    function adoptionhistory(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'adoption'=>Receipt::where('status','received')->where('usertype_id',3)->where('owner_id',$petowner->id)
+                        ->where('process','completed')->get()
+        );
+        return view('PetOwner.Reports.adoptionhistory',$data);
+    }
+
 }

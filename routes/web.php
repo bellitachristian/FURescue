@@ -310,6 +310,9 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
         Route::get('/PetOwner/generate/{id}',[PetOwnerManagement::class,'generateslip'])->name('generate');
         Route::get('/PetOwner/generated',[PetOwnerManagement::class,'generated'])->name('generated');
 
+        Route::get('/PetOwner/AdoptionHistory',[PetOwnerManagement::class,'adoptionhistory'])->name('adoptionhistory.petowner');
+
+
     });
     Route::get('/auto/logout/petowner/{petowner_id}',[LoginController::class,'autologoutpetowner']);
     Route::get('/tempdashboard/petowner',[PetOwnerManagement::class,'PetOwner_tempdashboard']);
