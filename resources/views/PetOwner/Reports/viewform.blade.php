@@ -11,7 +11,7 @@ Adopter's Application Form
 <div class="slip-content" >
     <a href="{{route('adoptionhistory.petowner')}}"><button type="button" class="btn btn-danger">Back</button></a>
     <div style="float:right">
-        <span><button id="print"type="button"><i class="fa fa-print"></i> Print Report</button></span>
+        <span><button id="print"type="button"><i class="fa fa-print"></i> Print Application Form</button></span>
     </div>
     <div id="report" class="container bootstrap snippets bootdey">
 		<div class="row">
