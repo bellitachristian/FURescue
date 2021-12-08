@@ -4,7 +4,6 @@ Adoption History
 @endsection
 @push("css")
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css">   
-<link rel="stylesheet" href="{{url('/css/print.css')}}">
 @endpush
 @section("content")
 <div class="row">
