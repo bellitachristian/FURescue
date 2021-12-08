@@ -30,9 +30,9 @@ Adoption History
                         <tr>
                             <td>{{$adopt->id}}</td>
                             <td>
-                            <img src="{{asset('uploads/adopts/'.$adopt->animal_image)}}" width="70px" height="70px" alt="photo">
+                            <img src="{{asset('uploads/adopts/'.$adopt->animal->animal_image)}}" width="70px" height="70px" alt="photo">
                             </td>
-                            <td>{{$adopt->animals->name}}</td>
+                            <td>{{$adopt->animal->name}}</td>
                             <td>
                             <img src="{{asset('/phpcode/adopter/'.$adopt->adopter->photo)}}" width="70px" height="70px" alt="photo">
                             </td>
@@ -40,7 +40,7 @@ Adoption History
                             <td>
                             <a href=""><i class="far fa-eye"></i></a>
                             </td>
-                            <td>{{$adopter->animals->updated_at}}</td>
+                            <td>{{$adopter->animal->updated_at}}</td>
                             <td>
                                 <button disabled class="btn btn-success">Adopted</button>
                             </td>
