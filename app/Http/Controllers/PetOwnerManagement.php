@@ -2502,6 +2502,6 @@ class PetOwnerManagement extends Controller
             'today'=>$ldate,
             'questions'=>Question::where('adoption_id',$id)->first()
         );
-        return view('PetOwner.Adoption.viewform',$data);
+        return view('PetOwner.Reports.viewform',$data);
     }
 }
