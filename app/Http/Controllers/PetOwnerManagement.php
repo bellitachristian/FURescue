@@ -2492,7 +2492,7 @@ class PetOwnerManagement extends Controller
         );
         return view('PetOwner.Reports.viewrevenue',$data);
     }
-    function viewform(){
+    function viewform($id){
         $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
         $ldate = date('F d, Y');
         $data =array(
