@@ -2542,5 +2542,84 @@ class AnimalShelterManagement extends Controller
         );
         return view('AnimalShelter.Deactivation.deactpage',$data);
     }
+    
+    function reports(){
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+        );
+        return view('AnimalShelter.Reports.reports',$data);
+    }
+
+    function adoptionhistory(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'adoption'=>Receipt::where('status','received')->where('usertype_id',2)->where('owner_id',$shelter->id)
+                        ->where('process','completed')->get()
+        );
+        return view('AnimalShelter.Reports.adoptionhistory',$data);
+    }
+
+    function searchAdoptionhistory(Request $req){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $fromdate = $req->fromdate;
+        $todate = $req->todate;
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'adoption'=>Receipt::where('status','received')->where('usertype_id',2)->where('owner_id',$shelter->id)
+                        ->where('process','completed')->where('updated_at','>=',$fromdate)->where('updated_at','<=',$todate)->get()
+        );
+        return view('AnimalShelter.Reports.adoptionhistory',$data);
+    }
+
+    function paymenthistory(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'subscription'=>SubscriptionTransac::where('status','approved')->where('shelter_id',$shelter->id)->get()
+        );
+        return view('AnimalShelter.Reports.paymenthistory',$data);
+    }
+
+
+    function searchpaymenthistory(Request $req){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $fromdate = $req->fromdate;
+        $todate = $req->todate;
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'subscription'=>SubscriptionTransac::where('status','approved')->where('shelter_id',$shelter->id)
+            ->where('updated_at','>=',$fromdate)->where('updated_at','<=',$todate)->get()
+        );
+        return view('AnimalShelter.Reports.paymenthistory',$data);
+    }
+
+    function viewrevenue(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'revenue'=> Receipt::where('owner_id',$shelter->id)->where('usertype_id',2)->where('process','completed')->get()
+        );
+        return view('AnimalShelter.Reports.viewrevenue',$data);
+    }
+
+    function searchrevenue(Request $req){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $fromdate = $req->fromdate;
+        $todate = $req->todate;
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'revenue'=> Receipt::where('owner_id',$shelter->id)->where('usertype_id',2)->where('process','completed')
+            ->where('updated_at','>=',$fromdate)->where('updated_at','<=',$todate)->get()
+        );
+        return view('AnimalShelter.Reports.viewrevenue',$data);
+    }
 }
 

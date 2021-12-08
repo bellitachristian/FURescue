@@ -74,6 +74,11 @@ Route::post('/PetOwner/search/AdoptionHistory',[PetOwnerManagement::class,'searc
 Route::post('/PetOwner/search/PaymentHistory',[PetOwnerManagement::class,'searchpaymenthistory'])->name('searchpaymenthistory.petowner');
 Route::post('/PetOwner/search/Revenue',[PetOwnerManagement::class,'searchrevenue'])->name('searchrevenue.petowner');
 
+//Reports Shelter
+Route::post('/AnimalShelter/search/AdoptionHistory',[AnimalShelterManagement::class,'searchAdoptionhistory'])->name('searchAdoptionhistory.shelter');
+Route::post('/AnimalShelter/search/PaymentHistory',[AnimalShelterManagement::class,'searchpaymenthistory'])->name('searchpaymenthistory.shelter');
+Route::post('/AnimalShelter/search/Revenue',[AnimalShelterManagement::class,'searchrevenue'])->name('searchrevenue.shelter');
+
 Route::post('/Admin/savesubscription',[AdminController::class,'savesubscription'])->name('save.subscription');
 Route::post('/Admin/updatesubscription/{id}',[AdminController::class,'updatesubscription'])->name('update.subscription');
 Route::post('/Admin/deletesubscription/{id}',[AdminController::class,'deletesubscription'])->name('delete.subscription');
@@ -233,6 +238,13 @@ Route::group(['middleware'=>['Authcheck']],function(){
         Route::post('/customselection/deletecat_breed/{id}',[DropDownController::class,'deletecatbreed']);
         Route::get('/customselection/addadoptionfee',[DropDownController::class,'addadoptionfee'])->name('selection.addadoptionfee');
         Route::post('/customselection/selection_adoption_savefee',[DropDownController::class,'selection_adoption_savefee'])->name('selection.adoption.savefee');
+
+        
+        Route::get('/AnimalShelter/AdoptionHistory',[AnimalShelterManagement::class,'adoptionhistory'])->name('adoptionhistory.shelter');
+        Route::get('/AnimalShelter/Application/{id}',[AnimalShelterManagement::class,'viewform'])->name('application.shelter');
+        Route::get('/AnimalShelter/PaymentHistory',[AnimalShelterManagement::class,'paymenthistory'])->name('paymenthistory.shelter');
+        Route::get('/AnimalShelter/View/Revenue',[AnimalShelterManagement::class,'viewrevenue'])->name('view.revenue.shelter');
+        Route::get('/AnimalShelter/reports',[AnimalShelterManagement::class,'reports'])->name('reports.shelter');
     });
     Route::get('/dashboard',[AnimalShelterManagement::class,'Animalshelter_dashboard'])->name('dash');
     Route::get('/tempdashboard',[AnimalShelterManagement::class,'Animalshelter_tempdashboard']);
@@ -319,6 +331,7 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
         Route::get('/PetOwner/Application/{id}',[PetOwnerManagement::class,'viewform'])->name('application.petowner');
         Route::get('/PetOwner/PaymentHistory',[PetOwnerManagement::class,'paymenthistory'])->name('paymenthistory.petowner');
         Route::get('/PetOwner/View/Revenue',[PetOwnerManagement::class,'viewrevenue'])->name('view.revenue.petowner');
+        Route::get('/PetOwner/reports',[PetOwnerManagement::class,'reports'])->name('reports');
 
     });
     Route::get('/auto/logout/petowner/{petowner_id}',[LoginController::class,'autologoutpetowner']);
@@ -338,7 +351,6 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
     Route::get('/PetOwner/adoptable',[PetOwnerManagement::class,'adoptable'])->name('adoptable.petowner');
     Route::get('/PetOwner/adoptionrequests',[PetOwnerManagement::class,'adoption_requests'])->name('adoption.requests.petowner');
     Route::get('/PetOwner/revenue',[PetOwnerManagement::class,'revenue'])->name('revenue.petowner');
-    Route::get('/PetOwner/reports',[PetOwnerManagement::class,'reports'])->name('reports');
 });
 
 Route::get('/dashboard/gettype/petowner',[DropDownController::class,'gettype_petowner'])->name('get.type.petowner');
