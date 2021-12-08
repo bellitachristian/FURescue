@@ -70,7 +70,7 @@ Reports
                     </div>
                     <h6 class="font-weight-bold mb-3">Revenue</h6>
                 </div>
-                <div class="card-footer bg-transparent "><a href="{{route('paymenthistory.petowner')}}" class="btn btn-primary">View History</a></div>
+                <div class="card-footer bg-transparent "><a href="{{route('view.revenue.petowner')}}" class="btn btn-primary">View History</a></div>
             </div>
         </div>            
     </div>
