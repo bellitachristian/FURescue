@@ -29,19 +29,19 @@ Adoption History
                     @foreach($adoption as $adopt)
                         <tr>
                             <td>{{$adopt->id}}</td>
-                            <td>
-                            <img src="{{asset('uploads/adopts/'.$adopt->animal->animal_image)}}" width="70px" height="70px" alt="photo">
-                            </td>
-                            <td>{{$adopt->animal->name}}</td>
+                            <td  style="text-align:center">
+                            <img src="{{asset('uploads/animals/'.$adopt->animal->animal_image)}}" width="70px" height="70px" alt="photo">
+                            </td> 
+                            <td  style="text-align:center">{{$adopt->animal->name}}</td>
                             <td>
                             <img src="{{asset('/phpcode/adopter/'.$adopt->adopter->photo)}}" width="70px" height="70px" alt="photo">
                             </td>
-                            <td>{{$adopt->adopter->fname}} {{$adopt->adopter->lname}}</td>
-                            <td>
+                            <td  style="text-align:center">{{$adopt->adopter->fname}} {{$adopt->adopter->lname}}</td>
+                            <td style="text-align:center">
                             <a href=""><i class="far fa-eye"></i></a>
                             </td>
-                            <td>{{$adopt->animal->updated_at}}</td>
-                            <td>
+                            <td  style="text-align:center">{{$adopt->animal->updated_at}}</td>
+                            <td  style="text-align:center">
                                 <button disabled class="btn btn-success">Adopted</button>
                             </td>
                         </tr> 
