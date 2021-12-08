@@ -46,7 +46,9 @@ Revenue
                             <td>{{$rev->id}}</td>
                             <td>Adoption Fee</td>
                             <td>{{$rev->receipt_no}}</td>
-                            <td>{{$rev->updated_at}}</td>
+                            <td>
+                                {{ \Carbon\Carbon::parse($rev->updated_at)->format('F d, Y h:i A')}}
+                            </td>
                             <td>
                                {{$rev->animal->fee}}
                             </td>
