@@ -10,9 +10,15 @@ Adoption History
     <div class="col-sm">
         <div class="card">
             <div class="card-header">
-                <label for="">Start Date</label><span><input type="date" name="" class="form-control" id=""></span>&nbsp&nbsp
-                <label for="">End Date</label><span><input type="date" name="" class="form-control" id=""></span>
-                <span><button class="btn btn-success">Generate</button></span>
+                <div style="display:flex">
+                    <div class="col-sm">
+                        <label for="">Start Date</label><span><input type="date" name="" class="form-control" id=""></span>&nbsp&nbsp
+                    </div>
+                    <div class="col-sm">
+                        <label for="">End Date</label><span><input type="date" name="" class="form-control" id=""></span>
+                        <span><button class="btn btn-success">Generate</button></span>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <table id="datatable" class="table table-light table-hover">
