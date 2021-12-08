@@ -8,7 +8,7 @@
                     <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                        <a style="color:#42ba96"><h5 style="font-weight:bold;">Grace Remaining</h5></div></a> 
+                        <a style="color:#42ba96"><h5 style="font-weight:bold;">Chances Remaining</h5></div></a> 
                         <div class="h5 mb-0 font-weight-bold text-gray-800">{{$petowner->grace}}</div>
                     </div>
                     <div class="col-auto">
