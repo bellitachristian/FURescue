@@ -40,7 +40,7 @@ Adoption History
                             <td style="text-align:center">
                             <a href=""><i class="far fa-eye"></i></a>
                             </td>
-                            <td  style="text-align:center">{{$adopt->animal->updated_at}}</td>
+                            <td  style="text-align:center">{{ \Carbon\Carbon::parse($adopt->animal->updated_at)->format('F d, Y')}}</td>
                             <td  style="text-align:center">
                                 <button disabled class="btn btn-success">Adopted</button>
                             </td>
