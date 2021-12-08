@@ -11,7 +11,7 @@
                         <a style="color:#42ba96"><h5 style="font-weight:bold;">Chances Remaining</h5></div></a> 
                         <div class="h5 mb-0 font-weight-bold text-gray-800">{{$petowner->grace}}</div>
                     </div>
-                    <div class="col-auto">
+                    <div class="col-auto">  
                         <i class="fas fa-paw fa-2x text-gray-300"></i>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-    @if($check > 0)
+    @if($check == 0)
     <div class="row" style="float:right;margin-right:25%">
         <a href="{{route('view.wait')}}"><button style="padding:10px" class="btn btn-danger">Upload Valid Documents</button></a>
     </div>
