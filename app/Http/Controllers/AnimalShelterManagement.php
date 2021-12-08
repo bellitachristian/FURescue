@@ -2633,5 +2633,28 @@ class AnimalShelterManagement extends Controller
         );
         return view('AnimalShelter.Reports.viewform',$data);
     }
+    
+    function donationhistory(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'donation'=> Donation::where('animal_shelter',$shelter->id)->where('status','received')->get()
+        );
+        return view('AnimalShelter.Reports.donationhistory',$data);
+    }
+
+    function searchdonation(Request $req){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $fromdate = $req->fromdate;
+        $todate = $req->todate;
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'donation'=> Donation::where('animal_shelter',$shelter->id)->where('status','received')
+            ->where('updated_at','>=',$fromdate)->where('updated_at','<=',$todate)->get()
+        );
+        return view('AnimalShelter.Reports.donationhistory',$data);
+    }
 }
 

@@ -78,6 +78,7 @@ Route::post('/PetOwner/search/Revenue',[PetOwnerManagement::class,'searchrevenue
 Route::post('/AnimalShelter/search/AdoptionHistory',[AnimalShelterManagement::class,'searchAdoptionhistory'])->name('searchAdoptionhistory.shelter');
 Route::post('/AnimalShelter/search/PaymentHistory',[AnimalShelterManagement::class,'searchpaymenthistory'])->name('searchpaymenthistory.shelter');
 Route::post('/AnimalShelter/search/Revenue',[AnimalShelterManagement::class,'searchrevenue'])->name('searchrevenue.shelter');
+Route::post('/AnimalShelter/search/Donation',[AnimalShelterManagement::class,'searchdonation'])->name('searchDonation.shelter');
 
 Route::post('/Admin/savesubscription',[AdminController::class,'savesubscription'])->name('save.subscription');
 Route::post('/Admin/updatesubscription/{id}',[AdminController::class,'updatesubscription'])->name('update.subscription');
@@ -245,6 +246,7 @@ Route::group(['middleware'=>['Authcheck']],function(){
         Route::get('/AnimalShelter/PaymentHistory',[AnimalShelterManagement::class,'paymenthistory'])->name('paymenthistory.shelter');
         Route::get('/AnimalShelter/View/Revenue',[AnimalShelterManagement::class,'viewrevenue'])->name('view.revenue.shelter');
         Route::get('/AnimalShelter/reports',[AnimalShelterManagement::class,'reports'])->name('reports.shelter');
+        Route::get('/AnimalShelter/donationhistory',[AnimalShelterManagement::class,'donationhistory'])->name('donationhistory');
     });
     Route::get('/dashboard',[AnimalShelterManagement::class,'Animalshelter_dashboard'])->name('dash');
     Route::get('/tempdashboard',[AnimalShelterManagement::class,'Animalshelter_tempdashboard']);
