@@ -47,7 +47,7 @@ class Animals extends Model
         return $this->belongsTo(AnimalShelter::class,'shelter_id');
     }
     protected $casts = [
-        'updated_at' => 'datetime:F d, Y',
+        'updated_at' => 'datetime:Y-m-d',
     ];
 }
     
