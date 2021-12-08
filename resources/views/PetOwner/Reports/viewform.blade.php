@@ -10,7 +10,10 @@ Adopter's Application Form
 @section("content")
 <div class="slip-content" >
     <a href="{{route('adoptionhistory.petowner')}}"><button type="button" class="btn btn-danger">Back</button></a>
-    <div class="container bootstrap snippets bootdey">
+    <div style="float:right">
+        <span><button id="print"type="button"><i class="fa fa-print"></i> Print Report</button></span>
+    </div>
+    <div id="report" class="container bootstrap snippets bootdey">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="slip-wrapper">
@@ -144,3 +147,12 @@ Adopter's Application Form
         </div>
     </div>
 @endsection
+@push('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.2/jQuery.print.js" integrity="sha512-BaXrDZSVGt+DvByw0xuYdsGJgzhIXNgES0E9B+Pgfe13XlZQvmiCkQ9GXpjVeLWEGLxqHzhPjNSBs4osiuNZyg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.2/jQuery.print.min.js" integrity="sha512-t3XNbzH2GEXeT9juLjifw/5ejswnjWWMMDxsdCg4+MmvrM+MwqGhxlWeFJ53xN/SBHPDnW0gXYvBx/afZZfGMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+$('#print').click(function(){
+    $("#report").print();
+});
+</script>
+@endpush
