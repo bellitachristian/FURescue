@@ -46,6 +46,9 @@ Subscription History
                         <tr>
                             <td>{{$sub->id}}</td>
                             <td  style="text-align:center">
+                                {{$sub->subscription->sub_name}}
+                            </td> 
+                            <td  style="text-align:center">
                                 {{$sub->subscription->sub_credit}}
                             </td> 
                             <td  style="text-align:center">PHP {{$sub->subscription->sub_price}}</td>
