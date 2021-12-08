@@ -2433,4 +2433,17 @@ class PetOwnerManagement extends Controller
         return view('PetOwner.Reports.adoptionhistory',$data);
     }
 
+    function searchAdoptionhistory(Request $req){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $fromdate = $req->fromdate;
+        $todate = $req->todate;
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'adoption'=>Receipt::where('status','received')->where('usertype_id',3)->where('owner_id',$petowner->id)
+                        ->where('process','completed')->where('updated_at','>=',$fromdate)->where('updated_at','<=',$todate)->get()
+        );
+        return view('PetOwner.Reports.adoptionhistory',$data);
+    }
+
 }

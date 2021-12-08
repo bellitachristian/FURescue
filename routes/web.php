@@ -69,6 +69,10 @@ Route::post('/postpet/postupdate/petowner/{id}',[PetOwnerManagement::class,'post
 Route::post('/postpet/postupdate/petowner/{id}',[PetOwnerManagement::class,'post_pet_update'])->name('post.pet.update.petowner');
 Route::post('/PetOwner/request/{id}/{shelter_id}',[PetOwnerManagement::class,'selectanimal'])->name('select.request.animal');
 
+//Reports PetOwner
+Route::post('/PetOwner/search/AdoptionHistory',[PetOwnerManagement::class,'searchAdoptionhistory'])->name('searchAdoptionhistory.petowner');
+
+
 Route::post('/Admin/savesubscription',[AdminController::class,'savesubscription'])->name('save.subscription');
 Route::post('/Admin/updatesubscription/{id}',[AdminController::class,'updatesubscription'])->name('update.subscription');
 Route::post('/Admin/deletesubscription/{id}',[AdminController::class,'deletesubscription'])->name('delete.subscription');
