@@ -11,11 +11,13 @@ Adoption History
         <div class="card">
             <div class="card-header">
                 <div style="display:flex">
-                    <div class="col-sm">
+                    <div class="col-sm-3">
                         <label for="">Start Date</label><span><input type="date" name="" class="form-control" id=""></span>&nbsp&nbsp
                     </div>
-                    <div class="col-sm">
+                    <div class="col-sm-3">
                         <label for="">End Date</label><span><input type="date" name="" class="form-control" id=""></span>
+                    </div>
+                    <div class="col-sm-3">
                         <span><button class="btn btn-success">Generate</button></span>
                     </div>
                 </div>
