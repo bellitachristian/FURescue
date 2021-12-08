@@ -28,7 +28,7 @@ Revenue
                     </div>
                 </form>
             </div>
-            <div class="card-body">
+            <div class="card-body"id="printreport">
                 <table id="datatable" class="table table-light table-hover">
                     <thead>
                         <tr>
