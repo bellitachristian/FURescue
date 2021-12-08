@@ -33,7 +33,7 @@ Adoption History
                             <img src="{{asset('uploads/animals/'.$adopt->animal->animal_image)}}" width="70px" height="70px" alt="photo">
                             </td> 
                             <td  style="text-align:center">{{$adopt->animal->name}}</td>
-                            <td>
+                            <td style="text-align:center">
                             <img src="{{asset('/phpcode/adopter/'.$adopt->adopter->photo)}}" width="70px" height="70px" alt="photo">
                             </td>
                             <td  style="text-align:center">{{$adopt->adopter->fname}} {{$adopt->adopter->lname}}</td>
