@@ -1,4 +1,4 @@
-@extends("mainpetowner")
+@extends("main")
 @section("header")
 Revenue
 @endsection
