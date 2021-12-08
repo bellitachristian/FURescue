@@ -4,6 +4,7 @@ Adoption History
 @endsection
 @push("css")
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css">   
+<link rel="stylesheet" href="{{url('/css/print.css')}}">
 @endpush
 @section("content")
 <div class="row">
@@ -12,17 +13,25 @@ Adoption History
             <div class="card-header">
                 <div style="display:flex">
                     <div class="col-sm-3">
-                        <label for="">Start Date</label><span><input type="date" name="" class="form-control" id=""></span>&nbsp&nbsp
+                        <label for="">Start Date</label><span><input type="date" name="" required class="form-control" id=""></span>&nbsp&nbsp
                     </div>
                     <div class="col-sm-3">
-                        <label for="">End Date</label><span><input type="date" name="" class="form-control" id=""></span>
+                        <label for="">End Date</label><span><input type="date" name="" required class="form-control" id=""></span>
                     </div>
                     <div class="col-sm-5">
                         <span><button style="margin-top:30px" class="btn btn-danger">Generate Report</button></span>
                     </div>
+                    <div class="col-sm">
+                        <div class="print">
+							<a href="#">
+								<i id="print" class="fa fa-print"></i>
+								    Print Report
+							</a>
+						</div>
+                    </div>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="print">
                 <table id="datatable" class="table table-light table-hover">
                     <thead>
                         <tr>
@@ -71,10 +80,15 @@ Adoption History
 </div>
 @endsection
 @push('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.2/jQuery.print.js" integrity="sha512-BaXrDZSVGt+DvByw0xuYdsGJgzhIXNgES0E9B+Pgfe13XlZQvmiCkQ9GXpjVeLWEGLxqHzhPjNSBs4osiuNZyg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.2/jQuery.print.min.js" integrity="sha512-t3XNbzH2GEXeT9juLjifw/5ejswnjWWMMDxsdCg4+MmvrM+MwqGhxlWeFJ53xN/SBHPDnW0gXYvBx/afZZfGMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-          var table = $('#datatable').DataTable();
-        });
-    </script>
+<script type="text/javascript">
+$(document).ready(function(){
+    var table = $('#datatable').DataTable();
+});
+$('.print').click(function(){
+    $("#print").print();
+});
+</script>
 @endpush
