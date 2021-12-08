@@ -50,13 +50,13 @@ Ddonation History
                             <td style="text-align:center">
                             <img src="{{asset('/phpcode/adopter/'.$donor->adopter->photo)}}" width="70px" height="70px" alt="photo">
                             </td>
-                            <td  style="text-align:center">{{$donor->adopter->fname}} {{$donor->adopter->lname}}</td>
-                            <td>{{$donor->adopter->email}}</td>
-                            <td>{{$donor->adopter->phonenum}}</td>
-                            <td>{{$donor->adopter->address}}</td>
-                            <td>PHP {{$donor->donor_amount}}</td>
-                            <td  style="text-align:center">{{ \Carbon\Carbon::parse($donor->updated_at)->format('F d, Y h:i A')}}</td>
-                            <td  style="text-align:center">
+                            <td style="text-align:center">{{$donor->adopter->fname}} {{$donor->adopter->lname}}</td>
+                            <td style="text-align:center">{{$donor->adopter->email}}</td>
+                            <td style="text-align:center">{{$donor->adopter->phonenum}}</td>
+                            <td style="text-align:center">{{$donor->adopter->address}}</td>
+                            <td style="text-align:center">PHP {{$donor->donor_amount}}</td>
+                            <td style="text-align:center">{{ \Carbon\Carbon::parse($donor->updated_at)->format('F d, Y h:i A')}}</td>
+                            <td style="text-align:center">
                                 <button disabled class="btn btn-success">Completed</button>
                             </td>
                         </tr> 
