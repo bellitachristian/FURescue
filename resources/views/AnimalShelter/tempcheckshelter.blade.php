@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-    @if($check > 0)
+    @if($check == 0)
     <div class="row" style="float:right;margin-right:25%">
         <a href="{{route('view.wait')}}"><button style="padding:10px" class="btn btn-danger">Upload Valid Documents</button></a>
     </div>
