@@ -46,7 +46,7 @@ Donation History
                     <tbody>
                     @foreach($donation as $donor)
                         <tr>
-                            <td>{{$donor->id}}</td>
+                            <td>{{$donor->donation_id}}</td>
                             <td style="text-align:center">
                             <img src="{{asset('/phpcode/adopter/'.$donor->adopter->photo)}}" width="70px" height="70px" alt="photo">
                             </td>
