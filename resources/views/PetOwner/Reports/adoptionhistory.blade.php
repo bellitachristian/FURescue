@@ -11,17 +11,17 @@ Adoption History
         <div class="card">
             <div class="card-header">
                 <div style="display:flex">
-                    <div class="col-sm">
+                    <div class="col-sm-3">
                         <label for="">Start Date</label><span><input type="date" name="" required class="form-control" id=""></span>&nbsp&nbsp
                     </div>
-                    <div class="col-sm">
+                    <div class="col-sm-3">
                         <label for="">End Date</label><span><input type="date" name="" required class="form-control" id=""></span>
                     </div>
-                    <div class="col-sm">
+                    <div class="col-sm-4">
                         <span><button style="margin-top:30px" class="btn btn-danger">Generate Report</button></span>
                     </div>
                     <div style="float:right">
-                        <span><button id="print" class="btn btn-secondary" type="button"><i class="fa fa-print"></i>Print Report</button></span>
+                        <span><button id="print"type="button"><i class="fa fa-print"></i> Print Report</button></span>
                     </div>
                 </div>
             </div>
