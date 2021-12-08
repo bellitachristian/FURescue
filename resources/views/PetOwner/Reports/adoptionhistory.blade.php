@@ -21,16 +21,13 @@ Adoption History
                         <span><button style="margin-top:30px" class="btn btn-danger">Generate Report</button></span>
                     </div>
                     <div class="col-sm">
-                        <div class="print">
-							<a href="#">
-								<i id="print" class="fa fa-print"></i>
-								    Print Report
-							</a>
-						</div>
+                        <a href="">
+                            <button id="print" type="button"><i class="fa fa-print"></i>Print Report</button>                     
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="card-body" id="print">
+            <div class="card-body" id="printreport">
                 <table id="datatable" class="table table-light table-hover">
                     <thead>
                         <tr>
@@ -86,8 +83,8 @@ Adoption History
 $(document).ready(function(){
     var table = $('#datatable').DataTable();
 });
-$('.print').click(function(){
-    $("#print").print();
+$('#print').click(function(){
+    $("#printreport").print();
 });
 </script>
 @endpush
