@@ -40,7 +40,7 @@ Adoption History
                             <td>
                             <a href=""><i class="far fa-eye"></i></a>
                             </td>
-                            <td>{{$adopter->animal->updated_at}}</td>
+                            <td>{{$adopt->animal->updated_at}}</td>
                             <td>
                                 <button disabled class="btn btn-success">Adopted</button>
                             </td>
