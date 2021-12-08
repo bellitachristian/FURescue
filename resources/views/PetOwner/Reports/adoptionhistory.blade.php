@@ -21,9 +21,7 @@ Adoption History
                         <span><button style="margin-top:30px" class="btn btn-danger">Generate Report</button></span>
                     </div>
                     <div class="col-sm">
-                        <a href="">
-                            <button id="print" type="button"><i class="fa fa-print"></i>Print Report</button>                     
-                        </a>
+                        <button id="print" type="button"><i class="fa fa-print"></i>Print Report</button>                     
                     </div>
                 </div>
             </div>
