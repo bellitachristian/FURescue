@@ -2492,5 +2492,16 @@ class PetOwnerManagement extends Controller
         );
         return view('PetOwner.Reports.viewrevenue',$data);
     }
-
+    function viewform(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $ldate = date('F d, Y');
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'adoption'=>Adoption::find($id),
+            'today'=>$ldate,
+            'questions'=>Question::where('adoption_id',$id)->first()
+        );
+        return view('PetOwner.Adoption.viewform',$data);
+    }
 }

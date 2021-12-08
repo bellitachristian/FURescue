@@ -37,6 +37,7 @@ Adoption History
                             <th style="text-align:center">Adopted Pet Name</th>
                             <th style="text-align:center">Adopter Photo</th>
                             <th style="text-align:center">Adopter Name</th>
+                            <th style="text-align:center">View Application</th>
                             <th style="text-align:center">Date Pet Adopted</th>
                             <th style="text-align:center">Status</th>
                         </tr>
@@ -53,6 +54,9 @@ Adoption History
                             <img src="{{asset('/phpcode/adopter/'.$adopt->adopter->photo)}}" width="70px" height="70px" alt="photo">
                             </td>
                             <td  style="text-align:center">{{$adopt->adopter->fname}} {{$adopt->adopter->lname}}</td>
+                            <td style="text-align:center">
+                            <a href="{{route('application.petowner',$adopt->adoption->id)}}"><i class="far fa-eye"></i></a>
+                            </td>
                             <td  style="text-align:center">{{ \Carbon\Carbon::parse($adopt->animal->updated_at)->format('F d, Y')}}</td>
                             <td  style="text-align:center">
                                 <button disabled class="btn btn-success">Adopted</button>

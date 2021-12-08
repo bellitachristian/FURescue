@@ -316,6 +316,7 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
         Route::get('/PetOwner/generated',[PetOwnerManagement::class,'generated'])->name('generated');
 
         Route::get('/PetOwner/AdoptionHistory',[PetOwnerManagement::class,'adoptionhistory'])->name('adoptionhistory.petowner');
+        Route::get('/PetOwner/Application/{id}',[PetOwnerManagement::class,'viewform'])->name('application.petowner');
         Route::get('/PetOwner/PaymentHistory',[PetOwnerManagement::class,'paymenthistory'])->name('paymenthistory.petowner');
         Route::get('/PetOwner/View/Revenue',[PetOwnerManagement::class,'viewrevenue'])->name('view.revenue.petowner');
 
