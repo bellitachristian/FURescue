@@ -16,13 +16,13 @@ Adoption History
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Adopted Pet Photo</th>
-                            <th>Adopted Pet Name</th>
-                            <th>Adopter Photo</th>
-                            <th>Adopter Name</th>
-                            <th>View Application</th>
-                            <th>Date Pet Adopted</th>
-                            <th>Status</th>
+                            <th style="text-align:center">Adopted Pet Photo</th>
+                            <th style="text-align:center">Adopted Pet Name</th>
+                            <th style="text-align:center">Adopter Photo</th>
+                            <th style="text-align:center">Adopter Name</th>
+                            <th style="text-align:center">View Application</th>
+                            <th style="text-align:center">Date Pet Adopted</th>
+                            <th style="text-align:center">Status</th>
                         </tr>
                     </thead>
                     <tbody>
