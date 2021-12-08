@@ -18,7 +18,7 @@ Adoption History
                         <label for="">End Date</label><span><input type="date" name="" class="form-control" id=""></span>
                     </div>
                     <div class="col-sm-5">
-                        <span><button style="margin-top:3%" class="btn btn-danger">Generate Report</button></span>
+                        <span><button style="margin-top:5%" class="btn btn-danger">Generate Report</button></span>
                     </div>
                 </div>
             </div>
