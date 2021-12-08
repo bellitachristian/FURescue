@@ -64,7 +64,7 @@ Revenue
                 </table>
             </div>
             <div class="card-footer">
-                <a href="{{route('reports')}}"><button class="btn btn-danger">Back</button></a>
+                <a href="{{route('reports.shelter')}}"><button class="btn btn-danger">Back</button></a>
             </div>
         </div>
     </div>
