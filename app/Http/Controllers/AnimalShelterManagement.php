@@ -2621,5 +2621,17 @@ class AnimalShelterManagement extends Controller
         );
         return view('AnimalShelter.Reports.viewrevenue',$data);
     }
+    function viewform($id){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $ldate = date('F d, Y');
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'adoption'=>Adoption::find($id),
+            'today'=>$ldate,
+            'questions'=>Question::where('adoption_id',$id)->first()
+        );
+        return view('AnimalShelter.Reports.viewform',$data);
+    }
 }
 
