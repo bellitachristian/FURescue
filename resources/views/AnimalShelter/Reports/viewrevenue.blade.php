@@ -33,26 +33,26 @@ Revenue
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Transaction Type</th>
-                            <th>Receipt No.</th>
-                            <th>Received Date</th>
-                            <th>Amount</th>
-                            <th>Status</th>
+                            <th style="text-align:center">Transaction Type</th>
+                            <th style="text-align:center">Receipt No.</th>
+                            <th style="text-align:center">Received Date</th>
+                            <th style="text-align:center">Amount</th>
+                            <th style="text-align:center">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach($revenue as $rev)
                         <tr>
                             <td>{{$rev->id}}</td>
-                            <td>Adoption Fee</td>
-                            <td>{{$rev->receipt_no}}</td>
-                            <td>
+                            <td style="text-align:center">Adoption Fee</td>
+                            <td style="text-align:center">{{$rev->receipt_no}}</td>
+                            <td style="text-align:center">
                                 {{ \Carbon\Carbon::parse($rev->updated_at)->format('F d, Y h:i A')}}
                             </td>
-                            <td>
+                            <td style="text-align:center">
                                {{$rev->animal->fee}}
                             </td>
-                            <td>
+                            <td style="text-align:center">
                                 <button disabled class="btn btn-success">Completed</button>
                             </td>
                         </tr> 
