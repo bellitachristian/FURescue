@@ -59,7 +59,7 @@ Reports
                     <h6 class="font-weight-bold mb-3">Payment History</h6>
                     
                 </div>
-                <div class="card-footer bg-transparent "><a href="#" class="btn btn-primary">View History</a></div>
+                <div class="card-footer bg-transparent "><a href="{{route('paymenthistory.petowner')}}" class="btn btn-primary">View History</a></div>
             </div>
         </div>      
     </div>

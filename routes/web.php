@@ -71,6 +71,7 @@ Route::post('/PetOwner/request/{id}/{shelter_id}',[PetOwnerManagement::class,'se
 
 //Reports PetOwner
 Route::post('/PetOwner/search/AdoptionHistory',[PetOwnerManagement::class,'searchAdoptionhistory'])->name('searchAdoptionhistory.petowner');
+Route::post('/PetOwner/search/PaymentHistory',[PetOwnerManagement::class,'searchpaymenthistory'])->name('searchpaymenthistory.petowner');
 
 
 Route::post('/Admin/savesubscription',[AdminController::class,'savesubscription'])->name('save.subscription');
@@ -315,6 +316,7 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
         Route::get('/PetOwner/generated',[PetOwnerManagement::class,'generated'])->name('generated');
 
         Route::get('/PetOwner/AdoptionHistory',[PetOwnerManagement::class,'adoptionhistory'])->name('adoptionhistory.petowner');
+        Route::get('/PetOwner/PaymentHistory',[PetOwnerManagement::class,'paymenthistory'])->name('paymenthistory.petowner');
 
 
     });

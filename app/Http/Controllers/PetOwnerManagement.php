@@ -2446,4 +2446,28 @@ class PetOwnerManagement extends Controller
         return view('PetOwner.Reports.adoptionhistory',$data);
     }
 
+    function paymenthistory(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'subscription'=>SubscriptionTransac::where('status','approved')->where('petowner_id',$petowner->id)->get()
+        );
+        return view('PetOwner.Reports.paymenthistory',$data);
+    }
+
+
+    function searchpaymenthistory(Request $req){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $fromdate = $req->fromdate;
+        $todate = $req->todate;
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'subscription'=>SubscriptionTransac::where('status','approved')->where('petowner_id',$petowner->id)
+            ->where('updated_at','>=',$fromdate)->where('updated_at','<=',$todate)->get()
+        );
+        return view('PetOwner.Reports.paymenthistory',$data);
+    }
+
 }
