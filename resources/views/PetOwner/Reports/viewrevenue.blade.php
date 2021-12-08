@@ -10,7 +10,7 @@ Revenue
     <div class="col-sm">
         <div class="card">
             <div class="card-header">
-                <form action="{{route('searchAdoptionhistory.petowner')}}" method="POST">
+                <form action="{{route('searchrevenue.petowner')}}" method="POST">
                     <div style="display:flex">
                             @csrf
                             <div class="col-sm">
