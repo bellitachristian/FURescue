@@ -108,7 +108,7 @@
                                 </div>      
                             <div class="col-sm-3">
                                 <label>Name of Contact Person</label>
-                                <input type="text" name="founder_name" required class="form-control" placeholder="Enter founder" value ="{{old('founder_name')}}">
+                                <input type="text" name="founder_name" required class="form-control" placeholder="Enter Contact Person" value ="{{old('founder_name')}}">
                                 <span class="text-danger">@error('founder_name'){{$message}}@enderror</span>     
                             </div>
                             <div class="col-sm-3">

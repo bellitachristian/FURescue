@@ -72,7 +72,7 @@ Route::post('/PetOwner/request/{id}/{shelter_id}',[PetOwnerManagement::class,'se
 //Reports PetOwner
 Route::post('/PetOwner/search/AdoptionHistory',[PetOwnerManagement::class,'searchAdoptionhistory'])->name('searchAdoptionhistory.petowner');
 Route::post('/PetOwner/search/PaymentHistory',[PetOwnerManagement::class,'searchpaymenthistory'])->name('searchpaymenthistory.petowner');
-
+Route::post('/PetOwner/search/Revenue',[PetOwnerManagement::class,'searchrevenue'])->name('searchrevenue.petowner');
 
 Route::post('/Admin/savesubscription',[AdminController::class,'savesubscription'])->name('save.subscription');
 Route::post('/Admin/updatesubscription/{id}',[AdminController::class,'updatesubscription'])->name('update.subscription');
@@ -317,7 +317,7 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
 
         Route::get('/PetOwner/AdoptionHistory',[PetOwnerManagement::class,'adoptionhistory'])->name('adoptionhistory.petowner');
         Route::get('/PetOwner/PaymentHistory',[PetOwnerManagement::class,'paymenthistory'])->name('paymenthistory.petowner');
-
+        Route::get('/PetOwner/View/Revenue',[PetOwnerManagement::class,'viewrevenue'])->name('view.revenue.petowner');
 
     });
     Route::get('/auto/logout/petowner/{petowner_id}',[LoginController::class,'autologoutpetowner']);

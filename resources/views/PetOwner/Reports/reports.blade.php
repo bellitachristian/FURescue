@@ -61,7 +61,18 @@ Reports
                 </div>
                 <div class="card-footer bg-transparent "><a href="{{route('paymenthistory.petowner')}}" class="btn btn-primary">View History</a></div>
             </div>
-        </div>      
+        </div>
+        <div class="col my-3">
+            <div class="card border-hover-primary hover-scale">
+                <div class="card-body">
+                    <div class="text-primary mb-3">
+                        <img src="{{asset('images/revenue.png')}}" style="height: 70px; width: 70px;">
+                    </div>
+                    <h6 class="font-weight-bold mb-3">Revenue</h6>
+                </div>
+                <div class="card-footer bg-transparent "><a href="{{route('paymenthistory.petowner')}}" class="btn btn-primary">View History</a></div>
+            </div>
+        </div>            
     </div>
 </div>
 @endsection
