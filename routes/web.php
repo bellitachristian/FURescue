@@ -78,7 +78,7 @@ Route::post('/PetOwner/search/Revenue',[PetOwnerManagement::class,'searchrevenue
 Route::post('/AnimalShelter/search/AdoptionHistory',[AnimalShelterManagement::class,'searchAdoptionhistory'])->name('searchAdoptionhistory.shelter');
 Route::post('/AnimalShelter/search/PaymentHistory',[AnimalShelterManagement::class,'searchpaymenthistory'])->name('searchpaymenthistory.shelter');
 Route::post('/AnimalShelter/search/Revenue',[AnimalShelterManagement::class,'searchrevenue'])->name('searchrevenue.shelter');
-Route::post('/AnimalShelter/search/Donation',[AnimalShelterManagement::class,'searchdonation'])->name('searchDonation.shelter');
+Route::post('/AnimalShelter/search/Donation',[AnimalShelterManagement::class,'searchdonation'])->name('searchDonationhistory.shelter');
 
 Route::post('/Admin/savesubscription',[AdminController::class,'savesubscription'])->name('save.subscription');
 Route::post('/Admin/updatesubscription/{id}',[AdminController::class,'updatesubscription'])->name('update.subscription');
