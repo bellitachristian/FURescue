@@ -1125,6 +1125,7 @@ class AdminController extends Controller
       return view('Admin.Reports.listofadopter',$data);
     }
     function searchtransfer(Request $req){
+      $checkfree = Animals::where('fee','FREE')->pluck('id')->toArray();
       $fromdate = $req->fromdate;
       $todate = $req->todate;
       $data =array(
