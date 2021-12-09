@@ -2391,8 +2391,28 @@ class AnimalShelterManagement extends Controller
         $shelter->update();
         AnimalShelter::find($shelters->id)->notify(new ApproveProofPayment($approvedproof));
 
+        $approvedproof = [
+            'shelter_name' => 'You have received PHP '.$shelter->subscription->sub_price.' from the subscription payment of ',
+            'promo' => $shelters->shelter_name,
+        ];
+        Admin::find(1)->notify(new ApproveProofPayment($approvedproof));
+        //check Admin Revenue
+        $rev = Admin::find(1)->where('revenue','0')->count();
+        if($rev == 0){
+            $revenue = Admin::find(1);
+            $subtotal = (int)$revenue->revenue;
+            $fee = (int)$shelter->subscription->sub_price;
+            $total = $subtotal + $fee;
+            $revenue->revenue = $total.'.00';
+            $revenue->update();
+        }else{
+            $revenue = Admin::find(1);
+            $revenue->revenue = $shelter->subscription->sub_price;
+            $revenue->update();
+        }
+
         $subscription = Subscription::find($id);
-            $data = array(
+            $data = array(  
               'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
               'proof' => UploadedPhotos::where('sub_id',$id)->where('shelter_id',$shelters->id)->get(),
           );

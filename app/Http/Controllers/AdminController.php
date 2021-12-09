@@ -47,6 +47,10 @@ class AdminController extends Controller
         $admin=Admin::where('id','=',session('LoggedUserAdmin'))->first();
         $data = array(
             'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(), 
+            'countshelter'=>AnimalShelter::where('is_verified_account','1')->where('is_verified_shelter','1')->count(),
+            'countpetowner'=>PetOwner::where('is_verified_account','1')->where('is_verified_petowner','1')->count(),
+            'countadopter'=>Adopter::where('email_verified_at','1')->count(),
+            'revenue'=>$admin->revenue
           );
         return view('Admin.AdminDash', $data);
     }
@@ -1061,5 +1065,81 @@ class AdminController extends Controller
             $receipt->update();
         }
       }
+    }
+    
+    function view_reports(){
+      $data = array(
+        'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+      );  
+      return view('Admin.Reports.reports',$data);
+    }
+    function view_shelters(){
+      $data = array(
+        'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+        'shelters'=> AnimalShelter::where('is_verified_account','1')->where('is_verified_shelter','1')->get(),
+      );  
+      return view('Admin.Reports.listofshelter',$data);
+    }
+    function searchshelter(Request $req){
+      $fromdate = $req->fromdate;
+      $todate = $req->todate;
+      $data =array(
+          'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+          'shelters'=> AnimalShelter::where('is_verified_account','1')->where('is_verified_shelter','1')
+          ->where('created_at','>=',$fromdate)->where('created_at','<=',$todate)->get()
+      );
+      return view('Admin.Reports.listofshelter',$data);
+    }
+    function searchpetowner(Request $req){
+      $fromdate = $req->fromdate;
+      $todate = $req->todate;
+      $data =array(
+          'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+          'petowners'=> PetOwner::where('is_verified_account','1')->where('is_verified_petowner','1')
+          ->where('created_at','>=',$fromdate)->where('created_at','<=',$todate)->get()
+      );
+      return view('Admin.Reports.listofpetowner',$data);
+    }
+    function view_petowners(){
+      $data = array(
+        'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+        'petowners'=> PetOwner::where('is_verified_account','1')->where('is_verified_petowner','1')->get(),
+      );  
+      return view('Admin.Reports.listofpetowner',$data);
+    }
+    function searchadopter(Request $req){
+      $fromdate = $req->fromdate;
+      $todate = $req->todate;
+      $data =array(
+          'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+          'adopters'=> Adopter::where('email_verified_at','1')
+          ->where('created_at','>=',$fromdate)->where('created_at','<=',$todate)->get()
+      );
+      return view('Admin.Reports.listofadopter',$data);
+    }
+    function view_adopters(){
+      $data = array(
+        'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+        'adopters'=> Adopter::where('email_verified_at','1')->get(),
+      );  
+      return view('Admin.Reports.listofadopter',$data);
+    }
+    function searchtransfer(Request $req){
+      $fromdate = $req->fromdate;
+      $todate = $req->todate;
+      $data =array(
+          'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+          'transfers'=>Receipt::whereNotIn('animal_id',$checkfree)->where('process','confirmed')->where('status','received')
+          ->where('updated_at','>=',$fromdate)->where('updated_at','<=',$todate)->get()
+      );
+      return view('Admin.Reports.transferpayment',$data);
+    }
+    function view_transfer(){
+      $checkfree = Animals::where('status','Adopted')->where('fee','FREE')->pluck('id')->toArray();
+      $data = array(
+        'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+        'transfers'=> Receipt::whereNotIn('animal_id',$checkfree)->where('process','confirmed')->where('status','received')->get(),
+      );  
+      return view('Admin.Reports.transferpayment',$data);
     }
 } 

@@ -80,6 +80,13 @@ Route::post('/AnimalShelter/search/PaymentHistory',[AnimalShelterManagement::cla
 Route::post('/AnimalShelter/search/Revenue',[AnimalShelterManagement::class,'searchrevenue'])->name('searchrevenue.shelter');
 Route::post('/AnimalShelter/search/Donation',[AnimalShelterManagement::class,'searchdonation'])->name('searchDonationhistory.shelter');
 
+//Reports Admin
+Route::post('/Admin/SearchShelter',[AdminController::class,'searchshelter'])->name('searchshelter.admin');
+Route::post('/Admin/SearchPetowner',[AdminController::class,'searchpetowner'])->name('searchpetowner.admin');
+Route::post('/Admin/SearchAdopter',[AdminController::class,'searchadopter'])->name('searchadopter.admin');
+Route::post('/Admin/SearchTransfer',[AdminController::class,'searchtransfer'])->name('searchtransfer.admin');
+
+
 Route::post('/Admin/savesubscription',[AdminController::class,'savesubscription'])->name('save.subscription');
 Route::post('/Admin/updatesubscription/{id}',[AdminController::class,'updatesubscription'])->name('update.subscription');
 Route::post('/Admin/deletesubscription/{id}',[AdminController::class,'deletesubscription'])->name('delete.subscription');
@@ -406,6 +413,15 @@ Route::group(['middleware'=>['AdopterNotifRequest','AdoptionPaymentReq']],functi
     Route::get('/Admin/transfer',[AdminController::class,'viewtransfer'])->name('view.transfer');
     Route::get('/Admin/transfer/money/{id}',[AdminController::class,'transfermoney'])->name('transfer.money');
     Route::get('/Admin/transferring/money/{id}',[AdminController::class,'transferring'])->name('transferring.money');
+
+    //Reports
+    Route::get('/Admin/ViewReports',[AdminController::class,'view_reports'])->name('view.reports.admin');
+    Route::get('/Admin/ViewListofShelters',[AdminController::class,'view_shelters'])->name('view.shelters');
+    Route::get('/Admin/ViewListofPetowners',[AdminController::class,'view_petowners'])->name('view.petowners');
+    Route::get('/Admin/ViewListofAdopters',[AdminController::class,'view_adopters'])->name('view.adopters');
+    Route::get('/Admin/TransferPaymentHistory',[AdminController::class,'view_transfer'])->name('view.transfer');
+
+
 
 });
 

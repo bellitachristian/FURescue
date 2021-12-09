@@ -2233,11 +2233,27 @@ class PetOwnerManagement extends Controller
 
         $petowner->status = 'approved';
         $petowner->update();
-        
-        $subscription = Subscription::find($id);
-        $feedback = Feedback::where('sub_id',$subscription->id)->delete();
 
-     
+        $approvedproof = [
+            'petowner_name' =>  'You have received PHP '.$petowner->subscription->sub_price.' from the subscription payment of ',
+            'promo' => $petowners->fname.' '.$petowners->lname,
+          ];
+          Admin::find(1)->notify(new ApproveProofPaymentPetowner($approvedproof));
+         
+          $rev = Admin::find(1)->where('revenue','0')->count();
+          if($rev == 0){
+              $revenue = Admin::find(1);
+              $subtotal = (int)$revenue->revenue;
+              $fee = (int)$petowner->subscription->sub_price;
+              $total = $subtotal + $fee;
+              $revenue->revenue = $total.'.00';
+              $revenue->update();
+          }else{
+              $revenue = Admin::find(1);
+              $revenue->revenue = $petowner->subscription->sub_price;
+              $revenue->update();
+          }
+        $subscription = Subscription::find($id);
         $data = array(
           'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
           'proof' => UploadedPhotos::where('sub_id',$id)->where('petowner_id',$petowners->id)->get(),

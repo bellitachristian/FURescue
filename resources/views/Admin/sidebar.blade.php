@@ -69,9 +69,9 @@
     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Facilities</h6>
-            <a class="collapse-item" href="{{route('view.proof.payment')}}">Subscription</a>
+            <!-- <a class="collapse-item" href="{{route('view.proof.payment')}}">Subscription</a> -->
             <a class="collapse-item" href="{{route('adoption.payment')}}">Adoption Payment</a>
-            <a class="collapse-item" href="{{route('view.transfer')}}">Transfer Money</a>
+            <a class="collapse-item" href="{{route('view.transfer')}}">Transfer Payment</a>
         </div>
     </div>
 </li>
@@ -87,16 +87,16 @@
         <span>Subscription</span></a>
 </li>
 
-<!-- Nav Item - Tables -->
+<!-- Nav Item - Tables
 <li class="nav-item">
     <a class="nav-link" href="tables.html">
         <i class="fas fa-fw fa-table"></i>
         <span>Revenue</span></a>
-</li>
+</li> -->
 
 <!-- Nav Item - Tables -->
 <li class="nav-item">
-    <a class="nav-link" href="tables.html">
+    <a class="nav-link" href="{{route('view.reports.admin')}}">
         <i class="fas fa-fw fa-table"></i>
         <span>Reports</span></a>
 </li>
