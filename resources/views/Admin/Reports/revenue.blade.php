@@ -27,7 +27,7 @@ Revenue
                     </div>
                 </div>
              </form>            </div>
-            <div class="card-body">
+            <div class="card-body" id="printreport">
                 <table id="datatable" class="table table-light table-hover">
                     <thead>
                         <tr>
@@ -84,9 +84,15 @@ Revenue
 @endsection
 @push('js')
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.2/jQuery.print.js" integrity="sha512-BaXrDZSVGt+DvByw0xuYdsGJgzhIXNgES0E9B+Pgfe13XlZQvmiCkQ9GXpjVeLWEGLxqHzhPjNSBs4osiuNZyg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.2/jQuery.print.min.js" integrity="sha512-t3XNbzH2GEXeT9juLjifw/5ejswnjWWMMDxsdCg4+MmvrM+MwqGhxlWeFJ53xN/SBHPDnW0gXYvBx/afZZfGMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript">
         $(document).ready(function(){
           var table = $('#datatable').DataTable();
         });
+        $('#print').click(function(){
+            $("#printreport").print();
+        });
     </script>
+    
 @endpush
