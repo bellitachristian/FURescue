@@ -13,7 +13,7 @@ Dashboard
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            <a href=""><h5 style="font-weight:bold">Registered Shelters</h5></a></div>
+                            <a href="{{route('view.shelters')}}"><h5 style="font-weight:bold">Registered Shelters</h5></a></div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">{{$countshelter}}</div>
                     </div>
                     <div class="col-auto">
@@ -32,7 +32,7 @@ Dashboard
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                    <a href="" style="color:#5cb85c"><h5 style="font-weight:bold">Registered Pet Owners</h5></a></div>
+                    <a href="{{route('view.petowners')}}" style="color:#5cb85c"><h5 style="font-weight:bold">Registered Pet Owners</h5></a></div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{$countpetowner}}</div>
                 </div>
                 <div class="col-auto">
@@ -50,7 +50,7 @@ Dashboard
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                        <a href=""style="color:#5bc0de"><h5 style="font-weight:bold">Registered Adopters</h5></a>
+                        <a href="{{route('view.adopters')}}"style="color:#5bc0de"><h5 style="font-weight:bold">Registered Adopters</h5></a>
                     </div>
                     <div class="row no-gutters align-items-center">
                         <div class="col-auto">
@@ -76,7 +76,7 @@ Dashboard
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                    <a href=""style="color:#f0ad4e"><h5 style="font-weight:bold">Total Revenue</h5></a></div>
+                    <a href="{{route('view.revenue.history')}}"style="color:#f0ad4e"><h5 style="font-weight:bold">Total Revenue</h5></a></div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">PHP {{$revenue}}</div>
                 </div>
                 <div class="col-auto">
