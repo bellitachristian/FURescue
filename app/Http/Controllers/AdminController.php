@@ -1138,7 +1138,7 @@ class AdminController extends Controller
       $checkfree = Animals::where('fee','FREE')->pluck('id')->toArray();
       $data = array(
         'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
-        'transfers'=> Receipt::whereNotIn('animal_id',$checkfree)->where('process','confirmed')->where('status','received')->get(),
+        'transfers'=> Receipt::whereNotIn('animal_id',$checkfree)->where('process','completed')->where('status','received')->get(),
       );  
       return view('Admin.Reports.transferpayment',$data);
     }
