@@ -85,6 +85,7 @@ Route::post('/Admin/SearchShelter',[AdminController::class,'searchshelter'])->na
 Route::post('/Admin/SearchPetowner',[AdminController::class,'searchpetowner'])->name('searchpetowner.admin');
 Route::post('/Admin/SearchAdopter',[AdminController::class,'searchadopter'])->name('searchadopter.admin');
 Route::post('/Admin/SearchTransfer',[AdminController::class,'searchtransfer'])->name('searchtransfer.admin');
+Route::post('/Admin/Searchrevenue',[AdminController::class,'searchrevenue'])->name('searchrevenue.admin');
 
 
 Route::post('/Admin/savesubscription',[AdminController::class,'savesubscription'])->name('save.subscription');
@@ -420,6 +421,7 @@ Route::group(['middleware'=>['AdopterNotifRequest','AdoptionPaymentReq']],functi
     Route::get('/Admin/ViewListofPetowners',[AdminController::class,'view_petowners'])->name('view.petowners');
     Route::get('/Admin/ViewListofAdopters',[AdminController::class,'view_adopters'])->name('view.adopters');
     Route::get('/Admin/TransferPaymentHistory',[AdminController::class,'view_transfer'])->name('view.transfer.history');
+    Route::get('/Admin/Revenue',[AdminController::class,'revenue'])->name('view.revenue.history');
 
 
 

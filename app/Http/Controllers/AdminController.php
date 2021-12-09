@@ -1143,4 +1143,21 @@ class AdminController extends Controller
       );  
       return view('Admin.Reports.transferpayment',$data);
     }
+    function searchrevenue(Request $req){
+      $fromdate = $req->fromdate;
+      $todate = $req->todate;
+      $data =array(
+          'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+          'subscriptions'=>SubscriptionTransac::where('status','approved')
+          ->where('created_at','>=',$fromdate)->where('created_at','<=',$todate)->get()
+      );
+      return view('Admin.Reports.revenue',$data);
+    }
+    function view_revenue(){
+      $data = array(
+        'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
+        'subscriptions'=> SubscriptionTransac::where('status','approved')->get(),
+      );  
+      return view('Admin.Reports.revenue',$data);
+    }
 } 
