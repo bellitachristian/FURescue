@@ -1130,7 +1130,7 @@ class AdminController extends Controller
       $todate = $req->todate;
       $data =array(
           'admin' => Admin::where('id','=',session('LoggedUserAdmin'))->first(),
-          'transfers'=>Receipt::whereNotIn('animal_id',$checkfree)->where('process','confirmed')->where('status','received')
+          'transfers'=>Receipt::whereNotIn('animal_id',$checkfree)->where('process','completed')->where('status','received')
           ->where('updated_at','>=',$fromdate)->where('updated_at','<=',$todate)->get()
       );
       return view('Admin.Reports.transferpayment',$data);
