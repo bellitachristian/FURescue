@@ -82,7 +82,7 @@ Reports
                     </div>
                     <h6 class="font-weight-bold mb-3">Transferred Payment</h6>
                 </div>
-                <div class="card-footer bg-transparent "><a href="" class="btn btn-primary">View History</a></div>
+                <div class="card-footer bg-transparent "><a href="{{route('view.transfer')}}" class="btn btn-primary">View History</a></div>
             </div>
         </div>    
         <div class="col my-3">
