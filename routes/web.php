@@ -419,7 +419,7 @@ Route::group(['middleware'=>['AdopterNotifRequest','AdoptionPaymentReq']],functi
     Route::get('/Admin/ViewListofShelters',[AdminController::class,'view_shelters'])->name('view.shelters');
     Route::get('/Admin/ViewListofPetowners',[AdminController::class,'view_petowners'])->name('view.petowners');
     Route::get('/Admin/ViewListofAdopters',[AdminController::class,'view_adopters'])->name('view.adopters');
-    Route::get('/Admin/TransferPaymentHistory',[AdminController::class,'view_transfer'])->name('view.transfer');
+    Route::get('/Admin/TransferPaymentHistory',[AdminController::class,'view_transfer'])->name('view.transfer.history');
 
 
 
