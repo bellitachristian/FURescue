@@ -13,7 +13,7 @@ Welcome Animal Shelter!
                 <!-- Dashboard header -->
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5>Set Up the Animal Shelter's Adoption Fee. Select fee categories below:</h5> 
+                    <h5>Adoption Fee categories:</h5> 
                 </div>
             </div>  
         </div>
@@ -27,3 +27,10 @@ Welcome Animal Shelter!
 @endif
 
 @endsection
+@push('js')
+<script type="text/javascript">
+$(document).ready(function(){
+    $('input[type="checkbox"]').attr('checked', status);
+});
+</script>
+@endpush
