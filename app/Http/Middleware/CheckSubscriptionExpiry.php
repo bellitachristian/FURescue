@@ -22,7 +22,7 @@ class CheckSubscriptionExpiry
     public function handle(Request $request, Closure $next)
     {
         $currentdate ='December 26 2021 02:17:12 AM';
-        
+
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $checktrans = SubscriptionTransac::where('shelter_id',$shelter->id)->where('status','approved')->count();
         if($checktrans > 0){ 
@@ -30,7 +30,7 @@ class CheckSubscriptionExpiry
             //dd($getexpiry);
             foreach($getexpiry as $expired){
                 if($expired){
-                    $subscription = Susbcription::where('id',$getexpiry->sub_id)->first();
+                    $subscription = Subscription::where('id',$getexpiry->sub_id)->first();
                     if($subscription->sub_credit == "UNLI"){
                         $shelter->TotalCredits = "0";
                         $shelter->update();
