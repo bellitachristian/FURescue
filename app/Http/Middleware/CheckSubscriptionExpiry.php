@@ -21,7 +21,7 @@ class CheckSubscriptionExpiry
      */
     public function handle(Request $request, Closure $next)
     {
-        $currentdate = Carbon::now()->format('F d, Y h:i:s A');
+        $currentdate = new Carbon('December 26 2021 02:17:12 AM');
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $checktrans = SubscriptionTransac::where('shelter_id',$shelter->id)->where('status','approved')->count();
         if($checktrans > 0){ 
