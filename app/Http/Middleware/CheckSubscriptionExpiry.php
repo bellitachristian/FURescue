@@ -22,8 +22,10 @@ class CheckSubscriptionExpiry
         $currentdate = Carbon::now()->format('F d, Y h:i:s A');
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $getexpiry = SubscriptionTransac::where('shelter_id',$shelter->id)->where('status','approved')->pluck('expiry_date')->toArray();
-        dd($currentdate);
-
-        return $next($request);
+        if($getexpiry == $currentdate){
+            
+        }else{
+            return $next($request);
+        }
     }
 }
