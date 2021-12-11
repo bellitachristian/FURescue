@@ -21,7 +21,7 @@ class CheckSubscriptionExpiry
      */
     public function handle(Request $request, Closure $next)
     {
-        $currentdate ='December 26 2021 02:17:12 AM';
+        $currentdate ='December 26, 2021 03:44:29 AM';
 
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $checktrans = SubscriptionTransac::where('shelter_id',$shelter->id)->where('status','approved')->count();
