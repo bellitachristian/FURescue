@@ -177,9 +177,15 @@ class AdminController extends Controller
     }
 
     function deletesubscription($id){
-      $sub = Subscription::find($id);
-      $sub->delete();
-      return redirect()->back()->with('status','Removed Successfully');
+      $checkactive = SubscriptionTransac::where('sub_id',$id)->count();
+      if($checkactive > 0){
+        return redirect()->back()->with('status1','Subscription is active at the moment');
+      }
+      else{
+        $sub = Subscription::find($id);
+        $sub->delete();
+        return redirect()->back()->with('status','Removed Successfully');
+      }
     }
 
     function ViewPetOwners(){
