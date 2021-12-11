@@ -19,7 +19,8 @@
                         </div>
                         <hr>
                         <div>
-                            <p>Note! If Admins have rejected your valid documents, that means your credentials being sent are not valid you can try uploading your files again.</p>
+                            <p>Note! If Admins have rejected your valid documents, that means your credentials being sent are not valid, you have 3 chances to re-upload your files again.</p>
+                            <p>Once you have used all your chances the system will automatically remove your account.</p>
                             <br>
                             <p>Yours truly,</p> 
                             <p>furescue team</p>

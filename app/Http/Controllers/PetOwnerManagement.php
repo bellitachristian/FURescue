@@ -2190,24 +2190,32 @@ class PetOwnerManagement extends Controller
 
     function wait($id)
     {
+        $petowner=PetOwner::where('id',$id)->first();
         $check = ValidDocuments::where('petowner_id',$id)->count();
-        if($check > 0){
-            $petowner=PetOwner::where('id',$id)->first();
-            $convert = (int)$petowner->grace;
-            $petowner->grace = $convert-1;
-            $petowner->update(); 
+        $checkzero = PetOwner::find($id)->where('grace','0')->count();
+        if($checkzero > 0){
+            DB::table('valid_docu')->where('petowner_id', $petowner->id)->delete();
+            $petowner->delete();
+            return redirect('/User/login')->with('stat','Your account has been removed!');
+        }
+        else{
+            if($check > 0){
+                $convert = (int)$petowner->grace;
+                $petowner->grace = $convert-1;
+                $petowner->update(); 
 
-            $data = array();
-            $data = [
-                'shelter_name' => $petowner->fname.' '.$petowner->lname,
-                'approval'=>" resubmitted their valid documents and is waiting for your approval"
-            ];
+                $data = array();
+                $data = [
+                    'shelter_name' => $petowner->fname.' '.$petowner->lname,
+                    'approval'=>" resubmitted their valid documents and is waiting for your approval"
+                ];
 
-            $category = Category::all();
-            Admin::find(1)->notify( new ApproveRejectShelterNotif($data));
-           return redirect()->route('tempcheckshelter.petowner')->with('status','Submitted successfully');
-        }else{
-            return redirect()->back()->with('status1','Please upload valid documents first');
+                $category = Category::all();
+                Admin::find(1)->notify( new ApproveRejectShelterNotif($data));
+            return redirect()->route('tempcheckshelter.petowner')->with('status','Submitted successfully');
+            }else{
+                return redirect()->back()->with('status1','Please upload valid documents first');
+            }
         }
     }
     function subdetails($id){

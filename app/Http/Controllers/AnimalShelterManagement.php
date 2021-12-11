@@ -2304,25 +2304,34 @@ class AnimalShelterManagement extends Controller
 
     function wait($id)
     {
+        $shelter=AnimalShelter::where('id',$id)->first();
         $check = ValidDocuments::where('shelter_id',$id)->count();
-        if($check > 0){
-            $shelter=AnimalShelter::where('id',$id)->first();
-            $convert = (int)$shelter->grace;
-            $shelter->grace = $convert-1;
-            $shelter->update();
-
-            $data = array();
-            $data = [
-                'shelter_name' => $shelter->shelter_name,
-                'approval'=>" resubmitted their valid documents and is waiting for your approval"
-            ];
-
-            $category = Category::all();
-            Admin::find(1)->notify( new ApproveRejectShelterNotif($data));
-           return redirect()->route('tempcheckshelter')->with('status','Submitted successfully');
-        }else{
-            return redirect()->back()->with('status1','Please upload valid documents first');
+        $checkzero = AnimalShelter::find($id)->where('grace','0')->count();
+        if($checkzero > 0){
+            DB::table('valid_docu')->where('shelter_id', $shelter->id)->delete();
+            $shelter->delete();
+            return redirect('/User/login')->with('stat','Your account has been removed!');
         }
+        else{
+            if($check > 0){
+                $convert = (int)$shelter->grace;
+                $shelter->grace = $convert-1;
+                $shelter->update();
+    
+                $data = array();
+                $data = [
+                    'shelter_name' => $shelter->shelter_name,
+                    'approval'=>" resubmitted their valid documents and is waiting for your approval"
+                ];
+    
+                $category = Category::all();
+                Admin::find(1)->notify( new ApproveRejectShelterNotif($data));
+               return redirect()->route('tempcheckshelter')->with('status','Submitted successfully');
+            }else{
+                return redirect()->back()->with('status1','Please upload valid documents first');
+            }
+        }
+        
     }
 
     function confirmadoption($id){
