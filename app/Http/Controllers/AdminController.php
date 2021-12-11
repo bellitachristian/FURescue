@@ -130,16 +130,22 @@ class AdminController extends Controller
     }
 
     function savesubscription(Request $req){
-      $sub = new Subscription;
-      $sub->sub_name = $req->name;
-      $sub->sub_span = $req->span;
-      $sub->sub_price = $req->price;
-      $sub->sub_span_type = $req->length;
-      $sub->sub_credit = $req->credits;
-      $sub->sub_desc = $req->desc;
-
-      $sub->save();
-      echo 'ok'; 
+      $check = Subscription::where('sub_name',$req->name)->count();
+      if($check > 0){
+        echo 'exist'; 
+      }
+      else{
+        $sub = new Subscription;
+        $sub->sub_name = $req->name;
+        $sub->sub_span = $req->span;
+        $sub->sub_price = $req->price;
+        $sub->sub_span_type = $req->length;
+        $sub->sub_credit = $req->credits;
+        $sub->sub_desc = $req->desc;
+  
+        $sub->save();
+        echo 'ok'; 
+      }
     }
 
     function loadsubscription($id){
