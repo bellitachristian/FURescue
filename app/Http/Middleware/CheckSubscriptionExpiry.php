@@ -42,6 +42,7 @@ class CheckSubscriptionExpiry
                         $expired->update();
                         return back()->with('status','Your subscription '.$subscription->sub_name.' promo has been expired');
                     }else{
+                        dd('hi');
                         $credits = (int)$subscription->sub_credit; 
                         $total = (int)$shelter->TotalCredits;
                         $new = $total - $credits;
