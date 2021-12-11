@@ -2428,7 +2428,7 @@ class AnimalShelterManagement extends Controller
                $datestart = Carbon::parse($shelter->updated_at);
                $expiry = $datestart->addDays($convertspan);
                //update
-               $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+               $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');
                $shelter->update();
              }
              elseif($span_type == "month"){
@@ -2436,7 +2436,7 @@ class AnimalShelterManagement extends Controller
                $datestart = Carbon::parse($shelter->updated_at);
                $expiry = $datestart->addMonths($convertspan);
                //update
-               $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+               $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');
                $shelter->update();
              }
              elseif($span_type == "year"){
@@ -2444,7 +2444,7 @@ class AnimalShelterManagement extends Controller
                $datestart = Carbon::parse($shelter->updated_at);
                $expiry = $datestart->addYears($convertspan);
                //update
-               $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+               $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');
                $shelter->update();
              }
           }
@@ -2459,7 +2459,7 @@ class AnimalShelterManagement extends Controller
                 $datestart = Carbon::parse($shelter->updated_at);
                 $expiry = $datestart->addDays($convertspan);
                 //update
-                $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+                $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');
                 $shelter->update();
               }
               elseif($span_type == "month"){
@@ -2467,7 +2467,7 @@ class AnimalShelterManagement extends Controller
                 $datestart = Carbon::parse($shelter->updated_at);
                 $expiry = $datestart->addMonths($convertspan);
                 //update
-                $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+                $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');
                 $shelter->update();
               }
               elseif($span_type == "year"){
@@ -2475,7 +2475,7 @@ class AnimalShelterManagement extends Controller
                 $datestart = Carbon::parse($shelter->updated_at);
                 $expiry = $datestart->addYears($convertspan);
                 //update
-                $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');
+                $shelter->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');
                 $shelter->update();
               }
             }
@@ -2492,7 +2492,7 @@ class AnimalShelterManagement extends Controller
                 $datestart = Carbon::parse($shelter->updated_at);
                 $expiry = $datestart->addDays($convertspan);
                 //update
-                $shelter->expiry_date = Carbon::parse($expiry)->format('F d Y h:i:s A');
+                $shelter->expiry_date = Carbon::parse($expiry)->format('F d Y h:i A');
                 $shelter->update();
               }
               elseif($span_type == "month"){
@@ -2500,7 +2500,7 @@ class AnimalShelterManagement extends Controller
                 $datestart = Carbon::parse($shelter->updated_at);
                 $expiry = $datestart->addMonths($convertspan);
                 //update
-                $shelter->expiry_date = Carbon::parse($expiry)->format('F d Y h:i:s A');
+                $shelter->expiry_date = Carbon::parse($expiry)->format('F d Y h:i A');
                 $shelter->update();
               }
               elseif($span_type == "year"){
@@ -2508,7 +2508,7 @@ class AnimalShelterManagement extends Controller
                 $datestart = Carbon::parse($shelter->updated_at);
                 $expiry = $datestart->addYears($convertspan);
                 //update
-                $shelter->expiry_date = Carbon::parse($expiry)->format('F d Y h:i:s A');
+                $shelter->expiry_date = Carbon::parse($expiry)->format('F d Y h:i A');
                 $shelter->update();
               }
             }
@@ -2603,7 +2603,7 @@ class AnimalShelterManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'subscription'=>SubscriptionTransac::where('status','approved')->where('shelter_id',$shelter->id)->get()
+            'subscription'=>SubscriptionTransac::where('status','approved')->orWhere('status','expired')->where('shelter_id',$shelter->id)->get()
         );
         return view('AnimalShelter.Reports.paymenthistory',$data);
     }
@@ -2616,7 +2616,7 @@ class AnimalShelterManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'subscription'=>SubscriptionTransac::where('status','approved')->where('shelter_id',$shelter->id)
+            'subscription'=>SubscriptionTransac::where('status','approved')->orWhere('status','expired')->where('shelter_id',$shelter->id)
             ->where('updated_at','>=',$fromdate)->where('updated_at','<=',$todate)->get()
         );
         return view('AnimalShelter.Reports.paymenthistory',$data);

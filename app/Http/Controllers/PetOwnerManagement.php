@@ -2270,7 +2270,7 @@ class PetOwnerManagement extends Controller
                 $datestart = Carbon::parse($petowner->updated_at);  
                 $expiry = $datestart->addDays($convertspan);
                 //update
-                $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+                $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');  
                 $petowner->update();
               }
               elseif($span_type == "month"){
@@ -2278,7 +2278,7 @@ class PetOwnerManagement extends Controller
                 $datestart = Carbon::parse($petowner->updated_at);  
                 $expiry = $datestart->addMonths($convertspan);
                 //update
-                $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+                $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');  
                 $petowner->update();
               }
               elseif($span_type == "year"){
@@ -2286,7 +2286,7 @@ class PetOwnerManagement extends Controller
                 $datestart = Carbon::parse($petowner->updated_at);  
                 $expiry = $datestart->addYears($convertspan);
                 //updates
-                $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+                $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');  
                 $petowner->update();
               }
         }
@@ -2301,7 +2301,7 @@ class PetOwnerManagement extends Controller
              $datestart = Carbon::parse($petowner->updated_at);  
              $expiry = $datestart->addDays($convertspan);
              //update
-             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');  
              $petowner->update();
            }
            elseif($span_type == "month"){
@@ -2309,7 +2309,7 @@ class PetOwnerManagement extends Controller
              $datestart = Carbon::parse($petowner->updated_at);  
              $expiry = $datestart->addMonths($convertspan);
              //update
-             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');  
              $petowner->update();
            }
            elseif($span_type == "year"){
@@ -2317,7 +2317,7 @@ class PetOwnerManagement extends Controller
              $datestart = Carbon::parse($petowner->updated_at);  
              $expiry = $datestart->addYears($convertspan);
              //updates
-             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');  
              $petowner->update();
            }
           }
@@ -2334,7 +2334,7 @@ class PetOwnerManagement extends Controller
              $datestart = Carbon::parse($petowner->updated_at);  
              $expiry = $datestart->addDays($convertspan);
              //update
-             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');  
              $petowner->update();
            }
            elseif($span_type == "month"){
@@ -2342,7 +2342,7 @@ class PetOwnerManagement extends Controller
              $datestart = Carbon::parse($petowner->updated_at);  
              $expiry = $datestart->addMonths($convertspan);
              //update
-             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');  
              $petowner->update();
            }
            elseif($span_type == "year"){
@@ -2350,7 +2350,7 @@ class PetOwnerManagement extends Controller
              $datestart = Carbon::parse($petowner->updated_at);  
              $expiry = $datestart->addYears($convertspan);
              //update
-             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i:s A');  
+             $petowner->expiry_date = Carbon::parse($expiry)->format('F d, Y h:i A');  
              $petowner->update();
            }
           }
@@ -2467,7 +2467,7 @@ class PetOwnerManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'subscription'=>SubscriptionTransac::where('status','approved')->where('petowner_id',$petowner->id)->get()
+            'subscription'=>SubscriptionTransac::where('status','approved')->orWhere('status','expired')->where('petowner_id',$petowner->id)->get()
         );
         return view('PetOwner.Reports.paymenthistory',$data);
     }
@@ -2480,7 +2480,7 @@ class PetOwnerManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'subscription'=>SubscriptionTransac::where('status','approved')->where('petowner_id',$petowner->id)
+            'subscription'=>SubscriptionTransac::where('status','approved')->orWhere('status','expired')->where('petowner_id',$petowner->id)
             ->where('updated_at','>=',$fromdate)->where('updated_at','<=',$todate)->get()
         );
         return view('PetOwner.Reports.paymenthistory',$data);

@@ -278,7 +278,7 @@ Route::group(['middleware'=>['AdminCheck']],function(){
 });
 
 Route::group(['middleware'=>['PetOwnerCheck']],function(){ 
-    Route::group(['middleware'=>['CheckPostCreditsPetOwner','CheckAdoptionPetOwnerRequest']],function(){
+    Route::group(['middleware'=>['CheckPostCreditsPetOwner','CheckAdoptionPetOwnerRequest','CheckPetownerExpiry']],function(){
         Route::get('/Profile/petowner/{petowner_id}',[PetOwnerManagement::class,'ViewProfile']);
         Route::get('/Profile/Edit/petowner/{petowner_id}',[PetOwnerManagement::class,'ViewEditProfile']);
         Route::get('/test/fetchimage/petowner',[UploadController::class,'fetchpetownerphotos'])->name('dropzone.fetch.petowner');
