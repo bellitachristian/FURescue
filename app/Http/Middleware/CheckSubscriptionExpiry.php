@@ -29,7 +29,7 @@ class CheckSubscriptionExpiry
             $getexpiry = SubscriptionTransac::where('shelter_id',$shelter->id)->where('status','approved')->get();
             //dd($getexpiry);
             foreach($getexpiry as $expired){
-                if($expired == $currentdate){
+                if($expired->expiry_date == $currentdate){
                     $subscription = Subscription::where('id',$expired->sub_id)->first();
                     if($subscription->sub_credit == "UNLI"){
                         $shelter->TotalCredits = "0";
