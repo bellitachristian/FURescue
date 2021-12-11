@@ -175,7 +175,7 @@ Route::get('/verify/petowner',[RegisterController::class,'verifyPetUser'])->name
 Route::get('/auto/logout/{shelter_id}',[LoginController::class,'autologout']);
 
 Route::group(['middleware'=>['Authcheck']],function(){
-    Route::group(['middleware'=>['CheckPostCredits','CheckAdoptionRequest','DonationCheckNotif']],function(){
+    Route::group(['middleware'=>['CheckPostCredits','CheckAdoptionRequest','DonationCheckNotif','CheckSubscriptionExpiry']],function(){
         
         Route::get('/AnimalShelter/enlargevalid/{id}',[AnimalShelterManagement::class,'enlarge'])->name('enlarge');
         Route::get('/AnimalShelter/enlargedonation/{id}',[AnimalShelterManagement::class,'enlargedonation'])->name('enlarge.donation');
