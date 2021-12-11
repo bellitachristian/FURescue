@@ -123,7 +123,8 @@ Add New Subscription
                             $('#error').html('<div class="alert alert-success">Saved Successfully</div>');
                             $('#submit_button').attr('disabled', false);
                             document.getElementById("insert_form").reset();
-                        }elseif(data == 'exist'){
+                        }
+                        else if(data == 'exist'){
                             $('#description').find('tr:gt(0)').remove();
                             $('#error').html('<div class="alert alert-danger">Subscription promo name already exist</div>');
                             $('#submit_button').attr('disabled', false);
