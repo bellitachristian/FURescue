@@ -54,8 +54,6 @@ class CheckSubscriptionExpiry
                         $expired->status = "expired";
                         $expired->update();
                     }
-                }else{
-                    return $next($request);
                 }
             }
         }
