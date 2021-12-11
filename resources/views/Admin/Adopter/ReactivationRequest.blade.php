@@ -34,7 +34,7 @@ Adopter Reactivation Requests
                 <tr>
                     <td>{{ $adopter->id}}</td>
                     <td>
-                        <img src="{{asset('/phpcode/adopter/'.$adopter->adopter->photo)}}" width="70px" height="70px" alt="">
+                        <img src="{{asset('/phpcode/adopter/'.$adopter->photo)}}" width="70px" height="70px" alt="">
                     </td>
                     <td>{{ $adopter->fname}}</td>
                     <td>{{ $adopter->email}}</td>

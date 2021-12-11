@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="/styles/login.css">
     <link rel="stylesheet" href="{{asset('/css/app.css')}}">
-    
+
 </head>
 <body>
     <header>
@@ -47,10 +47,11 @@
     </div>
     <!-- Choose as -->
     <div class="modal fade" id="choose" data-bs-keyboard="false" tabindex="-1" aria-labelledby="chooseLabel" aria-hidden="true">
-                    <div class="modal-dialog ">
+                    <div class="modal-dialog modal-dialog-centered ">
                         <div class="modal-content">
                             <div class="modal-header choose">
                                 <h5 class="modal-title" id="chooseLabel">Choose As</h5>
+                                <button type="button" data-bs-dismiss="modal" aria-label="Close">x</button>
                             </div>
                                 <div class="modal-body">
                                         <a class="animalshelter" href="/Register/signup">  
