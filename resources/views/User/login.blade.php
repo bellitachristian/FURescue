@@ -51,7 +51,6 @@
                         <div class="modal-content">
                             <div class="modal-header choose">
                                 <h5 class="modal-title" id="chooseLabel">Choose As</h5>
-                                <button type="button" data-bs-dismiss="modal" aria-label="Close">x</button>
                             </div>
                                 <div class="modal-body">
                                         <a class="animalshelter" href="/Register/signup">  
