@@ -30,7 +30,7 @@ class CheckSubscriptionExpiry
             //dd($getexpiry);
             foreach($getexpiry as $expired){
                 if($expired){
-                    $subscription = Subscription::where('id',$getexpiry->sub_id)->first();
+                    $subscription = Subscription::where('id',$expired->sub_id)->first();
                     if($subscription->sub_credit == "UNLI"){
                         $shelter->TotalCredits = "0";
                         $shelter->update();
