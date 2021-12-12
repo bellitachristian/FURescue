@@ -2612,7 +2612,12 @@ class AnimalShelterManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'subscription'=>SubscriptionTransac::where('status','approved')->orWhere('status','expired')->where('shelter_id',$shelter->id)->get()
+            'subscription'=>SubscriptionTransac:: 
+                where(function($query){
+                $query-> where('status', 'approved')
+                        ->orWhere('status','expired');
+            })
+            ->where('shelter_id',$shelter->id)->get()
         );
         return view('AnimalShelter.Reports.paymenthistory',$data);
     }
@@ -2625,8 +2630,13 @@ class AnimalShelterManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'subscription'=>SubscriptionTransac::where('status','approved')->orWhere('status','expired')->where('shelter_id',$shelter->id)
-            ->where('updated_at','>=',$fromdate)->where('updated_at','<=',$todate)->get()
+            'subscription'=>SubscriptionTransac::
+                        where(function($query){
+                            $query-> where('status', 'approved')
+                                    ->orWhere('status','expired');
+                        })
+                        ->where('shelter_id',$shelter->id)
+                        ->where('updated_at','>=',$fromdate)->where('updated_at','<=',$todate)->get()
         );
         return view('AnimalShelter.Reports.paymenthistory',$data);
     }

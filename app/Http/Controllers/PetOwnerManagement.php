@@ -2478,7 +2478,11 @@ class PetOwnerManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'subscription'=>SubscriptionTransac::where('status','approved')->orWhere('status','expired')->where('petowner_id',$petowner->id)->get()
+            'subscription'=>SubscriptionTransac::where(function($query){
+                $query-> where('status', 'approved')
+                        ->orWhere('status','expired');
+            })
+            ->where('petowner_id',$petowner->id)->get()
         );
         return view('PetOwner.Reports.paymenthistory',$data);
     }
@@ -2491,7 +2495,11 @@ class PetOwnerManagement extends Controller
         $data =array(
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'subscription'=>SubscriptionTransac::where('status','approved')->orWhere('status','expired')->where('petowner_id',$petowner->id)
+            'subscription'=>SubscriptionTransac::where(function($query){
+                $query-> where('status', 'approved')
+                        ->orWhere('status','expired');
+            })
+            ->where('petowner_id',$petowner->id)
             ->where('updated_at','>=',$fromdate)->where('updated_at','<=',$todate)->get()
         );
         return view('PetOwner.Reports.paymenthistory',$data);
