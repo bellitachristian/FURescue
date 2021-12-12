@@ -175,7 +175,7 @@ Route::get('/verify/petowner',[RegisterController::class,'verifyPetUser'])->name
 Route::get('/auto/logout/{shelter_id}',[LoginController::class,'autologout']);
 
 Route::group(['middleware'=>['Authcheck']],function(){
-    Route::group(['middleware'=>['CheckPostCredits','CheckAdoptionRequest','DonationCheckNotif','CheckSubscriptionExpiry']],function(){
+    Route::group(['middleware'=>['CheckPostCredits','CheckAdoptionRequest','DonationCheckNotif','CheckSubscriptionExpiry','CheckVaccineExpiry','CheckDewormExpiry']],function(){
         
         Route::get('/AnimalShelter/enlargevalid/{id}',[AnimalShelterManagement::class,'enlarge'])->name('enlarge');
         Route::get('/AnimalShelter/enlargedonation/{id}',[AnimalShelterManagement::class,'enlargedonation'])->name('enlarge.donation');
@@ -278,7 +278,7 @@ Route::group(['middleware'=>['AdminCheck']],function(){
 });
 
 Route::group(['middleware'=>['PetOwnerCheck']],function(){ 
-    Route::group(['middleware'=>['CheckPostCreditsPetOwner','CheckAdoptionPetOwnerRequest','CheckPetownerExpiry']],function(){
+    Route::group(['middleware'=>['CheckPostCreditsPetOwner','CheckAdoptionPetOwnerRequest','CheckPetownerExpiry','CheckVaccineExpiryOwner','CheckDewormExpiryOwner']],function(){
         Route::get('/Profile/petowner/{petowner_id}',[PetOwnerManagement::class,'ViewProfile']);
         Route::get('/Profile/Edit/petowner/{petowner_id}',[PetOwnerManagement::class,'ViewEditProfile']);
         Route::get('/test/fetchimage/petowner',[UploadController::class,'fetchpetownerphotos'])->name('dropzone.fetch.petowner');

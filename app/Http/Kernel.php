@@ -54,6 +54,10 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'CheckDewormExpiryOwner' => \App\Http\Middleware\CheckDewormExpiryOwner::class,
+        'CheckVaccineExpiryOwner' => \App\Http\Middleware\CheckVaccineExpiryOwner::class,
+        'CheckDewormExpiry' => \App\Http\Middleware\CheckDewormExpiry::class,
+        'CheckVaccineExpiry' => \App\Http\Middleware\CheckVaccineExpiry::class,
         'CheckPetownerExpiry' => \App\Http\Middleware\CheckPetownerExpiry::class,
         'CheckSubscriptionExpiry' => \App\Http\Middleware\CheckSubscriptionExpiry::class,
         'AdoptionPaymentReq' => \App\Http\Middleware\AdoptionPaymentReq::class,

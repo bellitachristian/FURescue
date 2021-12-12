@@ -144,10 +144,12 @@ class AnimalShelterManagement extends Controller
     function Allocate_Vaccine_Animal($id){
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $vaccinehistory = Vaccine::whereHas('allocatevaccine', function($q) use ($id) {
-            $q->where('animal_id','=',$id);
+            $q->where('animal_id','=',$id)
+                ->where('status','Active');
         })->pluck('id')->toArray();
         $dewormhistory = Deworm::whereHas('allocatedeworm', function($q) use ($id) {
-            $q->where('animal_id','=',$id);
+            $q->where('animal_id','=',$id)
+            ->where('status','Active');
         })->pluck('id')->toArray();
         $data = array(
             'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
@@ -166,6 +168,7 @@ class AnimalShelterManagement extends Controller
         $allocate->animal_id = $id;
         $allocate->dew_date = $req->dew_date;
         $allocate->dew_expiry_date = $req->dew_expiry;
+        $allocate->status = 'Active';
         $allocate->save();
 
         $history = new DewormHistory;
@@ -201,6 +204,7 @@ class AnimalShelterManagement extends Controller
         $allocate->animal_id = $id;
         $allocate->vac_date = $req->vac_date;
         $allocate->vac_expiry_date = $req->vac_expiry;
+        $allocate->status = 'Active';
         $allocate->save();
 
         $history = new VaccineHistory;
