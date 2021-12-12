@@ -319,7 +319,10 @@ class AnimalShelterManagement extends Controller
         whereHas('shelterPhoto',function($query)use($shelter){
           $query->where('shelter_id',$shelter->id);
         })
-        ->where('is_verified_shelter','0')
+        -> where(function($query1){
+            $query1-> where('is_verified_shelter', '0')
+                    ->orWhere('is_verified_shelter','1');
+        })
         ->where('grace','!=','0')
         ->count();
         $data =array(
