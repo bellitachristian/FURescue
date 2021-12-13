@@ -10,10 +10,10 @@
     }
     
     html{
-      background: url("/images/background.jpg") no-repeat center fixed;
+      background: url("/images/back1.jpg") no-repeat center fixed;
       background-size: cover;
     }
-
+    
     .welcome{
       padding-top: 100px;
       font-weight: 700;
