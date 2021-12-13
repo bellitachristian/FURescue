@@ -2018,7 +2018,7 @@ class PetOwnerManagement extends Controller
             'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'shelter'=>AnimalShelter::find($id),
-            'animals'=>Animals::whereNotIn('id',$check)->where('post_status','posted')->where('status','Available')->get(),
+            'animals'=>Animals::whereNotIn('id',$check)->where('post_status','posted')->where('petowner_id',$petowner->id)->where('status','Available')->get(),
         );
         return view('PetOwner.Request.animal',$data);
     }
