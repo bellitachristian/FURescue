@@ -153,7 +153,7 @@ class LoginController extends Controller
                                 'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
                                 'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first()
                             );
-                            return view('PetOwner.Deactivation.deactpage',$data);  //adtu sa view for reactivation of account
+                            return redirect()->route('deactpage.petowner');  //adtu sa view for reactivation of account
                         }
                     }
                     else{
