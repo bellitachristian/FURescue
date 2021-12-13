@@ -60,7 +60,7 @@
                                          <hr>
                                          <a class="petowner" href="/Register/petOwner">
                                             <img src="/images/icon-petowners.png" alt="petowner">   
-                                            <h4>pet owner only</h4>
+                                            <h4>pet owner</h4>
                                         </a>
                                        
                                         <!-- <hr> 
