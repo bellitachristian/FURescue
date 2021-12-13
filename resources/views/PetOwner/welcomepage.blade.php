@@ -10,7 +10,7 @@
     }
     
     html{
-      background: url("/images/background.jpg") no-repeat center fixed;
+      background: url("images/background.jpg") no-repeat center fixed;
       background-size: cover;
     }
 
