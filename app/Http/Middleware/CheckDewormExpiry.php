@@ -24,7 +24,7 @@ class CheckDewormExpiry
     {
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $now = Carbon::now()->format('Y-m-d');
-        //$now ='2022-03-12';
+        //$now ='2022-04-14';
 
         $checkanimal = Animals::where(function($query) use($shelter){
                                 $query-> where('shelter_id', $shelter->id)

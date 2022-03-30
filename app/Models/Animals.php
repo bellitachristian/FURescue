@@ -5,11 +5,13 @@ use App\Models\AllocateVaccine;
 use App\Models\AllocateDeworming;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\AnimalShelter;
 use Carbon\Carbon;
 
 class Animals extends Model
 {
+    use SoftDeletes;
     protected $table ='animals';
 
     public function VaccinatedAnimal()

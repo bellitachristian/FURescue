@@ -47,8 +47,22 @@ Donation History
                     @foreach($donation as $donor)
                         <tr>
                             <td>{{$donor->donation_id}}</td>
-                            <td style="text-align:center">
-                            <img src="{{asset('/phpcode/adopter/'.$donor->adopter->photo)}}" width="70px" height="70px" alt="photo">
+                            @if($donor->donor_id)
+                                <td style="text-align:center">
+                                    <img src="{{asset('/uploads/pet-owner/profile/'.$donor->petowner->profile)}}" width="70px" height="70px" alt="photo">
+                                </td>
+                                <td style="text-align:center">{{$donor->petowner->fname}} {{$donor->petowner->lname}}</td>
+                                <td style="text-align:center">{{$donor->petowner->email}}</td>
+                                <td style="text-align:center">{{$donor->petowner->contact}}</td>
+                                <td style="text-align:center">{{$donor->petowner->address}}</td>
+                                <td style="text-align:center">PHP {{$donor->donor_amount}}</td>
+                                <td style="text-align:center">{{ \Carbon\Carbon::parse($donor->updated_at)->format('F d, Y h:i A')}}</td>
+                                <td style="text-align:center">
+                                <button disabled class="btn btn-success">Completed</button>
+                            </td>
+                            @else
+                            <td>
+                                <img src="{{asset('/phpcode/adopter/'.$donor->adopter->photo)}}" width="70px" height="70px" alt="photo">                            
                             </td>
                             <td style="text-align:center">{{$donor->adopter->fname}} {{$donor->adopter->lname}}</td>
                             <td style="text-align:center">{{$donor->adopter->email}}</td>
@@ -59,6 +73,7 @@ Donation History
                             <td style="text-align:center">
                                 <button disabled class="btn btn-success">Completed</button>
                             </td>
+                            @endif
                         </tr> 
                     @endforeach
                     @if(empty($donor))   

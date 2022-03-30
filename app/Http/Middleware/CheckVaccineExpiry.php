@@ -26,8 +26,8 @@ class CheckVaccineExpiry
     public function handle(Request $request, Closure $next)
     {
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
-        //$now = Carbon::now()->format('Y-m-d');
-        $now ='2022-03-14';
+        $now = Carbon::now()->format('Y-m-d');
+        //$now ='2022-03-14';
         $checkanimal = Animals::where(function($query) use($shelter){
                                 $query-> where('shelter_id', $shelter->id)
                                         ->orWhere('owner_id',$shelter->id);

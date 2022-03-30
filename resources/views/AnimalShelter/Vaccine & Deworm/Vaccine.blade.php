@@ -15,7 +15,10 @@ Vaccination & Deworming
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
                     <div>
-                    <button class="btn btn-danger" data-toggle="modal" data-target="#AddVaccine" >Add Vaccine +</button>
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#AddVaccine" >Add Vaccine +</button>
+                    </div>
+                    <div>
+                        <a href="{{route('view_archived_vaccine')}}"><button class="btn btn-danger">View Archived Vaccine</button></a>
                     </div>
                 </div>
     <!-- Vaccine and deworm Content -->
@@ -37,7 +40,7 @@ Vaccination & Deworming
                     <td>{{ $vaccine->vac_desc}}</td>
                     <td style="text-align:center">
                         <a href="#" id="edit" ><i class="fas fa-edit" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                        <a href="#" id="delete"><i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                        <a href="#" id="delete"><i class="fas fa-trash-alt" data-toggle="tooltip" title="Move to Archive">&#xE872;</i></a>
                     </td>
                 </tr>   
                 @endforeach($vac as $vaccine)
@@ -56,7 +59,10 @@ Vaccination & Deworming
                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
                 <div>
-                <button class="btn btn-danger" data-toggle="modal" data-target="#AddDeworm" >Add Deworming +</button>
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#AddDeworm" >Add Deworming +</button>
+                </div>
+                <div>
+                    <a href="{{route('view_archived_deworm')}}"><button class="btn btn-danger">View Archived Deworm</button></a>
                 </div>
             </div>  
 <!-- Vaccine and deworm Content -->
@@ -78,7 +84,7 @@ Vaccination & Deworming
                 <td>{{ $dew->dew_desc}}</td>
                 <td style="text-align:center">
                     <a href="#" id="edit1"><i class="fas fa-edit" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                    <a href="#" id="delete1"><i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                    <a href="#" id="delete1"><i class="fas fa-trash-alt" data-toggle="tooltip" title="Move to  Archive">&#xE872;</i></a>
                 </td>
             </tr>
             @endforeach($deworm as $dew)

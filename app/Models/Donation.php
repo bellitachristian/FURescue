@@ -12,4 +12,7 @@ class Donation extends Model
     public function adopter(){
         return $this->belongsTo(Adopter::class,'donor_id');
     }
+    public function petowner(){
+        return $this->belongsTo(PetOwner::class,'donor_id');
+    }
 }

@@ -20,7 +20,8 @@ class CreateDewormTable extends Migration
             $table->unsignedBigInteger('shelter_id')->nullable();
             $table->foreign('shelter_id')->references('id')->on('animal_shelters')->onUpdate('cascade')->onDelete('cascade'); 
             $table->unsignedBigInteger('petowner_id')->nullable();
-            $table->foreign('petowner_id')->references('id')->on('pet_owners')->onUpdate('cascade')->onDelete('cascade');  
+            $table->foreign('petowner_id')->references('id')->on('pet_owners')->onUpdate('cascade')->onDelete('cascade'); 
+            $table->softDeletes(); 
             $table->timestamps();
         });
     }

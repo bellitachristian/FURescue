@@ -9,6 +9,7 @@ use App\Models\Type;
 use App\Models\Breed;
 use App\Models\Admin;
 use App\Models\Adoption;
+use App\Models\Donation;
 use App\Models\Animals;
 use App\Models\Adopter_Notif;
 use App\Models\AdoptionPolicy;
@@ -230,8 +231,8 @@ class PetOwnerManagement extends Controller
         $petowner=PetOwner::where('id','=',session('LoggedUserPet'))->first();       
         $data = array(
           'LoggedUserInfo' => PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-          'vac'=> DB::select("select *from vaccine where petowner_id='$petowner->id'"),
-          'deworm'=> DB::select("select *from deworm where petowner_id='$petowner->id'"),
+          'vac'=> Vaccine::where('petowner_id',$petowner->id)->get(),
+          'deworm'=> Deworm::where('petowner_id',$petowner->id)->get(),
           'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first() 
         );   
         return view('PetOwner.Vaccine & Deworm.Vaccine',$data);
@@ -255,8 +256,9 @@ class PetOwnerManagement extends Controller
      }
  
      function DeleteVaccine($id){
-         DB::delete("delete from vaccine where id='$id'");
-         return redirect()->back()->with('status','Vaccine Deleted Successfully');
+        $vaccine = Vaccine::find($id);
+        $vaccine->delete();
+        return redirect()->back()->with('status','Moved to Archived');
      }
 
      function EditDeworm(Request $req, $id){
@@ -267,8 +269,9 @@ class PetOwnerManagement extends Controller
      }
 
      function DeleteDeworm($id){
-         DB::delete("delete from deworm where id='$id'");
-         return redirect()->back()->with('status','Deworm Deleted Successfully');
+        $deworm = Deworm::find($id);
+        $deworm->delete();
+        return redirect()->back()->with('status','Moved to Archived');
      }
 
     function AddDeworm(Request $req){
@@ -286,7 +289,7 @@ class PetOwnerManagement extends Controller
         $data = array(
             'LoggedUserInfo' => PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
-            'policy'=>DB::select("select *from adopt_policy  where petowner_id ='$petowner->id'")
+            'policy'=>AdoptionPolicy::where('petowner_id',$petowner->id)->get()
         );
         return view('PetOwner.AdoptionPolicy.adoptpolicy',$data);
     }
@@ -309,10 +312,9 @@ class PetOwnerManagement extends Controller
      function DeletePolicy($id){
          $policy = AdoptionPolicy::find($id);
          $policy->delete();
-         return redirect()->back()->with('status','Adoption Policy Deleted Successfully');
+         return redirect()->back()->with('status','Moved to Archived');
      }
  
-
     function ViewEditAnimal($id){
         $data = array(
             'LoggedUserInfo' => PetOwner::where('id','=',session('LoggedUserPet'))->first(),
@@ -325,12 +327,90 @@ class PetOwnerManagement extends Controller
 
     function DeleteAnimal($id){
         $animal=Animals::find($id);
+        $animal->delete();
+        return redirect()->back()->with('status','Moved to Archive');
+    }
+
+    function force_delete_animal($id){
+        $animal=Animals::withTrashed()->where('id', $id)->firstOrFail();
         $destination = 'uploads/animals/'.$animal->animal_image;
             if(File::exists($destination)){
                 File::delete($destination);
             }
-        $animal->delete();
-        return redirect()->back()->with('status','Pet Removed Successfully');
+        $animal->forceDelete();
+        return redirect()->back()->with('status','Pet Deleted Successfully');
+    }
+
+    function restore_pet($id){
+        $animal=Animals::withTrashed()->where('id', $id)->firstOrFail();
+        $animal->restore();
+        return redirect()->back()->with('status','Pet Restored Successfully');
+    }
+
+    function view_archived_policy(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'policy'=>AdoptionPolicy::onlyTrashed()->where('petowner_id',$petowner->id)->get()
+        );
+        return view('PetOwner.AdoptionPolicy.Archived',$data);
+    }
+
+    function restore_policy($id){
+        $policy=AdoptionPolicy::withTrashed()->where('id', $id)->firstOrFail();
+        $policy->restore();
+        return redirect()->back()->with('status','Policy Restored Successfully');
+    }
+
+    function force_delete_policy($id){
+        $policy=AdoptionPolicy::withTrashed()->where('id', $id)->firstOrFail();
+        $policy->forceDelete();
+        return redirect()->back()->with('status','Policy Deleted Successfully');
+    }
+
+    function view_archived_vaccine(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'vac'=> Vaccine::onlyTrashed()->where('petowner_id',$petowner->id)->get(),
+        );
+        return view('PetOwner.Vaccine & Deworm.Archive_vaccine',$data);
+    }
+
+    function restore_vaccine($id){
+        $vaccine=Vaccine::withTrashed()->where('id', $id)->firstOrFail();
+        $vaccine->restore();
+        return redirect()->back()->with('status','Vaccine Restored Successfully');
+    }
+
+    function force_delete_vaccine($id){
+        $vaccine=Vaccine::withTrashed()->where('id', $id)->firstOrFail();
+        $vaccine->forceDelete();
+        return redirect()->back()->with('status','Vaccine Deleted Successfully');
+    }
+
+    function view_archived_deworm(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'deworm'=> Deworm::onlyTrashed()->where('petowner_id',$petowner->id)->get(),
+        );
+        return view('PetOwner.Vaccine & Deworm.Archive_deworm',$data);
+    }
+
+    function restore_deworm($id){
+        $deworm=Deworm::withTrashed()->where('id', $id)->firstOrFail();
+        $deworm->restore();
+        return redirect()->back()->with('status','Deworm Restored Successfully');
+    }
+
+    function force_delete_deworm($id){
+        $deworm=Deworm::withTrashed()->where('id', $id)->firstOrFail();
+        $deworm->forceDelete();
+        return redirect()->back()->with('status','Deworm Deleted Successfully');
     }
 
     function UpdateAnimal(Request $req, $id){
@@ -713,7 +793,7 @@ class PetOwnerManagement extends Controller
         $petowner=PetOwner::where('id','=',session('LoggedUserPet'))->first();
         $data = array(
             'LoggedUserInfo' => PetOwner::where('id','=',session('LoggedUserPet'))->first(), 
-            'animal'=> DB::select("select *from animals  where petowner_id ='$petowner->id' and owner_id ='none' and status ='Available'"),
+            'animal'=> Animals::where('petowner_id',$petowner->id)->where('status',"Available")->get(),
             'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
             'petownercateg' =>PetOwner::all()->where('id',session('LoggedUserPet')),
           );
@@ -2011,6 +2091,18 @@ class PetOwnerManagement extends Controller
         );
         return view('PetOwner.Request.detailshelter',$data);
     }
+
+    function shelter_detail_view($id){
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'shelter'=>AnimalShelter::find($id),
+            'countpets'=>Animals::where('shelter_id',$id)->where('status','Available')->count(),
+            'countprocess'=>Animals::where('shelter_id',$id)->where('status','Ongoing')->count(),
+            'countadopted'=>Animals::where('shelter_id',$id)->where('status','Adopted')->count(),
+        );
+        return view('PetOwner.Pet Book.viewshelter',$data);
+    }
     function selection($id){
         $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
         $check = Requestadoption::where('petowner_id',$petowner->id)->where('status','pending')->where('process','none')->pluck('animal_id')->toArray();
@@ -2266,7 +2358,7 @@ class PetOwnerManagement extends Controller
               $total = $subtotal + $fee;
               $revenue->revenue = $total.'.00';
               $revenue->update();
-          }else{
+          }else{ 
               $revenue = Admin::find(1);
               $revenue->revenue = $petowner->subscription->sub_price;
               $revenue->update();
@@ -2545,5 +2637,89 @@ class PetOwnerManagement extends Controller
             'questions'=>Question::where('adoption_id',$id)->first()
         );
         return view('PetOwner.Reports.viewform',$data);
+    }
+    function view_archived_pets(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'animal'=> Animals::onlyTrashed()->where('petowner_id',$petowner->id)->where('status',"Available")->get(),
+        );
+        return view('PetOwner.AnimalManagement.Archived',$data);
+    }
+
+    function view_to_donate(){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $check = Requestadoption::where('petowner_id',$petowner->id)->where('status','pending')->pluck('shelter_id')->toArray();
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'shelters'=>AnimalShelter::whereNotIn('id',$check)->get(),
+        );
+        return view('PetOwner.Pet Book.donate',$data);
+    }
+    function donatesave(Request $req, $shelter_id){ 
+        try {
+            $req->validate([
+                'donate'=>'numeric|min:50|max:99999'
+            ]);
+            $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+            $shelter = AnimalShelter::find($shelter_id);
+            $amount = $req->donate;
+            $donation = new Donation;
+            $donation->donor_id = $petowner->id;
+            $donation->donor_fname = $petowner->fname;
+            $donation->donor_lname = $petowner->lname;
+            $donation->donor_phone = $petowner->contact;
+            $donation->donor_email =$petowner->email;
+            $donation->status = 'sent';
+            $donation->donor_paymentMethod ="Paypal";
+            $donation->donor_amount = $amount;
+            $donation->donor_message = 'none';
+            $donation->donor_photo = $petowner->profile;
+            $donation->feedback ='none';
+            $donation->animal_shelter = $shelter->id;
+            $donation->created_at = Carbon::now();
+            $donation->save(); 
+    
+            return redirect()->route('view.set',$shelter_id);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('status1','Please input the correct amount of your donation!');
+        }
+      
+    }
+    function viewset($shelter_id){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $shelter = AnimalShelter::find($shelter_id);
+        $data =array(
+            'LoggedUserInfo'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'petowner'=>PetOwner::where('id','=',session('LoggedUserPet'))->first(),
+            'shelter'=>AnimalShelter::find($shelter_id),
+            'amount'=>Donation::where('animal_shelter',$shelter_id)->where('status','sent')->first(),
+        );
+        return view('PetOwner.Pet Book.Paypal.method',$data);
+    }
+    function updatedonation($shelter_id){
+        $petowner =PetOwner::where('id','=',session('LoggedUserPet'))->first();
+        $shelter = AnimalShelter::find($shelter_id);
+        $donation =  DB::table('donation')
+        ->select('donor_amount')
+        ->where('animal_shelter',$shelter_id)
+        ->where('status','sent')
+        ->get();
+        $approvedproof = [
+          'petowner_name' =>  'You donated PHP'.$donation,
+          'promo' => ' to '.$shelter->shelter_name,
+        ];
+        PetOwner::find($petowner->id)->notify(new ApproveProofPaymentPetowner($approvedproof));
+
+        DB::update("update donation set status = 'received' where status ='sent' and animal_shelter ='$shelter_id'");
+
+
+        $approvedproof = [
+            'petowner_name' =>  'You have received PHP '.$donation.' worth of donation from ',
+            'promo' => $petowner->fname.' '.$petowner->lname,
+          ];
+          AnimalShelter::find($shelter_id)->notify(new ApproveProofPaymentPetowner($approvedproof));
     }
 }

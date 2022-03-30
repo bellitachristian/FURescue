@@ -58,8 +58,8 @@ class AnimalShelterManagement extends Controller
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data = array(
           'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-          'vac'=> DB::select("select *from vaccine where shelter_id='$shelter->id'"),
-          'deworm'=> DB::select("select *from deworm where shelter_id='$shelter->id'"),
+          'vac'=> Vaccine::where('shelter_id',$shelter->id)->get(),
+          'deworm'=> Deworm::where('shelter_id',$shelter->id)->get(),
           'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first()
         );
         return view('AnimalShelter.Vaccine & Deworm.Vaccine',$data);
@@ -98,7 +98,7 @@ class AnimalShelterManagement extends Controller
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
         $data = array(
             'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'animal'=> DB::select("select *from animals  where shelter_id ='$shelter->id' and status ='Available'"),
+            'animal'=> Animals::where('shelter_id',$shelter->id)->where('status',"Available")->get(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'sheltercateg' =>AnimalShelter::all()->where('id',session('LoggedUser')),
             'count'=>Animals::where('owner_id',$shelter->id)->count(),
@@ -124,8 +124,9 @@ class AnimalShelterManagement extends Controller
     }
 
     function DeleteVaccine($id){
-        DB::delete("delete from vaccine where id='$id'");
-        return redirect()->back()->with('status','Vaccine Deleted Successfully');
+        $vaccine = Vaccine::find($id);
+        $vaccine->delete();
+        return redirect()->back()->with('status','Moved to Archived');
     }
     function Allocate_Deworm_Animal($id){
         $shelter=AnimalShelter::where('id','=',session('LoggedUser'))->first();
@@ -241,8 +242,9 @@ class AnimalShelterManagement extends Controller
      }
 
      function DeleteDeworm($id){
-         DB::delete("delete from deworm where id='$id'");
-         return redirect()->back()->with('status','Deworm Deleted Successfully');
+        $deworm = Deworm::find($id);
+        $deworm->delete();
+         return redirect()->back()->with('status','Moved to Archive!');
      }
 
     function AddDeworm(Request $req){
@@ -1280,12 +1282,90 @@ class AnimalShelterManagement extends Controller
 
     function DeleteAnimal($id){
         $animal=Animals::find($id);
+        $animal->delete();
+        return redirect()->back()->with('status','Moved to Archive');
+    }
+
+    function force_delete_animal($id){
+        $animal=Animals::withTrashed()->where('id', $id)->firstOrFail();
         $destination = 'uploads/animals/'.$animal->animal_image;
             if(File::exists($destination)){
                 File::delete($destination);
             }
-        $animal->delete();
-        return redirect()->back()->with('status','Animal Deleted Successfully');
+        $animal->forceDelete();
+        return redirect()->back()->with('status','Pet Deleted Successfully');
+    }
+
+    function restore_pet($id){
+        $animal=Animals::withTrashed()->where('id', $id)->firstOrFail();
+        $animal->restore();
+        return redirect()->back()->with('status','Pet Restored Successfully');
+    }
+
+    function view_archived_policy(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'policy'=>AdoptionPolicy::onlyTrashed()->where('shelter_id',$shelter->id)->get()
+        );
+        return view('AnimalShelter.AdoptionPolicy.Archived',$data);
+    }
+
+    function restore_policy($id){
+        $policy=AdoptionPolicy::withTrashed()->where('id', $id)->firstOrFail();
+        $policy->restore();
+        return redirect()->back()->with('status','Policy Restored Successfully');
+    }
+
+    function force_delete_policy($id){
+        $policy=AdoptionPolicy::withTrashed()->where('id', $id)->firstOrFail();
+        $policy->forceDelete();
+        return redirect()->back()->with('status','Policy Deleted Successfully');
+    }
+
+    function view_archived_vaccine(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'vac'=> Vaccine::onlyTrashed()->where('shelter_id',$shelter->id)->get(),
+        );
+        return view('AnimalShelter.Vaccine & Deworm.Archive_vaccine',$data);
+    }
+
+    function restore_vaccine($id){
+        $vaccine=Vaccine::withTrashed()->where('id', $id)->firstOrFail();
+        $vaccine->restore();
+        return redirect()->back()->with('status','Vaccine Restored Successfully');
+    }
+
+    function force_delete_vaccine($id){
+        $vaccine=Vaccine::withTrashed()->where('id', $id)->firstOrFail();
+        $vaccine->forceDelete();
+        return redirect()->back()->with('status','Vaccine Deleted Successfully');
+    }
+
+    function view_archived_deworm(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'deworm'=> Deworm::onlyTrashed()->where('shelter_id',$shelter->id)->get(),
+        );
+        return view('AnimalShelter.Vaccine & Deworm.Archive_deworm',$data);
+    }
+
+    function restore_deworm($id){
+        $deworm=Deworm::withTrashed()->where('id', $id)->firstOrFail();
+        $deworm->restore();
+        return redirect()->back()->with('status','Deworm Restored Successfully');
+    }
+
+    function force_delete_deworm($id){
+        $deworm=Deworm::withTrashed()->where('id', $id)->firstOrFail();
+        $deworm->forceDelete();
+        return redirect()->back()->with('status','Deworm Deleted Successfully');
     }
 
     function ViewEditAnimal($id){
@@ -1364,7 +1444,7 @@ class AnimalShelterManagement extends Controller
         $data = array(
             'LoggedUserInfo' => AnimalShelter::where('id','=',session('LoggedUser'))->first(),
             'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
-            'policy'=>DB::select("select *from adopt_policy  where shelter_id ='$shelter->id'")
+            'policy'=>AdoptionPolicy::where('shelter_id',$shelter->id)->get()
         );
         return view('AnimalShelter.AdoptionPolicy.adoptpolicy',$data);
     }
@@ -1388,7 +1468,7 @@ class AnimalShelterManagement extends Controller
     function DeletePolicy($id){
         $policy = AdoptionPolicy::find($id);
         $policy->delete();
-        return redirect()->back()->with('status','Adoption Policy Deleted Successfully');
+        return redirect()->back()->with('status','Moved to Archived');
     }
 
     function RequestActivation($shelter_id){
@@ -2704,6 +2784,16 @@ class AnimalShelterManagement extends Controller
             ->where('updated_at','>=',$fromdate)->where('updated_at','<=',$todate)->get()
         );
         return view('AnimalShelter.Reports.donationhistory',$data);
+    }
+
+    function view_archived_pets(){
+        $shelter =AnimalShelter::where('id','=',session('LoggedUser'))->first();
+        $data =array(
+            'LoggedUserInfo'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'shelter'=>AnimalShelter::where('id','=',session('LoggedUser'))->first(),
+            'animal'=> Animals::onlyTrashed()->where('shelter_id',$shelter->id)->where('status',"Available")->get(),
+        );
+        return view('AnimalShelter.AnimalManagement.Archived',$data);
     }
 }
 

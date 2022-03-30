@@ -28,6 +28,6 @@ class ApproveShelter extends Mailable
      */
     public function build()
     {
-        return $this->from('furescue1@gmail.com','furescue')->subject('Welcome Animal Shelter!')->view('Mail.Shelter-approve-email',['mail_data'=> $this->approve_shelter_data]);
+        return $this->from('furescueteam@gmail.com','furescue')->subject('Welcome Animal Shelter!')->view('Mail.Shelter-approve-email',['mail_data'=> $this->approve_shelter_data]);
     }
 }

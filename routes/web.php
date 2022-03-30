@@ -69,6 +69,9 @@ Route::post('/postpet/postupdate/petowner/{id}',[PetOwnerManagement::class,'post
 Route::post('/postpet/postupdate/petowner/{id}',[PetOwnerManagement::class,'post_pet_update'])->name('post.pet.update.petowner');
 Route::post('/PetOwner/request/{id}/{shelter_id}',[PetOwnerManagement::class,'selectanimal'])->name('select.request.animal');
 
+Route::get('/PetOwner/updatedonate/{shelter_id}',[PetOwnerManagement::class,'updatedonation'])->name('donate.update');
+Route::post('/PetOwner/donate/{shelter_id}',[PetOwnerManagement::class,'donatesave'])->name('donate.save');
+
 //Reports PetOwner
 Route::post('/PetOwner/search/AdoptionHistory',[PetOwnerManagement::class,'searchAdoptionhistory'])->name('searchAdoptionhistory.petowner');
 Route::post('/PetOwner/search/PaymentHistory',[PetOwnerManagement::class,'searchpaymenthistory'])->name('searchpaymenthistory.petowner');
@@ -255,6 +258,24 @@ Route::group(['middleware'=>['Authcheck']],function(){
         Route::get('/AnimalShelter/View/Revenue',[AnimalShelterManagement::class,'viewrevenue'])->name('view.revenue.shelter');
         Route::get('/AnimalShelter/reports',[AnimalShelterManagement::class,'reports'])->name('reports.shelter');
         Route::get('/AnimalShelter/donationhistory',[AnimalShelterManagement::class,'donationhistory'])->name('donationhistory');
+
+        //Archived
+        Route::get('/AnimalShelter/viewArchive',[AnimalShelterManagement::class,'view_archived_pets'])->name('view_archived');
+        Route::get('/AnimalShelter/restore/{id}',[AnimalShelterManagement::class,'restore_pet'])->name('restore_pet');
+        Route::get('/AnimalShelter/forcedelete/{id}',[AnimalShelterManagement::class,'force_delete_animal'])->name('force_delete_animal');
+
+        Route::get('/AnimalShelter/viewArchivePolicy',[AnimalShelterManagement::class,'view_archived_policy'])->name('view_archived_policy');
+        Route::get('/AnimalShelter/restorepolicy/{id}',[AnimalShelterManagement::class,'restore_policy'])->name('restore_policy');
+        Route::get('/AnimalShelter/forcedeletepolicy/{id}',[AnimalShelterManagement::class,'force_delete_policy'])->name('force_delete_policy');
+
+        Route::get('/AnimalShelter/viewArchiveVaccine',[AnimalShelterManagement::class,'view_archived_vaccine'])->name('view_archived_vaccine');
+        Route::get('/AnimalShelter/restorevaccine/{id}',[AnimalShelterManagement::class,'restore_vaccine'])->name('restore_vaccine');
+        Route::get('/AnimalShelter/forcedeletevaccine/{id}',[AnimalShelterManagement::class,'force_delete_vaccine'])->name('force_delete_vaccine');
+
+        Route::get('/AnimalShelter/viewArchiveDeworm',[AnimalShelterManagement::class,'view_archived_deworm'])->name('view_archived_deworm');
+        Route::get('/AnimalShelter/restoredeworm/{id}',[AnimalShelterManagement::class,'restore_deworm'])->name('restore_deworm');
+        Route::get('/AnimalShelter/forcedeletedeworm/{id}',[AnimalShelterManagement::class,'force_delete_deworm'])->name('force_delete_deworm');
+
     });
     Route::get('/dashboard',[AnimalShelterManagement::class,'Animalshelter_dashboard'])->name('dash');
     Route::get('/tempdashboard',[AnimalShelterManagement::class,'Animalshelter_tempdashboard']);
@@ -318,13 +339,13 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
         Route::get('Receipt/Confirmed/Slip',[PetOwnerManagement::class,'confirmreceipt'])->name('adoption.confirmed.result.petowner');
         Route::get('Receipt/Confirmed/Slip/{id}',[PetOwnerManagement::class,'confirmingreceipt'])->name('confirm.receipt');
 
-
-
         Route::get('/PetOwner/enlarge/{id}',[PetOwnerManagement::class,'enlarge'])->name('enlarge.petowner');
         Route::get('/PetOwner/request',[PetOwnerManagement::class,'request_adoption'])->name('view.request.adoption');
         Route::get('/PetOwner/print/{id}',[PetOwnerManagement::class,'printview'])->name('print.view');
 
         Route::get('/PetOwner/getshelterdetails/{id}',[PetOwnerManagement::class,'shelter_detail'])->name('shelter.details');
+        Route::get('/PetOwner/shelterdetails/{id}',[PetOwnerManagement::class,'shelter_detail_view'])->name('shelter.details.view');
+
         Route::get('/PetOwner/photos/{id}',[UploadController::class,'shelterphoto'])->name('shelter.photo');
         Route::get('/PetOwner/shelter/animals/{id}',[PetOwnerManagement::class,'selection'])->name('select');
         Route::get('/PetOwner/sent',[PetOwnerManagement::class,'sent'])->name('sent');
@@ -342,6 +363,26 @@ Route::group(['middleware'=>['PetOwnerCheck']],function(){
         Route::get('/PetOwner/PaymentHistory',[PetOwnerManagement::class,'paymenthistory'])->name('paymenthistory.petowner');
         Route::get('/PetOwner/View/Revenue',[PetOwnerManagement::class,'viewrevenue'])->name('view.revenue.petowner');
         Route::get('/PetOwner/reports',[PetOwnerManagement::class,'reports'])->name('reports');
+
+        //Archived
+        Route::get('/PetOwner/viewArchive',[PetOwnerManagement::class,'view_archived_pets'])->name('view_archived.petowner');
+        Route::get('/PetOwner/restore/{id}',[PetOwnerManagement::class,'restore_pet'])->name('restore_pet.petowner');
+        Route::get('/PetOwner/forcedelete/{id}',[PetOwnerManagement::class,'force_delete_animal'])->name('force_delete_animal.petowner');
+
+        Route::get('/PetOwner/viewArchivePolicy',[PetOwnerManagement::class,'view_archived_policy'])->name('view_archived_policy.petowner');
+        Route::get('/PetOwner/restorepolicy/{id}',[PetOwnerManagement::class,'restore_policy'])->name('restore_policy.petowner');
+        Route::get('/PetOwner/forcedeletepolicy/{id}',[PetOwnerManagement::class,'force_delete_policy'])->name('force_delete_policy.petowner');
+
+        Route::get('/PetOwner/viewArchiveVaccine',[PetOwnerManagement::class,'view_archived_vaccine'])->name('view_archived_vaccine.petowner');
+        Route::get('/PetOwner/restorevaccine/{id}',[PetOwnerManagement::class,'restore_vaccine'])->name('restore_vaccine.petowner');
+        Route::get('/PetOwner/forcedeletevaccine/{id}',[PetOwnerManagement::class,'force_delete_vaccine'])->name('force_delete_vaccine.petowner');
+
+        Route::get('/PetOwner/viewArchiveDeworm',[PetOwnerManagement::class,'view_archived_deworm'])->name('view_archived_deworm.petowner');
+        Route::get('/PetOwner/restoredeworm/{id}',[PetOwnerManagement::class,'restore_deworm'])->name('restore_deworm.petowner');
+        Route::get('/PetOwner/forcedeletedeworm/{id}',[PetOwnerManagement::class,'force_delete_deworm'])->name('force_delete_deworm.petowner');
+
+        Route::get('/PetOwner/viewdonate',[PetOwnerManagement::class,'view_to_donate'])->name('view.to.donate');
+        Route::get('/PetOwner/savedonate/{shelter_id}',[PetOwnerManagement::class,'viewset'])->name('view.set');
 
     });
     Route::get('/auto/logout/petowner/{petowner_id}',[LoginController::class,'autologoutpetowner']);

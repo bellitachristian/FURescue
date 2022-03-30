@@ -14,7 +14,10 @@ Pet Management
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
                     <div>
-                    <button class="btn btn-danger" data-toggle="modal" data-target="#AddAnimalModal" >Add Pet +</button>
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#AddAnimalModal" >Add Pet +</button>
+                    </div>
+                    <div>
+                        <a href="{{route('view_archived.petowner')}}"><button class="btn btn-danger" type="button">View Archived Pets</button></a>
                     </div>
                 </div>
     <!-- Animal Content -->
@@ -50,7 +53,7 @@ Pet Management
                     <td>{{ $anim->info}}</td>
                     <td style="text-align:center">
                         <a href="{{route('edit.pet',$anim->id)}}"><i class="fas fa-edit" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                        <a href="#" id="delete"><i class="fas fa-trash-alt" data-toggle="modal" data-target="#DeleteAnimal" title="Delete">&#xE872;</i></a>
+                        <a href="#" id="delete"><i class="fas fa-trash-alt" data-toggle="modal" data-target="#DeleteAnimal" title="Move to Archive">&#xE872;</i></a>
                     </td>
                 </tr> 
             @endforeach($animal as $anim)

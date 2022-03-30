@@ -4,7 +4,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete Animal </h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Move to Archive</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -12,7 +12,7 @@
             <form action="/AnimalManagement" method="POST" id="deleteform">
                 @csrf
                 <div class="modal-body">
-                    <h6> Are you sure you want to proceed deletion?</h6>  
+                    <h6> Are you sure you want to move this pet to archive?</h6>  
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>

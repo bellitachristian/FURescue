@@ -72,9 +72,10 @@
     </a>
     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Facilities</h6>
+            <h6 class="collapse-header">More</h6>
             <a class="collapse-item" href="{{route('petbook.view.petowner')}}">View Book</a>
             <a class="collapse-item" href="{{route('allocate.view')}}">Allocation</a>
+            <a class="collapse-item" href="{{route('view.to.donate')}}">Donate</a>
         </div>
     </div>
 </li>

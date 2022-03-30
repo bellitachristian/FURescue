@@ -14,7 +14,10 @@ Adoption Policy
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
                     <div>
-                    <button class="btn btn-danger" data-toggle="modal" data-target="#AddPolicy" >Add Adoption Policy +</button>
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#AddPolicy" >Add Adoption Policy +</button>
+                    </div>
+                    <div>
+                        <a href="{{route('view_archived_policy')}}"><button class="btn btn-danger" type="button">View Archived Policy</button></a>
                     </div>
                 </div>
     <!-- Policy Content -->
@@ -34,7 +37,7 @@ Adoption Policy
                     <td>{{$pol->policy_content}}</td>
                     <td style="text-align:center">
                         <a href="#" id="edit"><i class="fas fa-edit" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                        <a href="#" id="delete"><i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                        <a href="#" id="delete"><i class="fas fa-trash-alt" data-toggle="tooltip" title="Move to archive">&#xE872;</i></a>
                     </td>
                 </tr> 
             @endforeach($policy as $pol)
@@ -54,7 +57,7 @@ Adoption Policy
                     <h5 class="modal-title" id="exampleModalLabel">Add Adoption Policy +</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
-                    </button>
+                    </button>   
                 </div>
             <form action="/AdoptionPolicy"  method="POST">
                 @csrf
@@ -78,7 +81,7 @@ Adoption Policy
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete Adoption Policy </h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Move to Archive </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -86,7 +89,7 @@ Adoption Policy
             <form action="/AdoptionPolicy/delete" method="POST" id="deleteform">
                 @csrf
                 <div class="modal-body">
-                    <h6> Are you sure you want to proceed deletion?</h6>  
+                    <h6> Are you sure you want to move policy to archive?</h6>  
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
